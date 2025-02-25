@@ -1,4 +1,3 @@
-
 import { Card } from "@/components/ui/card";
 import { PersonalInfoData } from "./PersonalInfo";
 import { WorkExperienceEntry } from "./WorkExperience";
@@ -52,15 +51,15 @@ export function ResumePreview({
       margin: [0, 0],
       filename: `${personalInfo.fullName || 'resume'}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { 
+      html2canvas: {
         scale: 2,
         useCORS: true,
         letterRendering: true
       },
-      jsPDF: { 
-        unit: 'mm', 
-        format: 'a4', 
-        orientation: 'portrait' 
+      jsPDF: {
+        unit: 'mm',
+        format: 'a4',
+        orientation: 'portrait'
       }
     };
 
@@ -82,15 +81,15 @@ export function ResumePreview({
       margin: [0, 0],
       filename: `${personalInfo.fullName || 'resume'}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { 
+      html2canvas: {
         scale: 2,
         useCORS: true,
         letterRendering: true
       },
-      jsPDF: { 
-        unit: 'mm', 
-        format: 'a4', 
-        orientation: 'portrait' 
+      jsPDF: {
+        unit: 'mm',
+        format: 'a4',
+        orientation: 'portrait'
       }
     };
 
@@ -151,7 +150,7 @@ export function ResumePreview({
         </DialogContent>
       </Dialog>
 
-      <Card 
+      <Card
         className="w-[210mm] h-[297mm] p-8 max-w-full bg-white shadow-lg animate-fade-in relative overflow-hidden"
         style={{
           transform: `translateY(${-(currentPage - 1) * 100}%)`,

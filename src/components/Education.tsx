@@ -1,9 +1,6 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
-import { AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Plus, Trash2 } from "lucide-react";
 
 export interface EducationEntry {
@@ -44,21 +41,17 @@ export function Education({ education, onChange }: EducationProps) {
   };
 
   return (
-    <AccordionItem value="education" className="border-b-0">
-      <AccordionTrigger className="hover:no-underline">
-        <h2 className="text-2xl font-semibold text-primary">Education</h2>
-      </AccordionTrigger>
-      <AccordionContent>
-        <Card className="p-6 space-y-6 animate-fade-in">
-          <div className="flex justify-between items-center">
-            <Button onClick={addEducation} variant="outline" size="sm">
+    <div className="space-y-4">
+      <h2 className="text-2xl font-semibold text-primary">Education</h2>
+      <div className="flex justify-between items-center">
+        <Button onClick={addEducation} variant="outline" size="sm">
           <Plus className="w-4 h-4 mr-2" />
           Add Education
         </Button>
       </div>
       <div className="space-y-6">
         {education.map((edu) => (
-          <Card key={edu.id} className="p-4 relative">
+          <div key={edu.id} className="p-4 relative border rounded-md">
             <Button
               variant="ghost"
               size="icon"
@@ -109,11 +102,9 @@ export function Education({ education, onChange }: EducationProps) {
                 />
               </div>
             </div>
-          </Card>
-        ))}
           </div>
-        </Card>
-      </AccordionContent>
-    </AccordionItem>
+        ))}
+      </div>
+    </div>
   );
 }

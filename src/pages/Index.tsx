@@ -1,14 +1,13 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PersonalInfo, PersonalInfoData } from "@/components/PersonalInfo";
 import { WorkExperience, WorkExperienceEntry } from "@/components/WorkExperience";
 import { Education, EducationEntry } from "@/components/Education";
 import { Skills } from "@/components/Skills";
-import { Accordion } from "@/components/ui/accordion";
 import { ResumePreview } from "@/components/ResumePreview";
 import { Eye, EyeOff, Download, Upload } from "lucide-react";
 import { exportToJsonResume, importFromJsonResume } from "@/utils/jsonResume";
+import { FoldablePanel } from "@/components/FoldablePanel";
 
 const Index = () => {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfoData>({
@@ -49,9 +48,9 @@ const Index = () => {
       reader.onload = (e) => {
         try {
           const jsonResume = JSON.parse(e.target?.result as string);
-          const { personalInfo: newPersonalInfo, workExperience: newWorkExperience, education: newEducation, skills: newSkills } = 
+          const { personalInfo: newPersonalInfo, workExperience: newWorkExperience, education: newEducation, skills: newSkills } =
             importFromJsonResume(jsonResume);
-          
+
           setPersonalInfo(newPersonalInfo);
           setWorkExperience(newWorkExperience);
           setEducation(newEducation);
@@ -110,7 +109,7 @@ const Index = () => {
         </div>
 
         <div className="grid gap-8 lg:grid-cols-2">
-          <Accordion type="multiple" className="space-y-6">
+          <FoldablePanel>
             <PersonalInfo data={personalInfo} onChange={setPersonalInfo} />
             <WorkExperience
               experiences={workExperience}
@@ -118,7 +117,7 @@ const Index = () => {
             />
             <Education education={education} onChange={setEducation} />
             <Skills skills={skills} onChange={setSkills} />
-          </Accordion>
+          </FoldablePanel>
 
           {showPreview && (
             <div className="lg:sticky lg:top-8">

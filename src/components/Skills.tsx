@@ -1,9 +1,6 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
-import { AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { X } from "lucide-react";
 
 interface SkillsProps {
@@ -27,12 +24,8 @@ export function Skills({ skills, onChange }: SkillsProps) {
   };
 
   return (
-    <AccordionItem value="skills" className="border-b-0">
-      <AccordionTrigger className="hover:no-underline">
-        <h2 className="text-2xl font-semibold text-primary">Skills</h2>
-      </AccordionTrigger>
-      <AccordionContent>
-        <Card className="p-6 space-y-4 animate-fade-in">
+    <div className="space-y-4">
+      <h2 className="text-2xl font-semibold text-primary">Skills</h2>
       <form onSubmit={addSkill} className="flex gap-2">
         <Input
           value={newSkill}
@@ -60,8 +53,6 @@ export function Skills({ skills, onChange }: SkillsProps) {
           </span>
         ))}
       </div>
-        </Card>
-      </AccordionContent>
-    </AccordionItem>
+    </div>
   );
 }
