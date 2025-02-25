@@ -20,6 +20,7 @@ const Index = () => {
   const [education, setEducation] = useState<EducationEntry[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
   const [showPreview, setShowPreview] = useState(false);
+  const [isFolded, setIsFolded] = useState(false);
 
   const handleExport = () => {
     const jsonResume = exportToJsonResume(
@@ -108,8 +109,8 @@ const Index = () => {
           </div>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-2">
-          <FoldablePanel>
+        <div className={`grid gap-8 ${isFolded ? "grid-cols-1" : "lg:grid-cols-2"}`}>
+          <FoldablePanel setIsFolded={setIsFolded}>
             <PersonalInfo data={personalInfo} onChange={setPersonalInfo} />
             <WorkExperience
               experiences={workExperience}
@@ -120,7 +121,7 @@ const Index = () => {
           </FoldablePanel>
 
           {showPreview && (
-            <div className="lg:sticky lg:top-8">
+            <div className={`${isFolded ? "col-span-1" : "lg:sticky lg:top-8"}`}>
               <ResumePreview
                 personalInfo={personalInfo}
                 workExperience={workExperience}
