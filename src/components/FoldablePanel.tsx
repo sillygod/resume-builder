@@ -23,18 +23,16 @@ export function FoldablePanel({ children, setIsFolded, isFolded: isFoldedProp }:
   };
 
   return (
-    <div className="relative">
+    <div className={`fixed inset-y-0 left-0 w-full max-w-xs bg-white shadow-lg z-20 transform transition-transform duration-300 ${isFolded ? "-translate-x-full" : "translate-x-0"}`}>
       <Button
         variant="outline"
-        className="fixed top-4 right-4 z-30"
+        className="sticky top-4 right-4 z-30"
         onClick={handleToggle}
       >
         {isFolded ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
       </Button>
-      <div className={`fixed inset-y-0 left-0 w-full max-w-xs bg-white shadow-lg z-20 transform transition-transform duration-300 ${isFolded ? "-translate-x-full" : "translate-x-0"}`}>
-        <div className="p-6 space-y-6 animate-fade-in">
-          {children}
-        </div>
+      <div className="p-6 space-y-6 animate-fade-in">
+        {children}
       </div>
     </div>
   );
