@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { PersonalInfoData } from "./PersonalInfo";
 import { WorkExperienceEntry } from "./WorkExperience";
 import { EducationEntry } from "./Education";
+import { useState, useRef, useEffect } from "react";
 
 interface ResumePreviewProps {
   personalInfo: PersonalInfoData;
@@ -17,10 +18,29 @@ export function ResumePreview({
   education,
   skills,
 }: ResumePreviewProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [totalPages, setTotalPages] = useState(1);
+  const pageHeight = 297; // height in mm
+
+  useEffect(() => {
+    if (contentRef.current) {
+      const contentHeight = contentRef.current.scrollHeight;
+      const pages = Math.ceil(contentHeight / (pageHeight * 3.779527559)); // Convert mm to px (1mm ≈ 3.779527559px)
+      setTotalPages(Math.max(1, pages));
+    }
+  }, [personalInfo, workExperience, education, skills]);
+
   return (
-    <div className="flex justify-center">
-      <Card className="w-[210mm] h-[297mm] p-8 max-w-full bg-white shadow-lg animate-fade-in overflow-y-auto">
-        <div className="space-y-6">
+    <div className="flex flex-col items-center gap-4">
+      <Card 
+        className="w-[210mm] h-[297mm] p-8 max-w-full bg-white shadow-lg animate-fade-in relative overflow-hidden"
+        style={{
+          transform: `translateY(${-(currentPage - 1) * 100}%)`,
+          transition: 'transform 0.3s ease-in-out'
+        }}
+      >
+        <div ref={contentRef} className="space-y-6">
           <div className="text-center border-b pb-6">
             <h1 className="text-3xl font-bold text-primary mb-2">
               {personalInfo.fullName || "Your Name"}
@@ -87,6 +107,28 @@ export function ResumePreview({
           )}
         </div>
       </Card>
+
+      {totalPages > 1 && (
+        <div className="flex gap-4 items-center mt-4">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-primary text-white rounded-md disabled:opacity-50"
+          >
+            Previous Page
+          </button>
+          <span className="text-sm">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 bg-primary text-white rounded-md disabled:opacity-50"
+          >
+            Next Page
+          </button>
+        </div>
+      )}
     </div>
   );
 }
