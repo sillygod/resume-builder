@@ -1,8 +1,8 @@
 
-import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
+import { AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 
 export interface PersonalInfoData {
   fullName: string;
@@ -22,8 +22,12 @@ export function PersonalInfo({ data, onChange }: PersonalInfoProps) {
   };
 
   return (
-    <Card className="p-6 space-y-4 animate-fade-in">
-      <h2 className="text-2xl font-semibold text-primary mb-4">Personal Information</h2>
+    <AccordionItem value="personal-info" className="border-b-0">
+      <AccordionTrigger className="hover:no-underline">
+        <h2 className="text-2xl font-semibold text-primary">Personal Information</h2>
+      </AccordionTrigger>
+      <AccordionContent>
+        <Card className="p-6 space-y-4 animate-fade-in">
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="fullName">Full Name</Label>
@@ -63,6 +67,8 @@ export function PersonalInfo({ data, onChange }: PersonalInfoProps) {
           />
         </div>
       </div>
-    </Card>
+        </Card>
+      </AccordionContent>
+    </AccordionItem>
   );
 }

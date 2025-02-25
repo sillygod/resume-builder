@@ -1,10 +1,10 @@
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
+import { AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Plus, Trash2 } from "lucide-react";
 
 export interface WorkExperienceEntry {
@@ -47,10 +47,14 @@ export function WorkExperience({ experiences, onChange }: WorkExperienceProps) {
   };
 
   return (
-    <Card className="p-6 space-y-6 animate-fade-in">
-      <div className="flex justify-between items-center">
+    <AccordionItem value="work-experience" className="border-b-0">
+      <AccordionTrigger className="hover:no-underline">
         <h2 className="text-2xl font-semibold text-primary">Work Experience</h2>
-        <Button onClick={addExperience} variant="outline" size="sm">
+      </AccordionTrigger>
+      <AccordionContent>
+        <Card className="p-6 space-y-6 animate-fade-in">
+          <div className="flex justify-between items-center">
+            <Button onClick={addExperience} variant="outline" size="sm">
           <Plus className="w-4 h-4 mr-2" />
           Add Experience
         </Button>
@@ -121,7 +125,9 @@ export function WorkExperience({ experiences, onChange }: WorkExperienceProps) {
             </div>
           </Card>
         ))}
-      </div>
-    </Card>
+          </div>
+        </Card>
+      </AccordionContent>
+    </AccordionItem>
   );
 }
