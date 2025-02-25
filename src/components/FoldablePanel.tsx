@@ -14,7 +14,7 @@ export function FoldablePanel({ children }: FoldablePanelProps) {
     <div className="relative">
       <Button
         variant="outline"
-        className="absolute top-4 left-4 z-10"
+        className="absolute top-4 right-4 z-10"
         onClick={() => setIsFolded(!isFolded)}
       >
         {isFolded ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
