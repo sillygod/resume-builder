@@ -121,7 +121,7 @@ const Index = () => {
           </FoldablePanel>
 
           {showPreview && (
-            <div className={`${isFolded ? "col-span-1" : "lg:sticky lg:top-8"}`}>
+            <div className={`${isFolded ? "col-span-1 justify-self-center" : "lg:sticky lg:top-8"}`}>
               <ResumePreview
                 personalInfo={personalInfo}
                 workExperience={workExperience}

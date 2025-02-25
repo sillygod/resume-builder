@@ -23,7 +23,7 @@ export function FoldablePanel({ children, setIsFolded }: FoldablePanelProps) {
     <div className="relative">
       <Button
         variant="outline"
-        className="sticky top-4 right-4 z-10"
+        className="absolute top-4 right-4 z-10"
         onClick={handleToggle}
       >
         {isFolded ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
