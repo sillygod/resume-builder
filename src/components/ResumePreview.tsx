@@ -4,6 +4,10 @@ import { PersonalInfoData } from "./PersonalInfo";
 import { WorkExperienceEntry } from "./WorkExperience";
 import { EducationEntry } from "./Education";
 import { useState, useRef, useEffect } from "react";
+import { Button } from "./ui/button";
+import { Download } from "lucide-react";
+import { toast } from "sonner";
+import html2pdf from "html2pdf.js";
 
 interface ResumePreviewProps {
   personalInfo: PersonalInfoData;
@@ -31,8 +35,53 @@ export function ResumePreview({
     }
   }, [personalInfo, workExperience, education, skills]);
 
+  const handleDownloadPDF = async () => {
+    if (!contentRef.current) return;
+
+    const element = contentRef.current;
+    const opt = {
+      margin: [0, 0],
+      filename: `${personalInfo.fullName || 'resume'}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { 
+        scale: 2,
+        useCORS: true,
+        letterRendering: true
+      },
+      jsPDF: { 
+        unit: 'mm', 
+        format: 'a4', 
+        orientation: 'portrait' 
+      }
+    };
+
+    try {
+      toast.promise(
+        html2pdf().set(opt).from(element).save(),
+        {
+          loading: 'Generating PDF...',
+          success: 'PDF downloaded successfully!',
+          error: 'Failed to generate PDF'
+        }
+      );
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      toast.error('Failed to generate PDF');
+    }
+  };
+
   return (
     <div className="flex flex-col items-center gap-4">
+      <div className="w-full flex justify-end mb-4">
+        <Button
+          onClick={handleDownloadPDF}
+          variant="default"
+          className="flex items-center gap-2"
+        >
+          <Download className="w-4 h-4" /> Download PDF
+        </Button>
+      </div>
+
       <Card 
         className="w-[210mm] h-[297mm] p-8 max-w-full bg-white shadow-lg animate-fade-in relative overflow-hidden"
         style={{
