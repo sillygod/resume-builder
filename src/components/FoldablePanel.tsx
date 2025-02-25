@@ -6,21 +6,24 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 interface FoldablePanelProps {
   children: React.ReactNode;
   setIsFolded: (isFolded: boolean) => void;
+  isFolded: boolean;
 }
 
-export function FoldablePanel({ children, setIsFolded }: FoldablePanelProps) {
-  const [isFolded, setIsFoldedInternal] = useState(false);
+export function FoldablePanel({ children, setIsFolded, isFolded: isFoldedProp }: FoldablePanelProps) {
+  const [isFolded, setIsFoldedInternal] = useState(isFoldedProp);
 
   useEffect(() => {
-    setIsFolded(isFolded);
-  }, [isFolded, setIsFolded]);
+    setIsFolded(isFoldedProp);
+  }, [isFoldedProp]);
 
   const handleToggle = () => {
-    setIsFoldedInternal(!isFolded);
+    const newIsFolded = !isFolded;
+    setIsFoldedInternal(newIsFolded);
+    setIsFolded(newIsFolded);
   };
 
   return (
-    <div className="relative">
+    <div className={`fixed inset-y-0 left-0 w-full max-w-xs bg-white shadow-lg z-20 transform transition-transform duration-300 ${isFolded ? "-translate-x-full" : "translate-x-0"}`}>
       <Button
         variant="outline"
         className="absolute top-4 right-4 z-10"
@@ -28,10 +31,8 @@ export function FoldablePanel({ children, setIsFolded }: FoldablePanelProps) {
       >
         {isFolded ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
       </Button>
-      <div className={`transition-transform duration-300 ${isFolded ? "-translate-x-full" : "translate-x-0"}`}>
-        <Card className="p-6 space-y-6 animate-fade-in">
-          {children}
-        </Card>
+      <div className="p-6 space-y-6 animate-fade-in">
+        {children}
       </div>
     </div>
   );

@@ -65,7 +65,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 relative">
       <div className="container py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold text-primary">Resume Builder</h1>
@@ -109,8 +109,8 @@ const Index = () => {
           </div>
         </div>
 
-        <div className={`grid gap-8 ${isFolded ? "grid-cols-1 justify-items-center" : "lg:grid-cols-2"}`}>
-          <FoldablePanel setIsFolded={setIsFolded}>
+        <div className="grid gap-8 lg:grid-cols-2">
+          <FoldablePanel setIsFolded={setIsFolded} isFolded={isFolded}>
             <PersonalInfo data={personalInfo} onChange={setPersonalInfo} />
             <WorkExperience
               experiences={workExperience}
@@ -121,7 +121,7 @@ const Index = () => {
           </FoldablePanel>
 
           {showPreview && (
-            <div className={`${isFolded ? "col-span-1 justify-self-center" : "lg:sticky lg:top-8"}`}>
+            <div className={`${isFolded ? "col-span-2" : "lg:col-span-1"}`}>
               <ResumePreview
                 personalInfo={personalInfo}
                 workExperience={workExperience}
