@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface FoldablePanelProps {
@@ -9,31 +7,43 @@ interface FoldablePanelProps {
   isFolded: boolean;
 }
 
-export function FoldablePanel({ children, setIsFolded, isFolded: isFoldedProp }: FoldablePanelProps) {
+export function FoldablePanel({
+  children,
+  setIsFolded,
+  isFolded: isFoldedProp,
+}: FoldablePanelProps) {
   const [isFolded, setIsFoldedInternal] = useState(isFoldedProp);
-
+  
   useEffect(() => {
-    setIsFolded(isFoldedProp);
+    setIsFoldedInternal(isFoldedProp);
   }, [isFoldedProp]);
-
+  
   const handleToggle = () => {
     const newIsFolded = !isFolded;
     setIsFoldedInternal(newIsFolded);
     setIsFolded(newIsFolded);
   };
-
+  
   return (
     <div className="relative">
-      <Button
-        variant="outline"
-        className="absolute top-4 right-4 z-30"
-        onClick={handleToggle}
+      <div
+        className={`fixed inset-y-0 left-0 w-full max-w-xl bg-white shadow-lg z-20 transform transition-transform duration-300 ${
+          isFolded ? "-translate-x-full" : "translate-x-0"
+        }`}
       >
-        {isFolded ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-      </Button>
-      <div className={`fixed inset-y-0 left-0 w-full max-w-xs bg-white shadow-lg z-20 transform transition-transform duration-300 ${isFolded ? "-translate-x-full" : "translate-x-0"}`}>
-        <div className="p-6 space-y-6 animate-fade-in">
-          {children}
+        <div className="p-6 space-y-6 animate-fade-in">{children}</div>
+        
+        <div 
+          className={`absolute top-6 -right-8 h-10 flex items-center justify-center bg-white border-t-[1px] border-r-[1px] border-b-[1px] rounded-r-md transition-all duration-300 cursor-pointer`}
+          onClick={handleToggle}
+        >
+          <div className="px-2">
+            {isFolded ? (
+              <ChevronRight className="w-4 h-4" />
+            ) : (
+              <ChevronLeft className="w-4 h-4" />
+            )}
+          </div>
         </div>
       </div>
     </div>
