@@ -1,4 +1,3 @@
-
 import { PersonalInfoData } from "@/components/PersonalInfo";
 import { WorkExperienceEntry } from "@/components/WorkExperience";
 import { EducationEntry } from "@/components/Education";
