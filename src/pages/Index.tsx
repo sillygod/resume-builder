@@ -109,7 +109,7 @@ const Index = () => {
           </div>
         </div>
 
-        <div className={`grid gap-8 ${isFolded ? "grid-cols-1" : "lg:grid-cols-2"}`}>
+        <div className={`grid gap-8 ${isFolded ? "grid-cols-1 justify-items-center" : "lg:grid-cols-2"}`}>
           <FoldablePanel setIsFolded={setIsFolded}>
             <PersonalInfo data={personalInfo} onChange={setPersonalInfo} />
             <WorkExperience
