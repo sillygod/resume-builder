@@ -11,7 +11,7 @@ export function FoldablePanel({ children }: FoldablePanelProps) {
   const [isFolded, setIsFolded] = useState(false);
 
   return (
-    <div className={`transition-transform duration-300 ${isFolded ? "-translate-x-full" : "translate-x-0"}`}>
+    <div className="relative">
       <Button
         variant="outline"
         className="sticky top-4 right-4 z-10"
@@ -19,9 +19,11 @@ export function FoldablePanel({ children }: FoldablePanelProps) {
       >
         {isFolded ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
       </Button>
-      <Card className="p-6 space-y-6 animate-fade-in">
-        {children}
-      </Card>
+      <div className={`transition-transform duration-300 ${isFolded ? "-translate-x-full" : "translate-x-0"}`}>
+        <Card className="p-6 space-y-6 animate-fade-in">
+          {children}
+        </Card>
+      </div>
     </div>
   );
 }
