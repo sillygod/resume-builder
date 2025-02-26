@@ -32,15 +32,15 @@ export function ChatMessages({ messages, isLoading }: ChatMessagesProps) {
               }`}
             >
               <div
-                className={`max-w-[80%] rounded-lg p-3 ${
+                className={`max-w-[80%] rounded-lg p-4 ${
                   message.role === "assistant"
                     ? "bg-secondary text-secondary-foreground"
                     : "bg-primary text-primary-foreground"
                 }`}
               >
-                <p className="whitespace-pre-wrap">{message.content}</p>
+                <p className="whitespace-pre-wrap text-sm">{message.content}</p>
                 {message.timestamp && (
-                  <p className="text-xs opacity-70 mt-1">
+                  <p className="text-xs opacity-70 mt-2">
                     {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
                 )}
@@ -49,10 +49,10 @@ export function ChatMessages({ messages, isLoading }: ChatMessagesProps) {
           ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="max-w-[80%] rounded-lg p-3 bg-secondary text-secondary-foreground">
+            <div className="max-w-[80%] rounded-lg p-4 bg-secondary text-secondary-foreground">
               <div className="flex items-center">
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                <p>Thinking...</p>
+                <p className="text-sm">Thinking...</p>
               </div>
             </div>
           </div>

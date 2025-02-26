@@ -22,10 +22,10 @@ export function PromptTemplates({ templates, onSelect }: PromptTemplatesProps) {
           onClick={() => onSelect(template.prompt)}
         >
           <CardHeader className="p-4">
-            <CardTitle className="text-sm">{template.title}</CardTitle>
+            <CardTitle className="text-sm font-medium">{template.title}</CardTitle>
           </CardHeader>
           <CardContent className="p-4 pt-0">
-            <p className="text-xs text-muted-foreground">{template.prompt}</p>
+            <p className="text-xs text-muted-foreground line-clamp-3">{template.prompt}</p>
           </CardContent>
         </Card>
       ))}

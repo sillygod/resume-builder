@@ -1,36 +1,45 @@
 
-import React, { useRef } from "react";
-import { Textarea } from "@/components/ui/textarea";
+import React, { forwardRef } from "react";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { Send, Loader2 } from "lucide-react";
 
 interface ChatInputProps {
   input: string;
-  setInput: (value: string) => void;
+  setInput: (input: string) => void;
   sendMessage: () => void;
   isLoading: boolean;
   handleKeyDown: (e: React.KeyboardEvent) => void;
 }
 
-export function ChatInput({ input, setInput, sendMessage, isLoading, handleKeyDown }: ChatInputProps) {
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-
-  return (
-    <div className="pt-2 pb-4">
-      <div className="flex gap-2">
+export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
+  ({ input, setInput, sendMessage, isLoading, handleKeyDown }, ref) => {
+    return (
+      <div className="border rounded-lg p-2 flex items-end gap-2 bg-background">
         <Textarea
-          ref={textAreaRef}
           placeholder="Type your message..."
+          className="flex-1 min-h-[60px] resize-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 p-2"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="resize-none"
-          rows={2}
+          ref={ref}
         />
-        <Button onClick={sendMessage} disabled={isLoading || !input.trim()}>
-          {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+        <Button
+          type="submit"
+          size="icon"
+          className="h-9 w-9"
+          onClick={sendMessage}
+          disabled={isLoading || !input.trim()}
+        >
+          {isLoading ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Send className="h-4 w-4" />
+          )}
         </Button>
       </div>
-    </div>
-  );
-}
+    );
+  }
+);
+
+ChatInput.displayName = "ChatInput";

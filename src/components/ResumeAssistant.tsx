@@ -163,25 +163,25 @@ export function ResumeAssistant({
         </CardDescription>
       </CardHeader>
 
-      <Tabs defaultValue="chat" className="flex-1 flex flex-col" onValueChange={setActiveTab}>
+      <Tabs defaultValue="chat" className="flex-1 flex flex-col" onValueChange={setActiveTab} value={activeTab}>
         <div className="px-4">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="chat">
-              <MessageCircle className="h-4 w-4 mr-2" />
-              Chat
+            <TabsTrigger value="chat" className="flex items-center gap-2">
+              <MessageCircle className="h-4 w-4" />
+              <span>Chat</span>
             </TabsTrigger>
-            <TabsTrigger value="quick">
-              <Sparkles className="h-4 w-4 mr-2" />
-              Quick Prompts
+            <TabsTrigger value="quick" className="flex items-center gap-2">
+              <Sparkles className="h-4 w-4" />
+              <span>Quick Prompts</span>
             </TabsTrigger>
-            <TabsTrigger value="templates">
-              <BookOpen className="h-4 w-4 mr-2" />
-              Templates
+            <TabsTrigger value="templates" className="flex items-center gap-2">
+              <BookOpen className="h-4 w-4" />
+              <span>Templates</span>
             </TabsTrigger>
           </TabsList>
         </div>
 
-        <TabsContent value="chat" className="flex-1 flex flex-col px-4 pt-4 pb-0 space-y-4 overflow-hidden">
+        <TabsContent value="chat" className="flex-1 flex flex-col px-4 pt-4 pb-0 space-y-4 overflow-hidden m-0 mt-2 border-none">
           <ChatMessages messages={messages} isLoading={isLoading} />
           
           <ChatInput 
@@ -189,15 +189,16 @@ export function ResumeAssistant({
             setInput={setInput} 
             sendMessage={sendMessage} 
             isLoading={isLoading} 
-            handleKeyDown={handleKeyDown} 
+            handleKeyDown={handleKeyDown}
+            ref={textAreaRef}
           />
         </TabsContent>
 
-        <TabsContent value="quick" className="flex-1 space-y-4 p-4 overflow-y-auto">
+        <TabsContent value="quick" className="flex-1 space-y-4 p-4 overflow-y-auto m-0 mt-2 border-none">
           <PromptTemplates templates={quickPrompts} onSelect={handlePromptSelect} />
         </TabsContent>
 
-        <TabsContent value="templates" className="flex-1 space-y-4 p-4 overflow-y-auto">
+        <TabsContent value="templates" className="flex-1 space-y-4 p-4 overflow-y-auto m-0 mt-2 border-none">
           <PromptTemplates templates={templatePrompts} onSelect={handlePromptSelect} />
         </TabsContent>
       </Tabs>
