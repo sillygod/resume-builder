@@ -8,8 +8,11 @@ import { ResumePreview } from "@/components/ResumePreview";
 import { Eye, EyeOff, Download, Upload } from "lucide-react";
 import { exportToJsonResume, importFromJsonResume } from "@/utils/jsonResume";
 import { FoldablePanel } from "@/components/FoldablePanel";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { useTheme, ThemeName } from "@/themes/ThemeContext";
 
 const Index = () => {
+  const { currentTheme, setTheme } = useTheme();
   const [personalInfo, setPersonalInfo] = useState<PersonalInfoData>({
     fullName: "",
     email: "",
@@ -27,7 +30,8 @@ const Index = () => {
       personalInfo,
       workExperience,
       education,
-      skills
+      skills,
+      currentTheme // Pass the current theme to export function
     );
     const blob = new Blob([JSON.stringify(jsonResume, null, 2)], {
       type: "application/json",
@@ -49,13 +53,23 @@ const Index = () => {
       reader.onload = (e) => {
         try {
           const jsonResume = JSON.parse(e.target?.result as string);
-          const { personalInfo: newPersonalInfo, workExperience: newWorkExperience, education: newEducation, skills: newSkills } =
-            importFromJsonResume(jsonResume);
+          const { 
+            personalInfo: newPersonalInfo, 
+            workExperience: newWorkExperience, 
+            education: newEducation, 
+            skills: newSkills,
+            theme: newTheme
+          } = importFromJsonResume(jsonResume);
 
           setPersonalInfo(newPersonalInfo);
           setWorkExperience(newWorkExperience);
           setEducation(newEducation);
           setSkills(newSkills);
+          
+          // Apply the imported theme if available
+          if (newTheme) {
+            setTheme(newTheme);
+          }
         } catch (error) {
           console.error("Error importing resume:", error);
         }
@@ -67,9 +81,13 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gray-50 relative">
       <div className="container py-8">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 space-y-4 md:space-y-0">
           <h1 className="text-4xl font-bold text-primary">Resume Builder</h1>
-          <div className="flex gap-2">
+          
+          <div className="flex flex-wrap gap-2 items-center">
+            {/* Theme Switcher */}
+            <ThemeSwitcher />
+            
             <input
               type="file"
               accept=".json"
@@ -127,6 +145,7 @@ const Index = () => {
                 workExperience={workExperience}
                 education={education}
                 skills={skills}
+                theme={currentTheme} // Pass theme to preview
               />
             </div>
           )}

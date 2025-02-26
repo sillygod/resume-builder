@@ -1,12 +1,15 @@
 import { PersonalInfoData } from "@/components/PersonalInfo";
 import { WorkExperienceEntry } from "@/components/WorkExperience";
 import { EducationEntry } from "@/components/Education";
+import { ThemeName } from "@/themes/ThemeContext";
 
 export interface JsonResume {
+  theme: ThemeName;
   basics: {
     name: string;
     email: string;
     phone: string;
+    jobTitle?: string;
     location: {
       city: string;
       countryCode: string;
@@ -34,9 +37,11 @@ export const exportToJsonResume = (
   personalInfo: PersonalInfoData,
   workExperience: WorkExperienceEntry[],
   education: EducationEntry[],
-  skills: string[]
+  skills: string[],
+  theme: ThemeName
 ): JsonResume => {
   return {
+    theme,
     basics: {
       name: personalInfo.fullName,
       email: personalInfo.email,
@@ -72,6 +77,7 @@ export const importFromJsonResume = (
   workExperience: WorkExperienceEntry[];
   education: EducationEntry[];
   skills: string[];
+  theme: ThemeName;
 } => {
   return {
     personalInfo: {
@@ -79,6 +85,7 @@ export const importFromJsonResume = (
       email: jsonResume.basics.email,
       phone: jsonResume.basics.phone,
       location: jsonResume.basics.location.city,
+      jobTitle: jsonResume.basics.jobTitle,
     },
     workExperience: jsonResume.work.map((work) => ({
       id: Date.now().toString() + Math.random(),
@@ -96,5 +103,6 @@ export const importFromJsonResume = (
       graduationDate: edu.endDate,
     })),
     skills: jsonResume.skills.map((skill) => skill.name),
+    theme: jsonResume.theme || 'modern', // Default to modern if theme isn't specified
   };
 };

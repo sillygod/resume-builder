@@ -1,11 +1,16 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Card } from "@/components/ui/card";
 
 export interface PersonalInfoData {
   fullName: string;
+  photoUrl?: string;
+  jobTitle: string;
   email: string;
   phone: string;
   location: string;
+  website?: string;
+  summary?: string;
 }
 
 interface PersonalInfoProps {
@@ -19,8 +24,8 @@ export function PersonalInfo({ data, onChange }: PersonalInfoProps) {
   };
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-2xl font-semibold text-primary">Personal Information</h2>
+    <Card className="p-6 space-y-4 animate-fade-in">
+      <h2 className="text-2xl font-semibold text-primary mb-4">Personal Information</h2>
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="fullName">Full Name</Label>
@@ -60,6 +65,6 @@ export function PersonalInfo({ data, onChange }: PersonalInfoProps) {
           />
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
