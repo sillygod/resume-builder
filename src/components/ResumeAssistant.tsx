@@ -22,11 +22,13 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
 import { PersonalInfoData } from "./PersonalInfo";
 import { WorkExperienceEntry } from "./WorkExperience";
 import { EducationEntry } from "./Education";
-import { callAIAPI } from "@/utils/aiUtils";
-import { Bot, Send, Settings, Loader2, Sparkles, MessageCircle, Check, BookOpen } from "lucide-react";
+import { callAIAPI, AIModel, aiModels, AIConfigOptions } from "@/utils/aiUtils";
+import { Bot, Send, Settings, Loader2, Sparkles, MessageCircle, Check, BookOpen, Thermometer, Sliders } from "lucide-react";
 import { toast } from "sonner";
 
 interface Message {
@@ -65,6 +67,12 @@ export function ResumeAssistant({
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("chat");
+  const [modelOptions, setModelOptions] = useState<AIConfigOptions>({
+    model: localStorage.getItem("ai_model") || "gpt-3.5-turbo",
+    temperature: parseFloat(localStorage.getItem("ai_temperature") || "0.7"),
+    maxTokens: parseInt(localStorage.getItem("ai_max_tokens") || "1000")
+  });
+  const [customModel, setCustomModel] = useState(localStorage.getItem("custom_model") || "");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -79,6 +87,14 @@ export function ResumeAssistant({
   const saveSettings = () => {
     localStorage.setItem("openai_api_key", apiKey);
     localStorage.setItem("openai_api_url", apiUrl);
+    localStorage.setItem("ai_model", modelOptions.model);
+    localStorage.setItem("ai_temperature", modelOptions.temperature.toString());
+    localStorage.setItem("ai_max_tokens", modelOptions.maxTokens.toString());
+    
+    if (modelOptions.model === "custom" && customModel) {
+      localStorage.setItem("custom_model", customModel);
+    }
+    
     setIsSettingsOpen(false);
     toast.success("Settings saved successfully");
   };
@@ -122,8 +138,16 @@ Work Experience: ${workExperience.map(w => `${w.position} at ${w.company}`).join
 Provide helpful, specific advice related to the user's query. If they ask for improvements or grammar checks, reference specific parts of their resume.`
     };
 
+    // Determine actual model to use (custom or predefined)
+    const actualModel = modelOptions.model === "custom" && customModel ? customModel : modelOptions.model;
+
     try {
-      const response = await callAIAPI([systemMessage, ...apiMessages], apiKey, apiUrl);
+      const response = await callAIAPI(
+        [systemMessage, ...apiMessages], 
+        apiKey, 
+        apiUrl, 
+        { ...modelOptions, model: actualModel }
+      );
       
       if (response) {
         setMessages((prev) => [
@@ -147,6 +171,20 @@ Provide helpful, specific advice related to the user's query. If they ask for im
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
+    }
+  };
+
+  const handleModelChange = (value: string) => {
+    const selectedModel = value as AIModel;
+    const defaultValues = aiModels.find(model => model.id === selectedModel);
+    
+    if (defaultValues) {
+      setModelOptions({
+        ...modelOptions,
+        model: selectedModel,
+        temperature: defaultValues.defaultTemperature,
+        maxTokens: defaultValues.maxTokens
+      });
     }
   };
 
@@ -358,9 +396,9 @@ Provide helpful, specific advice related to the user's query. If they ask for im
       <Dialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>API Settings</DialogTitle>
+            <DialogTitle>AI Assistant Settings</DialogTitle>
             <DialogDescription>
-              Configure your OpenAI-compatible API settings. Your API key is stored locally in your browser.
+              Configure your OpenAI-compatible API settings and model preferences.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -382,6 +420,69 @@ Provide helpful, specific advice related to the user's query. If they ask for im
                 onChange={(e) => setApiUrl(e.target.value)}
                 placeholder="https://api.openai.com/v1/chat/completions"
               />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="model">AI Model</Label>
+              <Select value={modelOptions.model} onValueChange={handleModelChange}>
+                <SelectTrigger id="model">
+                  <SelectValue placeholder="Select a model" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>AI Models</SelectLabel>
+                    {aiModels.map((model) => (
+                      <SelectItem key={model.id} value={model.id}>
+                        {model.name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              {modelOptions.model === "custom" && (
+                <div className="mt-2">
+                  <Label htmlFor="customModel">Custom Model Identifier</Label>
+                  <Input
+                    id="customModel"
+                    placeholder="Enter custom model identifier"
+                    value={customModel}
+                    onChange={(e) => setCustomModel(e.target.value)}
+                  />
+                </div>
+              )}
+            </div>
+            <div className="grid gap-2">
+              <div className="flex justify-between">
+                <Label htmlFor="temperature">Temperature: {modelOptions.temperature.toFixed(1)}</Label>
+                <Thermometer className="h-4 w-4" />
+              </div>
+              <Slider
+                id="temperature"
+                min={0}
+                max={2}
+                step={0.1}
+                value={[modelOptions.temperature]}
+                onValueChange={(values) => setModelOptions({...modelOptions, temperature: values[0]})}
+              />
+              <p className="text-xs text-muted-foreground">
+                Lower values make responses more deterministic, higher values make them more creative.
+              </p>
+            </div>
+            <div className="grid gap-2">
+              <div className="flex justify-between">
+                <Label htmlFor="maxTokens">Max Tokens: {modelOptions.maxTokens}</Label>
+                <Sliders className="h-4 w-4" />
+              </div>
+              <Slider
+                id="maxTokens"
+                min={100}
+                max={4000}
+                step={100}
+                value={[modelOptions.maxTokens]}
+                onValueChange={(values) => setModelOptions({...modelOptions, maxTokens: values[0]})}
+              />
+              <p className="text-xs text-muted-foreground">
+                Maximum length of the AI's response. Higher values allow for longer outputs.
+              </p>
             </div>
           </div>
           <DialogFooter>
