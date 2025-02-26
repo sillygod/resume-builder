@@ -1,16 +1,16 @@
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
 
 export interface PersonalInfoData {
+  [key: string]: string;
   fullName: string;
-  photoUrl?: string;
   jobTitle: string;
   email: string;
   phone: string;
   location: string;
-  website?: string;
-  summary?: string;
 }
 
 interface PersonalInfoProps {
@@ -18,52 +18,65 @@ interface PersonalInfoProps {
   onChange: (data: PersonalInfoData) => void;
 }
 
+const defaultFields = ['fullName', 'jobTitle', 'email', 'phone', 'location'];
+
 export function PersonalInfo({ data, onChange }: PersonalInfoProps) {
-  const handleChange = (key: keyof PersonalInfoData, value: string) => {
+  const handleChange = (key: string, value: string) => {
     onChange({ ...data, [key]: value });
+  };
+
+  // Get all unique fields from the data object
+  const fields = Array.from(new Set([...defaultFields, ...Object.keys(data)]));
+
+  // Helper function to format field labels
+  const formatFieldLabel = (field: string) => {
+    return field
+      .replace(/([A-Z])/g, ' $1') // Insert space before capital letters
+      .replace(/^./, (str) => str.toUpperCase()) // Capitalize first letter
+      .trim();
+  };
+
+  // Helper function to determine input type
+  const getInputType = (field: string) => {
+    if (field === 'email') return 'email';
+    if (field === 'phone') return 'tel';
+    if (field.toLowerCase().includes('date')) return 'date';
+    return 'text';
+  };
+
+  // Helper function to determine if field should use textarea
+  const shouldUseTextarea = (field: string) => {
+    return field.toLowerCase().includes('summary') || 
+           field.toLowerCase().includes('description') ||
+           field.toLowerCase().includes('bio');
   };
 
   return (
     <Card className="p-6 space-y-4 animate-fade-in">
       <h2 className="text-2xl font-semibold text-primary mb-4">Personal Information</h2>
       <div className="grid gap-4 md:grid-cols-2">
-        <div className="space-y-2">
-          <Label htmlFor="fullName">Full Name</Label>
-          <Input
-            id="fullName"
-            value={data.fullName}
-            onChange={(e) => handleChange("fullName", e.target.value)}
-            placeholder="John Doe"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            value={data.email}
-            onChange={(e) => handleChange("email", e.target.value)}
-            placeholder="john@example.com"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="phone">Phone</Label>
-          <Input
-            id="phone"
-            value={data.phone}
-            onChange={(e) => handleChange("phone", e.target.value)}
-            placeholder="+1 (555) 000-0000"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="location">Location</Label>
-          <Input
-            id="location"
-            value={data.location}
-            onChange={(e) => handleChange("location", e.target.value)}
-            placeholder="City, Country"
-          />
-        </div>
+        {fields.map((field) => (
+          <div key={field} className={`space-y-2 ${shouldUseTextarea(field) ? 'md:col-span-2' : ''}`}>
+            <Label htmlFor={field}>{formatFieldLabel(field)}</Label>
+            {shouldUseTextarea(field) ? (
+              <Textarea
+                id={field}
+                value={data[field] || ''}
+                onChange={(e) => handleChange(field, e.target.value)}
+                placeholder={`Enter your ${formatFieldLabel(field).toLowerCase()}`}
+                className="min-h-[100px]"
+              />
+            ) : (
+              <Input
+                id={field}
+                type={getInputType(field)}
+                value={data[field] || ''}
+                onChange={(e) => handleChange(field, e.target.value)}
+                placeholder={`Enter your ${formatFieldLabel(field).toLowerCase()}`}
+              />
+            )}
+          </div>
+        ))}
       </div>
     </Card>
   );

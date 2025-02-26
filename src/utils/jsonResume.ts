@@ -1,3 +1,4 @@
+
 import { PersonalInfoData } from "@/components/PersonalInfo";
 import { WorkExperienceEntry } from "@/components/WorkExperience";
 import { EducationEntry } from "@/components/Education";
@@ -6,6 +7,7 @@ import { ThemeName } from "@/themes/ThemeContext";
 export interface JsonResume {
   theme: ThemeName;
   basics: {
+    [key: string]: any;
     name: string;
     email: string;
     phone: string;
@@ -40,17 +42,27 @@ export const exportToJsonResume = (
   skills: string[],
   theme: ThemeName
 ): JsonResume => {
+  // Create basics object with all personal info fields
+  const basics: any = {
+    name: personalInfo.fullName,
+    email: personalInfo.email,
+    phone: personalInfo.phone,
+    location: {
+      city: personalInfo.location,
+      countryCode: "US",
+    },
+  };
+
+  // Add any additional fields from personalInfo
+  Object.entries(personalInfo).forEach(([key, value]) => {
+    if (!['fullName', 'email', 'phone', 'location'].includes(key)) {
+      basics[key] = value;
+    }
+  });
+
   return {
     theme,
-    basics: {
-      name: personalInfo.fullName,
-      email: personalInfo.email,
-      phone: personalInfo.phone,
-      location: {
-        city: personalInfo.location,
-        countryCode: "US", // Default value
-      },
-    },
+    basics,
     work: workExperience.map((exp) => ({
       name: exp.company,
       position: exp.position,
@@ -79,14 +91,24 @@ export const importFromJsonResume = (
   skills: string[];
   theme: ThemeName;
 } => {
+  // Create personalInfo object with required fields
+  const personalInfo: PersonalInfoData = {
+    fullName: jsonResume.basics.name,
+    email: jsonResume.basics.email,
+    phone: jsonResume.basics.phone,
+    location: jsonResume.basics.location.city,
+    jobTitle: jsonResume.basics.jobTitle || "",
+  };
+
+  // Add any additional fields from the JSON
+  Object.entries(jsonResume.basics).forEach(([key, value]) => {
+    if (!['name', 'email', 'phone', 'location'].includes(key) && typeof value === 'string') {
+      personalInfo[key] = value;
+    }
+  });
+
   return {
-    personalInfo: {
-      fullName: jsonResume.basics.name,
-      email: jsonResume.basics.email,
-      phone: jsonResume.basics.phone,
-      location: jsonResume.basics.location.city,
-      jobTitle: jsonResume.basics.jobTitle,
-    },
+    personalInfo,
     workExperience: jsonResume.work.map((work) => ({
       id: Date.now().toString() + Math.random(),
       company: work.name,
@@ -103,6 +125,6 @@ export const importFromJsonResume = (
       graduationDate: edu.endDate,
     })),
     skills: jsonResume.skills.map((skill) => skill.name),
-    theme: jsonResume.theme || 'modern', // Default to modern if theme isn't specified
+    theme: jsonResume.theme || 'modern',
   };
 };
