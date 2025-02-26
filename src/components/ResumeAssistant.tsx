@@ -1,48 +1,23 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
-import { PersonalInfoData } from "./PersonalInfo";
-import { WorkExperienceEntry } from "./WorkExperience";
-import { EducationEntry } from "./Education";
-import { callAIAPI, AIModel, aiModels, AIConfigOptions } from "@/utils/aiUtils";
-import { Bot, Send, Settings, Loader2, Sparkles, MessageCircle, Check, BookOpen, Thermometer, Sliders } from "lucide-react";
+import { Bot, Settings, MessageCircle, Sparkles, BookOpen } from "lucide-react";
 import { toast } from "sonner";
-
-interface Message {
-  role: "system" | "user" | "assistant";
-  content: string;
-  timestamp?: Date;
-}
-
-interface ResumeAssistantProps {
-  personalInfo: PersonalInfoData;
-  workExperience: WorkExperienceEntry[];
-  education: EducationEntry[];
-  skills: string[];
-}
+import { callAIAPI, AIConfigOptions } from "@/utils/aiUtils";
+import { Message, ResumeAssistantProps } from "@/types/resumeAssistantTypes";
+import { getSystemPrompt, getQuickPrompts, getTemplatePrompts } from "@/utils/resumeAssistantUtils";
+import { ChatMessages } from "./resumeAssistant/ChatMessages";
+import { ChatInput } from "./resumeAssistant/ChatInput";
+import { PromptTemplates } from "./resumeAssistant/PromptTemplates";
+import { AISettingsDialog } from "./resumeAssistant/AISettingsDialog";
 
 export function ResumeAssistant({
   personalInfo,
@@ -73,16 +48,7 @@ export function ResumeAssistant({
     maxTokens: parseInt(localStorage.getItem("ai_max_tokens") || "1000")
   });
   const [customModel, setCustomModel] = useState(localStorage.getItem("custom_model") || "");
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
 
   const saveSettings = () => {
     localStorage.setItem("openai_api_key", apiKey);
@@ -126,16 +92,7 @@ export function ResumeAssistant({
     // Prepend system message with context about the resume
     const systemMessage = {
       role: "system" as const,
-      content: `You are a helpful career and resume assistant. Help users improve their resumes, provide career advice, and assist with grammar and phrasing.
-      
-Current resume information:
-Name: ${personalInfo.fullName || "Not provided"}
-Job Title: ${personalInfo.jobTitle || "Not provided"}
-Skills: ${skills.join(", ") || "None provided"}
-Education: ${education.map(e => `${e.degree} in ${e.field} from ${e.institution}`).join("; ") || "None provided"}
-Work Experience: ${workExperience.map(w => `${w.position} at ${w.company}`).join("; ") || "None provided"}
-      
-Provide helpful, specific advice related to the user's query. If they ask for improvements or grammar checks, reference specific parts of their resume.`
+      content: getSystemPrompt({ personalInfo, workExperience, education, skills })
     };
 
     // Determine actual model to use (custom or predefined)
@@ -174,73 +131,16 @@ Provide helpful, specific advice related to the user's query. If they ask for im
     }
   };
 
-  const handleModelChange = (value: string) => {
-    const selectedModel = value as AIModel;
-    const defaultValues = aiModels.find(model => model.id === selectedModel);
-    
-    if (defaultValues) {
-      setModelOptions({
-        ...modelOptions,
-        model: selectedModel,
-        temperature: defaultValues.defaultTemperature,
-        maxTokens: defaultValues.maxTokens
-      });
-    }
+  const handlePromptSelect = (prompt: string) => {
+    setInput(prompt);
+    setActiveTab("chat");
+    setTimeout(() => {
+      textAreaRef.current?.focus();
+    }, 100);
   };
 
-  const getQuickPrompts = () => [
-    {
-      title: "Resume Review",
-      prompt: "Could you review my resume and suggest improvements?",
-    },
-    {
-      title: "Grammar Check",
-      prompt: "Can you check my resume for grammatical errors?",
-    },
-    {
-      title: "Enhance Job Descriptions",
-      prompt: "Help me enhance the description for my most recent job position.",
-    },
-    {
-      title: "Career Advice",
-      prompt: `Based on my experience as a ${personalInfo.jobTitle || "professional"}, what career paths should I consider?`,
-    },
-    {
-      title: "Missing Skills",
-      prompt: "What important skills might be missing from my resume?",
-    },
-    {
-      title: "ATS Optimization",
-      prompt: "How can I optimize my resume for ATS (Applicant Tracking Systems)?",
-    },
-  ];
-
-  const getTemplatePrompts = () => [
-    {
-      title: "Highlight Achievements",
-      prompt: "I need help turning my job duties into achievement statements with metrics.",
-    },
-    {
-      title: "Professional Summary",
-      prompt: "Write a compelling professional summary for my resume that highlights my key strengths.",
-    },
-    {
-      title: "Career Change Statement",
-      prompt: `I'm transitioning from ${workExperience[0]?.position || "my current role"} to a new field. Help me craft a statement explaining this career change.`,
-    },
-    {
-      title: "Skills Section Enhancement",
-      prompt: "Reorganize and enhance my skills section to be more impactful.",
-    },
-    {
-      title: "Education Highlighting",
-      prompt: "Help me better highlight my educational background in a way that's relevant to my target jobs.",
-    },
-    {
-      title: "Cover Letter Points",
-      prompt: "Based on my resume, suggest key points I should include in my cover letter.",
-    },
-  ];
+  const quickPrompts = getQuickPrompts(personalInfo);
+  const templatePrompts = getTemplatePrompts(workExperience);
 
   return (
     <Card className="w-full h-full shadow-md max-h-[800px] flex flex-col animate-fade-in">
@@ -282,217 +182,39 @@ Provide helpful, specific advice related to the user's query. If they ask for im
         </div>
 
         <TabsContent value="chat" className="flex-1 flex flex-col px-4 pt-4 pb-0 space-y-4 overflow-hidden">
-          <div className="flex-1 overflow-y-auto pr-2">
-            <div className="space-y-4">
-              {messages
-                .filter((msg) => msg.role !== "system")
-                .map((message, index) => (
-                  <div
-                    key={index}
-                    className={`flex ${
-                      message.role === "assistant" ? "justify-start" : "justify-end"
-                    }`}
-                  >
-                    <div
-                      className={`max-w-[80%] rounded-lg p-3 ${
-                        message.role === "assistant"
-                          ? "bg-secondary text-secondary-foreground"
-                          : "bg-primary text-primary-foreground"
-                      }`}
-                    >
-                      <p className="whitespace-pre-wrap">{message.content}</p>
-                      {message.timestamp && (
-                        <p className="text-xs opacity-70 mt-1">
-                          {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="max-w-[80%] rounded-lg p-3 bg-secondary text-secondary-foreground">
-                    <div className="flex items-center">
-                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                      <p>Thinking...</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-          </div>
+          <ChatMessages messages={messages} isLoading={isLoading} />
           
-          <div className="pt-2 pb-4">
-            <div className="flex gap-2">
-              <Textarea
-                ref={textAreaRef}
-                placeholder="Type your message..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                className="resize-none"
-                rows={2}
-              />
-              <Button onClick={sendMessage} disabled={isLoading || !input.trim()}>
-                {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-              </Button>
-            </div>
-          </div>
+          <ChatInput 
+            input={input} 
+            setInput={setInput} 
+            sendMessage={sendMessage} 
+            isLoading={isLoading} 
+            handleKeyDown={handleKeyDown} 
+          />
         </TabsContent>
 
         <TabsContent value="quick" className="flex-1 space-y-4 p-4 overflow-y-auto">
-          <div className="grid gap-4 md:grid-cols-2">
-            {getQuickPrompts().map((quickPrompt, index) => (
-              <Card 
-                key={index} 
-                className="cursor-pointer hover:bg-secondary/50 transition-colors"
-                onClick={() => {
-                  setInput(quickPrompt.prompt);
-                  setActiveTab("chat");
-                  setTimeout(() => {
-                    textAreaRef.current?.focus();
-                  }, 100);
-                }}
-              >
-                <CardHeader className="p-4">
-                  <CardTitle className="text-sm">{quickPrompt.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 pt-0">
-                  <p className="text-xs text-muted-foreground">{quickPrompt.prompt}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <PromptTemplates templates={quickPrompts} onSelect={handlePromptSelect} />
         </TabsContent>
 
         <TabsContent value="templates" className="flex-1 space-y-4 p-4 overflow-y-auto">
-          <div className="grid gap-4 md:grid-cols-2">
-            {getTemplatePrompts().map((template, index) => (
-              <Card 
-                key={index} 
-                className="cursor-pointer hover:bg-secondary/50 transition-colors"
-                onClick={() => {
-                  setInput(template.prompt);
-                  setActiveTab("chat");
-                  setTimeout(() => {
-                    textAreaRef.current?.focus();
-                  }, 100);
-                }}
-              >
-                <CardHeader className="p-4">
-                  <CardTitle className="text-sm">{template.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 pt-0">
-                  <p className="text-xs text-muted-foreground">{template.prompt}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <PromptTemplates templates={templatePrompts} onSelect={handlePromptSelect} />
         </TabsContent>
       </Tabs>
 
-      {/* Settings Dialog */}
-      <Dialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>AI Assistant Settings</DialogTitle>
-            <DialogDescription>
-              Configure your OpenAI-compatible API settings and model preferences.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="apiKey">API Key</Label>
-              <Input
-                id="apiKey"
-                type="password"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder="sk-..."
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="apiUrl">API URL</Label>
-              <Input
-                id="apiUrl"
-                value={apiUrl}
-                onChange={(e) => setApiUrl(e.target.value)}
-                placeholder="https://api.openai.com/v1/chat/completions"
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="model">AI Model</Label>
-              <Select value={modelOptions.model} onValueChange={handleModelChange}>
-                <SelectTrigger id="model">
-                  <SelectValue placeholder="Select a model" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>AI Models</SelectLabel>
-                    {aiModels.map((model) => (
-                      <SelectItem key={model.id} value={model.id}>
-                        {model.name}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              {modelOptions.model === "custom" && (
-                <div className="mt-2">
-                  <Label htmlFor="customModel">Custom Model Identifier</Label>
-                  <Input
-                    id="customModel"
-                    placeholder="Enter custom model identifier"
-                    value={customModel}
-                    onChange={(e) => setCustomModel(e.target.value)}
-                  />
-                </div>
-              )}
-            </div>
-            <div className="grid gap-2">
-              <div className="flex justify-between">
-                <Label htmlFor="temperature">Temperature: {modelOptions.temperature.toFixed(1)}</Label>
-                <Thermometer className="h-4 w-4" />
-              </div>
-              <Slider
-                id="temperature"
-                min={0}
-                max={2}
-                step={0.1}
-                value={[modelOptions.temperature]}
-                onValueChange={(values) => setModelOptions({...modelOptions, temperature: values[0]})}
-              />
-              <p className="text-xs text-muted-foreground">
-                Lower values make responses more deterministic, higher values make them more creative.
-              </p>
-            </div>
-            <div className="grid gap-2">
-              <div className="flex justify-between">
-                <Label htmlFor="maxTokens">Max Tokens: {modelOptions.maxTokens}</Label>
-                <Sliders className="h-4 w-4" />
-              </div>
-              <Slider
-                id="maxTokens"
-                min={100}
-                max={4000}
-                step={100}
-                value={[modelOptions.maxTokens]}
-                onValueChange={(values) => setModelOptions({...modelOptions, maxTokens: values[0]})}
-              />
-              <p className="text-xs text-muted-foreground">
-                Maximum length of the AI's response. Higher values allow for longer outputs.
-              </p>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button type="submit" onClick={saveSettings}>
-              <Check className="mr-2 h-4 w-4" />
-              Save Changes
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <AISettingsDialog 
+        isOpen={isSettingsOpen}
+        onOpenChange={setIsSettingsOpen}
+        apiKey={apiKey}
+        setApiKey={setApiKey}
+        apiUrl={apiUrl}
+        setApiUrl={setApiUrl}
+        modelOptions={modelOptions}
+        setModelOptions={setModelOptions}
+        customModel={customModel}
+        setCustomModel={setCustomModel}
+        saveSettings={saveSettings}
+      />
     </Card>
   );
 }
