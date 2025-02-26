@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PersonalInfo, PersonalInfoData } from "@/components/PersonalInfo";
@@ -5,11 +6,13 @@ import { WorkExperience, WorkExperienceEntry } from "@/components/WorkExperience
 import { Education, EducationEntry } from "@/components/Education";
 import { Skills } from "@/components/Skills";
 import { ResumePreview } from "@/components/ResumePreview";
+import { ResumeAssistant } from "@/components/ResumeAssistant";
 import { Eye, EyeOff, Download, Upload } from "lucide-react";
 import { exportToJsonResume, importFromJsonResume } from "@/utils/jsonResume";
 import { FoldablePanel } from "@/components/FoldablePanel";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { useTheme, ThemeName } from "@/themes/ThemeContext";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
   const { currentTheme, setTheme } = useTheme();
@@ -127,29 +130,61 @@ const Index = () => {
           </div>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-2">
-          <FoldablePanel setIsFolded={setIsFolded} isFolded={isFolded}>
-            <PersonalInfo data={personalInfo} onChange={setPersonalInfo} />
-            <WorkExperience
-              experiences={workExperience}
-              onChange={setWorkExperience}
-            />
-            <Education education={education} onChange={setEducation} />
-            <Skills skills={skills} onChange={setSkills} />
-          </FoldablePanel>
+        <Tabs defaultValue="editor" className="w-full">
+          <TabsList className="mb-4">
+            <TabsTrigger value="editor">Editor</TabsTrigger>
+            <TabsTrigger value="assistant">AI Assistant</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="editor">
+            <div className="grid gap-8 lg:grid-cols-2">
+              <FoldablePanel setIsFolded={setIsFolded} isFolded={isFolded}>
+                <PersonalInfo data={personalInfo} onChange={setPersonalInfo} />
+                <WorkExperience
+                  experiences={workExperience}
+                  onChange={setWorkExperience}
+                />
+                <Education education={education} onChange={setEducation} />
+                <Skills skills={skills} onChange={setSkills} />
+              </FoldablePanel>
 
-          {showPreview && (
-            <div className={`${isFolded ? "col-span-2" : "lg:col-span-1"}`}>
-              <ResumePreview
-                personalInfo={personalInfo}
-                workExperience={workExperience}
-                education={education}
-                skills={skills}
-                theme={currentTheme} // Pass theme to preview
-              />
+              {showPreview && (
+                <div className={`${isFolded ? "col-span-2" : "lg:col-span-1"}`}>
+                  <ResumePreview
+                    personalInfo={personalInfo}
+                    workExperience={workExperience}
+                    education={education}
+                    skills={skills}
+                    theme={currentTheme} // Pass theme to preview
+                  />
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </TabsContent>
+          
+          <TabsContent value="assistant">
+            <div className="grid gap-8 lg:grid-cols-2">
+              <div className="lg:col-span-1">
+                <ResumeAssistant 
+                  personalInfo={personalInfo}
+                  workExperience={workExperience}
+                  education={education}
+                  skills={skills}
+                />
+              </div>
+              
+              <div className="lg:col-span-1">
+                <ResumePreview
+                  personalInfo={personalInfo}
+                  workExperience={workExperience}
+                  education={education}
+                  skills={skills}
+                  theme={currentTheme}
+                />
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
