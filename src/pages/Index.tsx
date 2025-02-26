@@ -21,6 +21,7 @@ const Index = () => {
     email: "",
     phone: "",
     location: "",
+    jobTitle: "", // Added the missing jobTitle property
   });
   const [workExperience, setWorkExperience] = useState<WorkExperienceEntry[]>([]);
   const [education, setEducation] = useState<EducationEntry[]>([]);
