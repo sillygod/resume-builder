@@ -160,17 +160,19 @@ export function ResumePreview({
         </DialogContent>
       </Dialog>
 
-      <Card
-        className="w-[210mm] h-[297mm] p-8 max-w-full bg-white shadow-lg animate-fade-in relative overflow-hidden"
-        style={{
-          transform: `translateY(${-(currentPage - 1) * 100}%)`,
-          transition: "transform 0.3s ease-in-out",
-        }}
-      >
-        <div ref={contentRef} className={`${theme === "sidebar" ? "flex" : ""}`}>
-          {renderLayout()}
-        </div>
-      </Card>
+      <div className="w-[210mm] h-[297mm] max-w-full overflow-hidden">
+        <Card
+          className="w-full h-full p-8 bg-white shadow-lg animate-fade-in relative"
+          style={{
+            transform: currentPage > 1 ? `translateY(-${(currentPage - 1) * 100}%)` : 'none',
+            transition: "transform 0.3s ease-in-out",
+          }}
+        >
+          <div ref={contentRef} className={`${theme === "sidebar" ? "flex" : ""}`}>
+            {renderLayout()}
+          </div>
+        </Card>
+      </div>
 
       {totalPages > 1 && (
         <div className="flex gap-4 items-center mt-4">
