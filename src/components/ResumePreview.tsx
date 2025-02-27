@@ -130,6 +130,13 @@ export function ResumePreview({
 
   return (
     <div className="flex flex-col items-center gap-4">
+      {/* Hidden button for external trigger */}
+      <Button 
+        id="preview-pdf-button" 
+        className="hidden" 
+        onClick={generatePdfPreview}
+      />
+
       <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
         <DialogContent className="max-w-[90vw] h-[90vh] flex flex-col">
           <DialogHeader>

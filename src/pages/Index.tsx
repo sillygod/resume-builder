@@ -7,12 +7,13 @@ import { Education, EducationEntry } from "@/components/Education";
 import { Skills } from "@/components/Skills";
 import { ResumePreview } from "@/components/ResumePreview";
 import { ResumeAssistant } from "@/components/ResumeAssistant";
-import { Eye, EyeOff, Download, Upload } from "lucide-react";
+import { Download, Upload } from "lucide-react";
 import { exportToJsonResume, importFromJsonResume } from "@/utils/jsonResume";
 import { FoldablePanel } from "@/components/FoldablePanel";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { useTheme, ThemeName } from "@/themes/ThemeContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ShowPreviewButton } from "@/components/ShowPreviewButton";
 
 const Index = () => {
   const { currentTheme, setTheme } = useTheme();
@@ -82,6 +83,15 @@ const Index = () => {
     }
   };
 
+  // Function to handle PDF preview from ResumePreview component
+  const handlePreviewPdf = () => {
+    // This will be passed to the ResumePreview component
+    const previewButton = document.getElementById('preview-pdf-button');
+    if (previewButton) {
+      previewButton.click();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 relative">
       <div className="container py-8">
@@ -113,21 +123,11 @@ const Index = () => {
             >
               <Download className="w-4 h-4" /> Export JSON
             </Button>
-            <Button
-              onClick={() => setShowPreview(!showPreview)}
-              variant="outline"
-              className="flex items-center gap-2"
-            >
-              {showPreview ? (
-                <>
-                  <EyeOff className="w-4 h-4" /> Hide Preview
-                </>
-              ) : (
-                <>
-                  <Eye className="w-4 h-4" /> Show Preview
-                </>
-              )}
-            </Button>
+            <ShowPreviewButton 
+              showPreview={showPreview}
+              togglePreview={() => setShowPreview(!showPreview)}
+              handlePreviewPdf={handlePreviewPdf}
+            />
           </div>
         </div>
 
@@ -157,6 +157,7 @@ const Index = () => {
                     education={education}
                     skills={skills}
                     theme={currentTheme} // Pass theme to preview
+                    onPreviewPdf={handlePreviewPdf} // Pass the PDF preview handler
                   />
                 </div>
               )}
@@ -181,6 +182,7 @@ const Index = () => {
                   education={education}
                   skills={skills}
                   theme={currentTheme}
+                  onPreviewPdf={handlePreviewPdf} // Pass the PDF preview handler
                 />
               </div>
             </div>
