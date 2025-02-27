@@ -15,7 +15,7 @@ interface ChatInputProps {
 export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
   ({ input, setInput, sendMessage, isLoading, handleKeyDown }, ref) => {
     return (
-      <div className="border rounded-lg p-2 flex items-end bg-background">
+      <div className="border rounded-lg p-2 flex items-center gap-2 bg-background">
         <Textarea
           placeholder="Type your message..."
           className="flex-1 min-h-9 resize-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 p-2"
@@ -27,7 +27,7 @@ export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
         <Button
           type="submit"
           size="icon"
-          className="h-9 w-9"
+          className="h-9 w-9 flex-shrink-0"
           onClick={sendMessage}
           disabled={isLoading || !input.trim()}
         >

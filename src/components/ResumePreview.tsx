@@ -27,6 +27,7 @@ interface ResumePreviewProps {
   education: EducationEntry[];
   skills: string[];
   theme?: ThemeName; // Make theme optional with a default
+  onPreviewPdf?: () => void; // Add prop to handle PDF preview
 }
 
 export function ResumePreview({
@@ -35,6 +36,7 @@ export function ResumePreview({
   education,
   skills,
   theme = "modern",
+  onPreviewPdf,
 }: ResumePreviewProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -128,16 +130,6 @@ export function ResumePreview({
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <div className="w-full flex justify-end gap-2 mb-4">
-        <Button
-          onClick={() => generatePdfPreviewWithReactToPrint()}
-          variant="outline"
-          className="flex items-center gap-2"
-        >
-          <Eye className="w-4 h-4" /> Preview Download PDF
-        </Button>
-      </div>
-
       <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
         <DialogContent className="max-w-[90vw] h-[90vh] flex flex-col">
           <DialogHeader>
