@@ -15,10 +15,10 @@ interface ChatInputProps {
 export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
   ({ input, setInput, sendMessage, isLoading, handleKeyDown }, ref) => {
     return (
-      <div className="border rounded-lg p-2 flex items-end gap-2 bg-background">
+      <div className="border rounded-lg p-2 flex items-end bg-background">
         <Textarea
           placeholder="Type your message..."
-          className="flex-1 min-h-[60px] resize-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 p-2"
+          className="flex-1 min-h-9 resize-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 p-2"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
