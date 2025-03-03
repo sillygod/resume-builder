@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PersonalInfo, PersonalInfoData } from "@/components/PersonalInfo";
@@ -13,7 +14,7 @@ import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { useTheme, ThemeName } from "@/themes/ThemeContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShowPreviewButton } from "@/components/ShowPreviewButton";
-import LayoutEditor from '@/components/LayoutEditor';
+import LayoutManager from '@/components/LayoutManager';
 
 const Index = () => {
   const { currentTheme, setTheme } = useTheme();
@@ -192,11 +193,11 @@ const Index = () => {
           </TabsContent>
           
           <TabsContent value="layout-editor">
-            <LayoutEditor 
-              selectedLayout={selectedLayout}
-              setSelectedLayout={setSelectedLayout}
-              layoutProps={layoutProps}
-              setLayoutProps={setLayoutProps}
+            <LayoutManager 
+              personalInfo={personalInfo}
+              workExperience={workExperience}
+              education={education}
+              skills={skills}
             />
           </TabsContent>
         </Tabs>
