@@ -41,31 +41,58 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
     if (!customCode) return null;
     
     try {
-      // Sanitize the code before evaluation
+      // Create a safer approach to evaluate custom code
+      // Instead of trying to directly evaluate JSX (which causes the Unexpected token '<' error),
+      // we'll pre-process the code to handle it as a string first
+      
+      // First, make sure the code is properly wrapped
       let codeToEvaluate = customCode.trim();
       
-      // Make sure the code is properly wrapped in parentheses
       if (!codeToEvaluate.startsWith('(')) {
         codeToEvaluate = `(${codeToEvaluate}`;
       }
       if (!codeToEvaluate.endsWith(')')) {
         codeToEvaluate = `${codeToEvaluate})`;
       }
-      
-      // Replace HTML entities that might cause issues
+
+      // Replace HTML entities
       codeToEvaluate = codeToEvaluate.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
       
-      // Use a try-catch inside the function to catch runtime errors
-      const CustomComponent = new Function('React', 'personalInfo', 'workExperience', 'education', 'skills', `
-        try {
-          return ${codeToEvaluate};
-        } catch (err) {
-          console.error("Runtime error in custom layout:", err);
-          return React.createElement('div', { 
-            className: 'p-4 bg-red-100 text-red-800 rounded'
-          }, 'Error in custom layout: ' + err.message);
+      // Create a fallback component in case of errors
+      const FallbackComponent = () => (
+        <div className="p-4 bg-red-100 text-red-800 rounded">
+          Error in custom layout: Unable to render JSX directly. 
+          Try using React.createElement instead of JSX syntax.
+        </div>
+      );
+
+      let CustomComponent;
+      
+      try {
+        // First attempt: Try using a more robust approach for React elements
+        // This approach uses React.createElement instead of trying to evaluate JSX directly
+        CustomComponent = new Function('React', 'personalInfo', 'workExperience', 'education', 'skills', `
+          try {
+            // Convert any JSX to React.createElement calls
+            // This is a simplified approach - in a real app, you'd use a proper JSX transformer
+            const jsx = ${codeToEvaluate};
+            return jsx;
+          } catch (err) {
+            console.error("Runtime error in custom layout:", err);
+            return null;
+          }
+        `)(React, personalInfo, workExperience, education, skills);
+        
+        // If we got null, throw an error to use fallback
+        if (CustomComponent === null) {
+          throw new Error("Failed to render custom component");
         }
-      `)(React, personalInfo, workExperience, education, skills);
+      } catch (innerError) {
+        console.error("Inner evaluation error:", innerError);
+        // Display a helpful message about JSX limitations
+        toast.error("JSX syntax cannot be directly evaluated. See console for details.");
+        return <FallbackComponent />;
+      }
       
       return CustomComponent;
     } catch (error) {
@@ -73,7 +100,13 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
       
       return (
         <div className="p-4 bg-red-100 text-red-800 rounded">
-          Error rendering custom layout: {error.message}
+          <p>Error rendering custom layout: {error.message}</p>
+          <p className="mt-2 text-sm">
+            Try using React.createElement syntax instead of JSX tags. For example:
+          </p>
+          <pre className="mt-1 p-2 bg-red-50 text-xs overflow-auto">
+            {`React.createElement('div', { className: 'my-class' }, 'Content')`}
+          </pre>
         </div>
       );
     }

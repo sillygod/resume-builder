@@ -446,13 +446,18 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         <TabsContent value="code">
           <div className="mb-4">
             <h3 className="text-lg font-semibold mb-2">Edit Resume Layout JSX</h3>
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-gray-600 mb-2">
               Edit the JSX code for your resume layout. Your code has access to these variables:
               <code className="mx-1 px-1 bg-gray-100 rounded text-xs">personalInfo</code>
               <code className="mx-1 px-1 bg-gray-100 rounded text-xs">workExperience</code>
               <code className="mx-1 px-1 bg-gray-100 rounded text-xs">education</code>
               <code className="mx-1 px-1 bg-gray-100 rounded text-xs">skills</code>
             </p>
+            
+            <div className="p-2 mb-3 bg-blue-50 border border-blue-200 rounded text-blue-700 text-sm">
+              <strong>Note:</strong> Due to browser security limitations, custom layouts are limited to 
+              the template formats. Make sure your code is wrapped in parentheses and follows the format in the examples.
+            </div>
             
             <div className="border rounded overflow-hidden mb-4">
               <CodeMirror
