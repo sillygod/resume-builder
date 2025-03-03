@@ -43,8 +43,18 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
     try {
       // This is a simplified approach - in a real app, you'd want to use
       // a proper JSX parser/renderer or a sandbox
+      
+      // Make sure the code is properly wrapped in parentheses
+      let codeToEvaluate = customCode.trim();
+      if (!codeToEvaluate.startsWith('(')) {
+        codeToEvaluate = `(${codeToEvaluate}`;
+      }
+      if (!codeToEvaluate.endsWith(')')) {
+        codeToEvaluate = `${codeToEvaluate})`;
+      }
+      
       const CustomComponent = new Function('React', 'personalInfo', 'workExperience', 'education', 'skills', 
-        `return ${customCode}`)(React, personalInfo, workExperience, education, skills);
+        `return ${codeToEvaluate}`)(React, personalInfo, workExperience, education, skills);
       
       return CustomComponent;
     } catch (error) {

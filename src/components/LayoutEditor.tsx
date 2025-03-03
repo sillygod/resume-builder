@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { SimpleLayout } from './resume-layouts/SimpleLayout';
 import { ModernLayout } from './resume-layouts/ModernLayout';
@@ -23,7 +22,6 @@ const layouts = {
   Centered: CenteredLayout,
 };
 
-// Helper function to get layout source code
 const getLayoutSourceCode = (layoutName: string) => {
   switch(layoutName) {
     case 'Simple':
@@ -194,9 +192,9 @@ const getLayoutSourceCode = (layoutName: string) => {
         <p className="text-gray-600">{personalInfo.jobTitle || "Your Profession"}</p>
         
         <div className="mt-3 text-sm space-y-1">
-          {personalInfo.email && <div>{personalInfo.email}</div>}
-          {personalInfo.phone && <div>{personalInfo.phone}</div>}
-          {personalInfo.location && <div>{personalInfo.location}</div>}
+          {personalInfo.email && <div className="flex items-center gap-1">{personalInfo.email}</div>}
+          {personalInfo.phone && <div className="flex items-center gap-1">{personalInfo.phone}</div>}
+          {personalInfo.location && <div className="flex items-center gap-1">{personalInfo.location}</div>}
         </div>
       </div>
 
@@ -240,8 +238,8 @@ const getLayoutSourceCode = (layoutName: string) => {
             {education.map((edu) => (
               <div key={edu.id} className="border-b pb-3">
                 <h3 className="font-semibold">{edu.institution}</h3>
-                <p className="text-sm">{edu.degree} in {edu.field}</p>
-                <p className="text-xs text-gray-500">Graduated: {edu.graduationDate}</p>
+                <p>{edu.degree} in {edu.field}</p>
+                <p className="text-sm text-gray-500">Graduated: {edu.graduationDate}</p>
               </div>
             ))}
           </div>
@@ -366,11 +364,10 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
     if (LayoutComponent) {
       setLayoutProps(LayoutComponent.defaultProps || {});
       
-      // If we're in code mode, load the template code for the selected layout
       if (editorMode === 'code') {
         const templateCode = getLayoutSourceCode(selectedLayout);
         setEditorValue(templateCode);
-        setCustomCode(null); // Reset custom code when changing layouts
+        setCustomCode(null);
       }
     }
   }, [selectedLayout, editorMode]);
@@ -383,21 +380,15 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   const handleCodeChange = (editor: any, data: any, value: string) => {
     setEditorValue(value);
     
-    // Attempt to validate and apply the code in real-time
-    try {
-      // Basic validation - ensure it has parentheses
-      if (!value.trim().startsWith('(') || !value.trim().endsWith(')')) {
-        setCodeError("JSX code must be wrapped in parentheses");
-        return;
-      }
-      
-      // If validation passes, update the custom code
-      setCustomCode(value);
+    let codeToValidate = value.trim();
+    
+    if (!codeToValidate.startsWith('(') || !codeToValidate.endsWith(')')) {
+      setCodeError("Warning: JSX code should be wrapped in parentheses for proper rendering");
+    } else {
       setCodeError(null);
-    } catch (error) {
-      console.error("Error validating code:", error);
-      setCodeError(`Invalid JSX: ${error.message}`);
     }
+    
+    setCustomCode(value);
   };
 
   const resetCustomCode = () => {
@@ -478,7 +469,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
             </div>
             
             {codeError && (
-              <div className="p-2 mb-4 bg-red-50 border border-red-200 rounded text-red-600 text-sm">
+              <div className="p-2 mb-4 bg-yellow-50 border border-yellow-200 rounded text-yellow-700 text-sm">
                 {codeError}
               </div>
             )}
