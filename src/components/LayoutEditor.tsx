@@ -6,7 +6,6 @@ import { SidebarLayout } from './resume-layouts/SidebarLayout';
 import { CenteredLayout } from './resume-layouts/CenteredLayout';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -360,6 +359,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
 }) => {
   const [editorValue, setEditorValue] = useState<string>('');
   const [editorMode, setEditorMode] = useState<'preview' | 'code'>('preview');
+  const [codeError, setCodeError] = useState<string | null>(null);
 
   useEffect(() => {
     const LayoutComponent = layouts[selectedLayout];
@@ -382,27 +382,29 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
 
   const handleCodeChange = (editor: any, data: any, value: string) => {
     setEditorValue(value);
-  };
-
-  const handleSaveCode = () => {
+    
+    // Attempt to validate and apply the code in real-time
     try {
       // Basic validation - ensure it has parentheses
-      if (!editorValue.trim().startsWith('(') || !editorValue.trim().endsWith(')')) {
-        throw new Error("JSX code must be wrapped in parentheses");
+      if (!value.trim().startsWith('(') || !value.trim().endsWith(')')) {
+        setCodeError("JSX code must be wrapped in parentheses");
+        return;
       }
       
-      setCustomCode(editorValue);
-      toast.success("Layout code updated successfully");
+      // If validation passes, update the custom code
+      setCustomCode(value);
+      setCodeError(null);
     } catch (error) {
-      console.error("Error saving code:", error);
-      toast.error(`Failed to save code: ${error.message}`);
+      console.error("Error validating code:", error);
+      setCodeError(`Invalid JSX: ${error.message}`);
     }
   };
 
   const resetCustomCode = () => {
-    setCustomCode(null);
     const templateCode = getLayoutSourceCode(selectedLayout);
     setEditorValue(templateCode);
+    setCustomCode(templateCode);
+    setCodeError(null);
     toast.info("Reset to template layout");
   };
 
@@ -475,8 +477,13 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
               />
             </div>
             
+            {codeError && (
+              <div className="p-2 mb-4 bg-red-50 border border-red-200 rounded text-red-600 text-sm">
+                {codeError}
+              </div>
+            )}
+            
             <div className="flex gap-2">
-              <Button onClick={handleSaveCode} variant="default">Apply Changes</Button>
               <Button onClick={resetCustomCode} variant="outline">Reset to Template</Button>
             </div>
           </div>

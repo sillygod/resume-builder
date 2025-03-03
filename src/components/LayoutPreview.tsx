@@ -7,6 +7,7 @@ import { CenteredLayout } from './resume-layouts/CenteredLayout';
 import { PersonalInfoData } from './PersonalInfo';
 import { WorkExperienceEntry } from './WorkExperience';
 import { EducationEntry } from './Education';
+import { toast } from 'sonner';
 
 const layouts = {
   Simple: SimpleLayout,
@@ -48,7 +49,13 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
       return CustomComponent;
     } catch (error) {
       console.error("Error rendering custom layout:", error);
-      return <div className="p-4 bg-red-100 text-red-800 rounded">Error rendering custom layout: {error.message}</div>;
+      // Don't show the toast for every render to avoid spamming
+      // We'll rely on the error display in the editor instead
+      return (
+        <div className="p-4 bg-red-100 text-red-800 rounded">
+          Error rendering custom layout: {error.message}
+        </div>
+      );
     }
   };
 
