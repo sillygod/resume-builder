@@ -92,18 +92,6 @@ export function ResumePreview({
 
   const handleDownloadPDFWithReactToPrint = useReactToPrint({
     contentRef: contentRef,
-    print: async (printIframe) => {
-      const document = printIframe.contentDocument;
-      if (document) {
-        const html = document.getElementsByTagName('html')[0];
-        const options = {
-          margin: 0,
-          filename: `${personalInfo.fullName || "resume"}.pdf`,
-        };
-        const exporter = new html2pdf(html, options);
-        await exporter.getPdf(options);
-      }
-    }
   });
 
   const renderLayout = () => {
@@ -134,31 +122,8 @@ export function ResumePreview({
       <Button 
         id="preview-pdf-button" 
         className="hidden" 
-        onClick={generatePdfPreview}
+        onClick={() => handleDownloadPDFWithReactToPrint()}
       />
-
-      <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
-        <DialogContent className="max-w-[90vw] h-[90vh] flex flex-col">
-          <DialogHeader>
-            <DialogTitle>PDF Preview</DialogTitle>
-          </DialogHeader>
-          <div className="flex-1 overflow-auto">
-            {pdfPreviewUrl && (
-              <iframe
-                src={pdfPreviewUrl}
-                className="w-full h-full border-0"
-                title="PDF Preview"
-              />
-            )}
-          </div>
-          <div className="flex justify-end gap-2 mt-4">
-            <Button variant="outline" onClick={() => setIsPreviewOpen(false)}>
-              Close
-            </Button>
-            <Button onClick={() => handleDownloadPDFWithReactToPrint()}>Download</Button>
-          </div>
-        </DialogContent>
-      </Dialog>
 
       <div className="w-[210mm] h-[297mm] max-w-full overflow-hidden">
         <Card

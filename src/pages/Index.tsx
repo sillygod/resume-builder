@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PersonalInfo, PersonalInfoData } from "@/components/PersonalInfo";
@@ -14,6 +13,7 @@ import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { useTheme, ThemeName } from "@/themes/ThemeContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShowPreviewButton } from "@/components/ShowPreviewButton";
+import LayoutEditor from '@/components/LayoutEditor';
 
 const Index = () => {
   const { currentTheme, setTheme } = useTheme();
@@ -29,6 +29,8 @@ const Index = () => {
   const [skills, setSkills] = useState<string[]>([]);
   const [showPreview, setShowPreview] = useState(false);
   const [isFolded, setIsFolded] = useState(false);
+  const [selectedLayout, setSelectedLayout] = useState<string>("");
+  const [layoutProps, setLayoutProps] = useState<any>({});
 
   const handleExport = () => {
     const jsonResume = exportToJsonResume(
@@ -135,6 +137,7 @@ const Index = () => {
           <TabsList className="mb-4">
             <TabsTrigger value="editor">Editor</TabsTrigger>
             <TabsTrigger value="assistant">AI Assistant</TabsTrigger>
+            <TabsTrigger value="layout-editor">Layout Editor</TabsTrigger>
           </TabsList>
           
           <TabsContent value="editor">
@@ -186,6 +189,15 @@ const Index = () => {
                 />
               </div>
             </div>
+          </TabsContent>
+          
+          <TabsContent value="layout-editor">
+            <LayoutEditor 
+              selectedLayout={selectedLayout}
+              setSelectedLayout={setSelectedLayout}
+              layoutProps={layoutProps}
+              setLayoutProps={setLayoutProps}
+            />
           </TabsContent>
         </Tabs>
       </div>

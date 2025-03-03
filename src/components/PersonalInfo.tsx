@@ -1,8 +1,10 @@
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { useState } from 'react';
+import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
+import { AlertDialog } from '@/components/ui/alert-dialog';
 
 export interface PersonalInfoData {
   [key: string]: string;
@@ -21,12 +23,22 @@ interface PersonalInfoProps {
 const defaultFields = ['fullName', 'jobTitle', 'email', 'phone', 'location'];
 
 export function PersonalInfo({ data, onChange }: PersonalInfoProps) {
+  const [fields, setFields] = useState(Array.from(new Set([...defaultFields, ...Object.keys(data)])));
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newFieldName, setNewFieldName] = useState('');
+
   const handleChange = (key: string, value: string) => {
     onChange({ ...data, [key]: value });
   };
 
-  // Get all unique fields from the data object
-  const fields = Array.from(new Set([...defaultFields, ...Object.keys(data)]));
+  const handleAddField = () => {
+    if (newFieldName && !fields.includes(newFieldName)) {
+      setFields([...fields, newFieldName]);
+      onChange({ ...data, [newFieldName]: '' }); // Initialize new field with empty string
+      setNewFieldName(''); // Reset input
+      setIsDialogOpen(false); // Close dialog
+    }
+  };
 
   // Helper function to format field labels
   const formatFieldLabel = (field: string) => {
@@ -54,6 +66,24 @@ export function PersonalInfo({ data, onChange }: PersonalInfoProps) {
   return (
     <Card className="p-6 space-y-4 animate-fade-in">
       <h2 className="text-2xl font-semibold text-primary mb-4">Personal Information</h2>
+      <button onClick={() => setIsDialogOpen(true)} className="btn btn-primary">Add New Field</button>
+
+      <AlertDialogPrimitive.Root open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <AlertDialogPrimitive.Content>
+          <input
+            type="text"
+            value={newFieldName}
+            onChange={(e) => setNewFieldName(e.target.value)}
+            placeholder="Enter new field name"
+            className="input"
+          />
+          <div className="flex justify-end mt-4">
+            <AlertDialogPrimitive.Cancel className="btn btn-secondary">Cancel</AlertDialogPrimitive.Cancel>
+            <button onClick={handleAddField} className="btn btn-primary ml-2">Add</button>
+          </div>
+        </AlertDialogPrimitive.Content>
+      </AlertDialogPrimitive.Root>
+
       <div className="grid gap-4 md:grid-cols-2">
         {fields.map((field) => (
           <div key={field} className={`space-y-2 ${shouldUseTextarea(field) ? 'md:col-span-2' : ''}`}>
