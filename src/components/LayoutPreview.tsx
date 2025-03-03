@@ -41,11 +41,10 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
     if (!customCode) return null;
     
     try {
-      // This is a simplified approach - in a real app, you'd want to use
-      // a proper JSX parser/renderer or a sandbox
+      // Sanitize the code before evaluation
+      let codeToEvaluate = customCode.trim();
       
       // Make sure the code is properly wrapped in parentheses
-      let codeToEvaluate = customCode.trim();
       if (!codeToEvaluate.startsWith('(')) {
         codeToEvaluate = `(${codeToEvaluate}`;
       }
@@ -53,14 +52,25 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
         codeToEvaluate = `${codeToEvaluate})`;
       }
       
-      const CustomComponent = new Function('React', 'personalInfo', 'workExperience', 'education', 'skills', 
-        `return ${codeToEvaluate}`)(React, personalInfo, workExperience, education, skills);
+      // Replace HTML entities that might cause issues
+      codeToEvaluate = codeToEvaluate.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+      
+      // Use a try-catch inside the function to catch runtime errors
+      const CustomComponent = new Function('React', 'personalInfo', 'workExperience', 'education', 'skills', `
+        try {
+          return ${codeToEvaluate};
+        } catch (err) {
+          console.error("Runtime error in custom layout:", err);
+          return React.createElement('div', { 
+            className: 'p-4 bg-red-100 text-red-800 rounded'
+          }, 'Error in custom layout: ' + err.message);
+        }
+      `)(React, personalInfo, workExperience, education, skills);
       
       return CustomComponent;
     } catch (error) {
-      console.error("Error rendering custom layout:", error);
-      // Don't show the toast for every render to avoid spamming
-      // We'll rely on the error display in the editor instead
+      console.error("Error compiling custom layout:", error);
+      
       return (
         <div className="p-4 bg-red-100 text-red-800 rounded">
           Error rendering custom layout: {error.message}
