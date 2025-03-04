@@ -15,6 +15,7 @@ import { Controlled as CodeMirror } from 'react-codemirror2';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/jsx/jsx';
 import 'codemirror/theme/material.css';
+import { themes } from '@/themes/ThemeContext';
 
 const layouts = {
   Simple: SimpleLayout,
@@ -28,31 +29,38 @@ const getLayoutSourceCode = (layoutName: string) => {
     case 'Simple':
       return `// SimpleLayout Component
 (
-  <div className="layout-contentClass">
+  <div className="${themes.simple.layout.contentClass}">
     {/* Personal Info Section */}
-    <div className="personalInfo-containerClass">
-      <h1>{personalInfo.fullName || "Your Name"}</h1>
-      <p>{personalInfo.jobTitle || "Your Profession"}</p>
-      
-      {/* Contact info */}
-      <div className="flex flex-wrap gap-4 mt-2">
-        {personalInfo.email && <div>{personalInfo.email}</div>}
-        {personalInfo.phone && <div>{personalInfo.phone}</div>}
-        {personalInfo.location && <div>{personalInfo.location}</div>}
+    <div className="${themes.simple.personalInfo.containerClass}">
+      <div className="${themes.simple.personalInfo.gridClass}">
+        <div className="${themes.simple.personalInfo.infoContainerClass}">
+          <h1 className="${themes.simple.personalInfo.titleClass}">
+            {personalInfo.fullName || "Your Name"}
+          </h1>
+          <p className="${themes.simple.personalInfo.subtitleClass}">
+            {personalInfo.jobTitle || "Your Profession"}
+          </p>
+          
+          <div className="${themes.simple.personalInfo.contactContainerClass}">
+            {personalInfo.email && <div className="${themes.simple.personalInfo.contactItemClass}">{personalInfo.email}</div>}
+            {personalInfo.phone && <div className="${themes.simple.personalInfo.contactItemClass}">{personalInfo.phone}</div>}
+            {personalInfo.location && <div className="${themes.simple.personalInfo.contactItemClass}">{personalInfo.location}</div>}
+          </div>
+        </div>
       </div>
     </div>
 
     {/* Work Experience Section */}
     {workExperience.length > 0 && (
-      <section className="mt-6">
-        <h2 className="text-xl font-semibold border-b pb-1 mb-3">Work Experience</h2>
+      <section className="${themes.simple.workExperience.containerClass}">
+        <h2 className="${themes.simple.workExperience.titleClass}">Work Experience</h2>
         <div className="space-y-4">
           {workExperience.map((exp) => (
-            <div key={exp.id}>
-              <h3 className="font-medium">{exp.position}</h3>
-              <p className="text-sm">{exp.company}</p>
-              <p className="text-xs text-gray-500">{exp.startDate} - {exp.endDate}</p>
-              <p className="text-sm mt-1">{exp.description}</p>
+            <div key={exp.id} className="${themes.simple.workExperience.entryClass}">
+              <h3 className="${themes.simple.workExperience.jobTitleClass}">{exp.position}</h3>
+              <p className="${themes.simple.workExperience.companyClass}">{exp.company}</p>
+              <p className="${themes.simple.workExperience.periodClass}">{exp.startDate} - {exp.endDate}</p>
+              <p className="${themes.simple.workExperience.descriptionClass}">{exp.description}</p>
             </div>
           ))}
         </div>
@@ -61,14 +69,14 @@ const getLayoutSourceCode = (layoutName: string) => {
 
     {/* Education Section */}
     {education.length > 0 && (
-      <section className="mt-6">
-        <h2 className="text-xl font-semibold border-b pb-1 mb-3">Education</h2>
+      <section className="${themes.simple.education.containerClass}">
+        <h2 className="${themes.simple.education.titleClass}">Education</h2>
         <div className="space-y-4">
           {education.map((edu) => (
-            <div key={edu.id}>
-              <h3 className="font-medium">{edu.institution}</h3>
-              <p className="text-sm">{edu.degree} in {edu.field}</p>
-              <p className="text-xs text-gray-500">Graduated: {edu.graduationDate}</p>
+            <div key={edu.id} className="${themes.simple.education.entryClass}">
+              <h3 className="${themes.simple.education.institutionClass}">{edu.institution}</h3>
+              <p className="${themes.simple.education.degreeClass}">{edu.degree} in {edu.field}</p>
+              <p className="${themes.simple.education.periodClass}">Graduated: {edu.graduationDate}</p>
             </div>
           ))}
         </div>
@@ -77,11 +85,11 @@ const getLayoutSourceCode = (layoutName: string) => {
 
     {/* Skills Section */}
     {skills.length > 0 && (
-      <section className="mt-6">
-        <h2 className="text-xl font-semibold border-b pb-1 mb-3">Skills</h2>
-        <div className="flex flex-wrap gap-2">
+      <section className="${themes.simple.skills.containerClass}">
+        <h2 className="${themes.simple.skills.titleClass}">Skills</h2>
+        <div className="${themes.simple.skills.skillsListClass}">
           {skills.map((skill) => (
-            <span key={skill} className="bg-gray-100 px-2 py-1 rounded text-sm">
+            <span key={skill} className="${themes.simple.skills.skillItemClass}">
               {skill}
             </span>
           ))}
@@ -93,30 +101,32 @@ const getLayoutSourceCode = (layoutName: string) => {
     case 'Modern':
       return `// ModernLayout Component
 (
-  <div className="space-y-6">
+  <div className="${themes.modern.layout.contentClass}">
     {/* Personal Info Section */}
-    <div className="bg-gray-50 p-4 rounded-lg">
-      <div className="flex flex-col md:flex-row gap-4 items-center">
+    <div className="${themes.modern.personalInfo.containerClass}">
+      <div className="${themes.modern.personalInfo.gridClass}">
         {personalInfo.photoUrl ? (
-          <img
-            src={personalInfo.photoUrl}
-            alt={personalInfo.fullName || "Profile"}
-            className="w-24 h-24 rounded-full object-cover"
-          />
+          <div className="${themes.modern.personalInfo.avatarContainerClass}">
+            <img
+              src={personalInfo.photoUrl}
+              alt={personalInfo.fullName || "Profile"}
+              className="w-full h-full object-cover"
+            />
+          </div>
         ) : (
-          <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center text-gray-500">
+          <div className="${themes.modern.personalInfo.avatarContainerClass} flex items-center justify-center text-gray-500">
             Photo
           </div>
         )}
 
-        <div>
-          <h1 className="text-2xl font-bold">{personalInfo.fullName || "Your Name"}</h1>
-          <p className="text-gray-600">{personalInfo.jobTitle || "Your Profession"}</p>
+        <div className="${themes.modern.personalInfo.infoContainerClass}">
+          <h1 className="${themes.modern.personalInfo.titleClass}">{personalInfo.fullName || "Your Name"}</h1>
+          <p className="${themes.modern.personalInfo.subtitleClass}">{personalInfo.jobTitle || "Your Profession"}</p>
           
-          <div className="flex flex-wrap gap-3 mt-2 text-sm">
-            {personalInfo.email && <div className="flex items-center gap-1">{personalInfo.email}</div>}
-            {personalInfo.phone && <div className="flex items-center gap-1">{personalInfo.phone}</div>}
-            {personalInfo.location && <div className="flex items-center gap-1">{personalInfo.location}</div>}
+          <div className="${themes.modern.personalInfo.contactContainerClass}">
+            {personalInfo.email && <div className="${themes.modern.personalInfo.contactItemClass}">{personalInfo.email}</div>}
+            {personalInfo.phone && <div className="${themes.modern.personalInfo.contactItemClass}">{personalInfo.phone}</div>}
+            {personalInfo.location && <div className="${themes.modern.personalInfo.contactItemClass}">{personalInfo.location}</div>}
           </div>
         </div>
       </div>
@@ -124,15 +134,15 @@ const getLayoutSourceCode = (layoutName: string) => {
 
     {/* Work Experience Section */}
     {workExperience.length > 0 && (
-      <section>
-        <h2 className="text-xl font-bold mb-3 text-gray-800">Work Experience</h2>
+      <section className="${themes.modern.workExperience.containerClass}">
+        <h2 className="${themes.modern.workExperience.titleClass}">Work Experience</h2>
         <div className="space-y-4">
           {workExperience.map((exp) => (
-            <div key={exp.id} className="p-3 border-l-2 border-gray-300 hover:border-blue-500">
-              <h3 className="font-semibold">{exp.position}</h3>
-              <p className="text-sm font-medium">{exp.company}</p>
-              <p className="text-xs text-gray-500">{exp.startDate} - {exp.endDate}</p>
-              <p className="text-sm mt-1">{exp.description}</p>
+            <div key={exp.id} className="${themes.modern.workExperience.entryClass}">
+              <h3 className="${themes.modern.workExperience.jobTitleClass}">{exp.position}</h3>
+              <p className="${themes.modern.workExperience.companyClass}">{exp.company}</p>
+              <p className="${themes.modern.workExperience.periodClass}">{exp.startDate} - {exp.endDate}</p>
+              <p className="${themes.modern.workExperience.descriptionClass}">{exp.description}</p>
             </div>
           ))}
         </div>
@@ -141,14 +151,14 @@ const getLayoutSourceCode = (layoutName: string) => {
 
     {/* Education Section */}
     {education.length > 0 && (
-      <section>
-        <h2 className="text-xl font-bold mb-3 text-gray-800">Education</h2>
+      <section className="${themes.modern.education.containerClass}">
+        <h2 className="${themes.modern.education.titleClass}">Education</h2>
         <div className="space-y-4">
           {education.map((edu) => (
-            <div key={edu.id} className="p-3 border-l-2 border-gray-300 hover:border-blue-500">
-              <h3 className="font-semibold">{edu.institution}</h3>
-              <p className="text-sm">{edu.degree} in {edu.field}</p>
-              <p className="text-xs text-gray-500">Graduated: {edu.graduationDate}</p>
+            <div key={edu.id} className="${themes.modern.education.entryClass}">
+              <h3 className="${themes.modern.education.institutionClass}">{edu.institution}</h3>
+              <p className="${themes.modern.education.degreeClass}">{edu.degree} in {edu.field}</p>
+              <p className="${themes.modern.education.periodClass}">Graduated: {edu.graduationDate}</p>
             </div>
           ))}
         </div>
@@ -157,11 +167,11 @@ const getLayoutSourceCode = (layoutName: string) => {
 
     {/* Skills Section */}
     {skills.length > 0 && (
-      <section>
-        <h2 className="text-xl font-bold mb-3 text-gray-800">Skills</h2>
-        <div className="flex flex-wrap gap-2">
+      <section className="${themes.modern.skills.containerClass}">
+        <h2 className="${themes.modern.skills.titleClass}">Skills</h2>
+        <div className="${themes.modern.skills.skillsListClass}">
           {skills.map((skill) => (
-            <span key={skill} className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm">
+            <span key={skill} className="${themes.modern.skills.skillItemClass}">
               {skill}
             </span>
           ))}
@@ -173,40 +183,42 @@ const getLayoutSourceCode = (layoutName: string) => {
     case 'Sidebar':
       return `// SidebarLayout Component
 (
-  <div className="flex flex-col md:flex-row gap-6">
+  <div className="${themes.sidebar.layout.contentClass}">
     {/* Left Sidebar */}
-    <div className="md:w-1/3 bg-gray-50 p-4 rounded-lg">
-      <div className="mb-6 text-center">
+    <div className="${themes.sidebar.personalInfo.containerClass}">
+      <div className="${themes.sidebar.personalInfo.avatarContainerClass}">
         {personalInfo.photoUrl ? (
           <img
             src={personalInfo.photoUrl}
             alt={personalInfo.fullName || "Profile"}
-            className="w-32 h-32 rounded-full mx-auto object-cover"
+            className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-32 h-32 rounded-full mx-auto bg-gray-300 flex items-center justify-center text-gray-500">
+          <div className="w-full h-full bg-gray-300 flex items-center justify-center text-gray-500">
             Photo
           </div>
         )}
+      </div>
 
-        <h1 className="text-xl font-bold mt-3">{personalInfo.fullName || "Your Name"}</h1>
-        <p className="text-gray-600">{personalInfo.jobTitle || "Your Profession"}</p>
+      <div className="${themes.sidebar.personalInfo.infoContainerClass}">
+        <h1 className="${themes.sidebar.personalInfo.titleClass}">{personalInfo.fullName || "Your Name"}</h1>
+        <p className="${themes.sidebar.personalInfo.subtitleClass}">{personalInfo.jobTitle || "Your Profession"}</p>
         
-        <div className="mt-3 text-sm space-y-1">
-          {personalInfo.email && <div className="flex items-center gap-1">{personalInfo.email}</div>}
-          {personalInfo.phone && <div className="flex items-center gap-1">{personalInfo.phone}</div>}
-          {personalInfo.location && <div className="flex items-center gap-1">{personalInfo.location}</div>}
+        <div className="${themes.sidebar.personalInfo.contactContainerClass}">
+          {personalInfo.email && <div className="${themes.sidebar.personalInfo.contactItemClass}">{personalInfo.email}</div>}
+          {personalInfo.phone && <div className="${themes.sidebar.personalInfo.contactItemClass}">{personalInfo.phone}</div>}
+          {personalInfo.location && <div className="${themes.sidebar.personalInfo.contactItemClass}">{personalInfo.location}</div>}
         </div>
       </div>
 
       {/* Skills in sidebar */}
       {skills.length > 0 && (
-        <section>
-          <h2 className="font-semibold mb-2 text-center">Skills</h2>
-          <div className="flex flex-wrap gap-1 justify-center">
+        <section className="${themes.sidebar.skills.containerClass}">
+          <h2 className="${themes.sidebar.skills.titleClass}">Skills</h2>
+          <div className="${themes.sidebar.skills.skillsListClass}">
             {skills.map((skill) => (
-              <div key={skill} className="bg-white px-2 py-1 rounded-full text-xs">
-                {skill}
+              <div key={skill} className="${themes.sidebar.skills.skillItemClass}">
+                <span>{skill}</span>
               </div>
             ))}
           </div>
@@ -215,17 +227,17 @@ const getLayoutSourceCode = (layoutName: string) => {
     </div>
 
     {/* Main Content */}
-    <div className="md:w-2/3">
+    <div className="flex-1">
       {workExperience.length > 0 && (
-        <section className="mb-6">
-          <h2 className="text-xl font-bold mb-3">Work Experience</h2>
+        <section className="${themes.sidebar.workExperience.containerClass}">
+          <h2 className="${themes.sidebar.workExperience.titleClass}">Work Experience</h2>
           <div className="space-y-4">
             {workExperience.map((exp) => (
-              <div key={exp.id} className="border-b pb-3">
-                <h3 className="font-semibold">{exp.position}</h3>
-                <p className="text-sm font-medium">{exp.company}</p>
-                <p className="text-xs text-gray-500">{exp.startDate} - {exp.endDate}</p>
-                <p className="text-sm mt-1">{exp.description}</p>
+              <div key={exp.id} className="${themes.sidebar.workExperience.entryClass}">
+                <h3 className="${themes.sidebar.workExperience.jobTitleClass}">{exp.position}</h3>
+                <p className="${themes.sidebar.workExperience.companyClass}">{exp.company}</p>
+                <p className="${themes.sidebar.workExperience.periodClass}">{exp.startDate} - {exp.endDate}</p>
+                <p className="${themes.sidebar.workExperience.descriptionClass}">{exp.description}</p>
               </div>
             ))}
           </div>
@@ -233,14 +245,14 @@ const getLayoutSourceCode = (layoutName: string) => {
       )}
 
       {education.length > 0 && (
-        <section>
-          <h2 className="text-xl font-bold mb-3">Education</h2>
+        <section className="${themes.sidebar.workExperience.containerClass}">
+          <h2 className="${themes.sidebar.education.titleClass}">Education</h2>
           <div className="space-y-4">
             {education.map((edu) => (
-              <div key={edu.id} className="border-b pb-3">
-                <h3 className="font-semibold">{edu.institution}</h3>
-                <p>{edu.degree} in {edu.field}</p>
-                <p className="text-sm text-gray-500">Graduated: {edu.graduationDate}</p>
+              <div key={edu.id} className="${themes.sidebar.education.entryClass}">
+                <h3 className="${themes.sidebar.education.institutionClass}">{edu.institution}</h3>
+                <p className="${themes.sidebar.education.degreeClass}">{edu.degree} in {edu.field}</p>
+                <p className="${themes.sidebar.education.periodClass}">Graduated: {edu.graduationDate}</p>
               </div>
             ))}
           </div>
@@ -252,47 +264,44 @@ const getLayoutSourceCode = (layoutName: string) => {
     case 'Centered':
       return `// CenteredLayout Component
 (
-  <div className="max-w-2xl mx-auto text-center">
+  <div className="${themes.centered.layout.contentClass}">
     {/* Personal Info Section */}
-    <div className="mb-8">
-      <div className="flex justify-center mb-4">
-        {personalInfo.photoUrl ? (
-          <img
-            src={personalInfo.photoUrl}
-            alt={personalInfo.fullName || "Profile"}
-            className="w-32 h-32 rounded-full object-cover"
-          />
-        ) : (
-          <div className="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center text-gray-500">
-            Photo
-          </div>
-        )}
-      </div>
+    <div className="${themes.centered.personalInfo.containerClass}">
+      <div className="${themes.centered.personalInfo.gridClass}">
+        <div className="${themes.centered.personalInfo.avatarContainerClass}">
+          {personalInfo.photoUrl ? (
+            <img
+              src={personalInfo.photoUrl}
+              alt={personalInfo.fullName || "Profile"}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-300 flex items-center justify-center text-gray-500">
+              Photo
+            </div>
+          )}
+        </div>
 
-      <h1 className="text-3xl font-bold">{personalInfo.fullName || "Your Name"}</h1>
-      <p className="text-xl text-gray-600 mt-1">{personalInfo.jobTitle || "Your Profession"}</p>
-      
-      <div className="flex justify-center flex-wrap gap-4 mt-3">
-        {personalInfo.email && <div className="flex items-center gap-1">{personalInfo.email}</div>}
-        {personalInfo.phone && <div className="flex items-center gap-1">{personalInfo.phone}</div>}
-        {personalInfo.location && <div className="flex items-center gap-1">{personalInfo.location}</div>}
+        <div className="${themes.centered.personalInfo.infoContainerClass}">
+          <h1 className="${themes.centered.personalInfo.titleClass}">{personalInfo.fullName || "Your Name"}</h1>
+          <p className="${themes.centered.personalInfo.subtitleClass}">{personalInfo.jobTitle || "Your Profession"}</p>
+          
+          <div className="${themes.centered.personalInfo.contactContainerClass}">
+            {personalInfo.email && <div className="${themes.centered.personalInfo.contactItemClass}">{personalInfo.email}</div>}
+            {personalInfo.phone && <div className="${themes.centered.personalInfo.contactItemClass}">{personalInfo.phone}</div>}
+            {personalInfo.location && <div className="${themes.centered.personalInfo.contactItemClass}">{personalInfo.location}</div>}
+          </div>
+        </div>
       </div>
     </div>
 
-    {/* Summary Section */}
-    {personalInfo.summary && (
-      <section className="mb-8">
-        <p className="text-gray-700">{personalInfo.summary}</p>
-      </section>
-    )}
-
     {/* Skills Section */}
     {skills.length > 0 && (
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4">Skills</h2>
-        <div className="flex flex-wrap justify-center gap-2">
+      <section className="${themes.centered.skills.containerClass}">
+        <h2 className="${themes.centered.skills.titleClass}">Skills</h2>
+        <div className="${themes.centered.skills.skillsListClass}">
           {skills.map((skill) => (
-            <span key={skill} className="bg-gray-100 px-3 py-1 rounded-full text-sm">
+            <span key={skill} className="${themes.centered.skills.skillItemClass}">
               {skill}
             </span>
           ))}
@@ -302,15 +311,15 @@ const getLayoutSourceCode = (layoutName: string) => {
 
     {/* Work Experience Section */}
     {workExperience.length > 0 && (
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4">Work Experience</h2>
+      <section className="${themes.centered.workExperience.containerClass}">
+        <h2 className="${themes.centered.workExperience.titleClass}">Work Experience</h2>
         <div className="space-y-6">
           {workExperience.map((exp) => (
-            <div key={exp.id}>
-              <h3 className="text-lg font-medium">{exp.position}</h3>
-              <p className="font-medium">{exp.company}</p>
-              <p className="text-sm text-gray-500">{exp.startDate} - {exp.endDate}</p>
-              <p className="mt-2">{exp.description}</p>
+            <div key={exp.id} className="${themes.centered.workExperience.entryClass}">
+              <h3 className="${themes.centered.workExperience.jobTitleClass}">{exp.position}</h3>
+              <p className="${themes.centered.workExperience.companyClass}">{exp.company}</p>
+              <p className="${themes.centered.workExperience.periodClass}">{exp.startDate} - {exp.endDate}</p>
+              <p className="${themes.centered.workExperience.descriptionClass}">{exp.description}</p>
             </div>
           ))}
         </div>
@@ -319,14 +328,14 @@ const getLayoutSourceCode = (layoutName: string) => {
 
     {/* Education Section */}
     {education.length > 0 && (
-      <section>
-        <h2 className="text-2xl font-semibold mb-4">Education</h2>
+      <section className="${themes.centered.education.containerClass}">
+        <h2 className="${themes.centered.education.titleClass}">Education</h2>
         <div className="space-y-6">
           {education.map((edu) => (
-            <div key={edu.id}>
-              <h3 className="text-lg font-medium">{edu.institution}</h3>
-              <p>{edu.degree} in {edu.field}</p>
-              <p className="text-sm text-gray-500">Graduated: {edu.graduationDate}</p>
+            <div key={edu.id} className="${themes.centered.education.entryClass}">
+              <h3 className="${themes.centered.education.institutionClass}">{edu.institution}</h3>
+              <p className="${themes.centered.education.degreeClass}">{edu.degree} in {edu.field}</p>
+              <p className="${themes.centered.education.periodClass}">Graduated: {edu.graduationDate}</p>
             </div>
           ))}
         </div>
