@@ -55,27 +55,32 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
           presets: ['react'],
           filename: 'virtual.jsx',
         }).code;
+
+        console.log(customCode);
+        console.log(transformedCode);
         
         // Create a function that will return the React elements
         const renderFunction = new Function(
           'React', 
+          'createElement',
           'personalInfo', 
           'workExperience', 
           'education', 
           'skills',
           `
           try {
-            ${transformedCode}
-            return ${sanitizedCode.startsWith('(') ? sanitizedCode : `(${sanitizedCode})`};
+            return () => (${transformedCode.substring(0, transformedCode.length - 1)});
           } catch (err) {
             console.error("Runtime error in custom layout:", err);
             throw new Error("Error running the layout: " + err.message);
           }
           `
         );
+
         
         // Execute the function with our dependencies
-        return renderFunction(React, personalInfo, workExperience, education, skills);
+        const element = renderFunction(React, React.createElement, personalInfo, workExperience, education, skills);
+        return element();
       } catch (transformError) {
         console.error("Babel transformation error:", transformError);
         
