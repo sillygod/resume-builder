@@ -58,9 +58,6 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
           presets: ['react'],
           filename: 'virtual.jsx',
         }).code;
-
-        console.log(customCode);
-        console.log(transformedCode);
         
         // Create a function that will return the React elements
         const renderFunction = new Function(
@@ -70,6 +67,7 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
           'workExperience', 
           'education', 
           'skills',
+          'currentTheme',
           `
           try {
             return () => (${transformedCode.substring(0, transformedCode.length - 1)});
@@ -81,8 +79,8 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
         );
 
         
-        // Execute the function with our dependencies
-        const element = renderFunction(React, React.createElement, personalInfo, workExperience, education, skills);
+        // Execute the function with our dependencies including currentTheme
+        const element = renderFunction(React, React.createElement, personalInfo, workExperience, education, skills, currentTheme);
         return element();
       } catch (transformError) {
         console.error("Babel transformation error:", transformError);

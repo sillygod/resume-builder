@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { SimpleLayout } from './resume-layouts/SimpleLayout';
 import { ModernLayout } from './resume-layouts/ModernLayout';
@@ -16,6 +15,7 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/jsx/jsx';
 import 'codemirror/theme/material.css';
 import { themes } from '@/themes/ThemeContext';
+import { useTheme } from '@/themes/ThemeContext';
 
 const layouts = {
   Simple: SimpleLayout,
@@ -368,28 +368,34 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   const [editorValue, setEditorValue] = useState<string>('');
   const [editorMode, setEditorMode] = useState<'preview' | 'code'>('preview');
   const [codeError, setCodeError] = useState<string | null>(null);
+  const { currentTheme } = useTheme();
 
-  // Load the initial template code when component mounts
   useEffect(() => {
     if (selectedLayout) {
-      // Set the layoutProps
       const LayoutComponent = layouts[selectedLayout];
       if (LayoutComponent) {
         setLayoutProps(LayoutComponent.defaultProps || {});
       }
       
-      // Initialize the editor value with either customCode or template
-      if (customCode) {
-        setEditorValue(customCode);
-      } else {
-        const templateCode = getLayoutSourceCode(selectedLayout);
+      const templateCode = getLayoutSourceCode(selectedLayout);
+      
+      if (!customCode) {
         setEditorValue(templateCode);
         setCustomCode(templateCode);
+      } else {
+        setEditorValue(customCode);
       }
     }
-  }, [selectedLayout, customCode]);
+  }, [selectedLayout, setCustomCode, setLayoutProps]);
   
-  // Initialize when switching to code tab
+  useEffect(() => {
+    if (!customCode || customCode === getLayoutSourceCode(selectedLayout)) {
+      const templateCode = getLayoutSourceCode(selectedLayout);
+      setEditorValue(templateCode);
+      setCustomCode(templateCode);
+    }
+  }, [currentTheme, selectedLayout]);
+  
   useEffect(() => {
     if (editorMode === 'code' && (!editorValue || editorValue.trim() === '')) {
       if (customCode) {
@@ -411,7 +417,6 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
     setEditorValue(value);
     setCustomCode(value);
     
-    // Validate code format
     let codeToValidate = value.trim();
     if (!codeToValidate.startsWith('(') || !codeToValidate.endsWith(')')) {
       setCodeError("Warning: JSX code should be wrapped in parentheses for proper rendering");
