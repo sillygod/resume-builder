@@ -9,6 +9,8 @@ import { WorkExperienceEntry } from './WorkExperience';
 import { EducationEntry } from './Education';
 import { toast } from 'sonner';
 import * as Babel from '@babel/standalone';
+import { Card } from './ui/card';
+import { useTheme } from '@/themes/ThemeContext';
 
 const layouts = {
   Simple: SimpleLayout,
@@ -36,6 +38,7 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
   education,
   skills
 }) => {
+  const { currentTheme } = useTheme();
   const LayoutComponent = layouts[selectedLayout];
   
   const renderCustomCode = () => {
@@ -124,22 +127,31 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
   };
 
   return (
-    <div className="preview bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4">Resume Preview</h2>
-      <div className="border p-4 rounded">
-        {customCode ? (
-          renderCustomCode()
-        ) : LayoutComponent ? (
-          <LayoutComponent 
-            personalInfo={personalInfo}
-            workExperience={workExperience}
-            education={education}
-            skills={skills}
-            {...layoutProps} 
-          />
-        ) : (
-          <p>Select a layout to preview.</p>
-        )}
+    <div className="flex flex-col items-center gap-4">
+      <div className="w-[210mm] max-w-full">
+        <Card 
+          className={`w-full p-8 bg-white shadow-lg animate-fade-in relative ${
+            currentTheme === 'sidebar' ? 'h-auto min-h-[297mm]' : 'h-[297mm]'
+          }`}
+        >
+          <div ref={null} className={`${currentTheme === "sidebar" ? "flex" : ""}`}>
+            {customCode ? (
+              renderCustomCode()
+            ) : LayoutComponent ? (
+              <LayoutComponent 
+                personalInfo={personalInfo}
+                workExperience={workExperience}
+                education={education}
+                skills={skills}
+                {...layoutProps} 
+              />
+            ) : (
+              <p className="text-center text-gray-500 my-10">
+                Select a layout to preview.
+              </p>
+            )}
+          </div>
+        </Card>
       </div>
     </div>
   );
