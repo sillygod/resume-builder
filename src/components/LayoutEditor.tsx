@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { SimpleLayout } from './resume-layouts/SimpleLayout';
 import { ModernLayout } from './resume-layouts/ModernLayout';
@@ -359,18 +360,28 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   const [editorMode, setEditorMode] = useState<'preview' | 'code'>('preview');
   const [codeError, setCodeError] = useState<string | null>(null);
 
+  // Initialize editor value as soon as component mounts or layout changes
   useEffect(() => {
-    const LayoutComponent = layouts[selectedLayout];
-    if (LayoutComponent) {
-      setLayoutProps(LayoutComponent.defaultProps || {});
-      
-      if (editorMode === 'code') {
-        const templateCode = getLayoutSourceCode(selectedLayout);
-        setEditorValue(templateCode);
-        setCustomCode(null);
+    if (selectedLayout) {
+      // Set the layoutProps
+      const LayoutComponent = layouts[selectedLayout];
+      if (LayoutComponent) {
+        setLayoutProps(LayoutComponent.defaultProps || {});
       }
+      
+      // Initialize the editor value
+      const templateCode = getLayoutSourceCode(selectedLayout);
+      setEditorValue(customCode || templateCode);
     }
-  }, [selectedLayout, editorMode]);
+  }, [selectedLayout]);
+  
+  // Handle tab change correctly
+  useEffect(() => {
+    if (editorMode === 'code' && !editorValue) {
+      const templateCode = getLayoutSourceCode(selectedLayout);
+      setEditorValue(templateCode);
+    }
+  }, [editorMode]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -417,7 +428,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         </Select>
       </div>
       
-      <Tabs defaultValue="code" className="mt-6" onValueChange={(value) => setEditorMode(value as 'preview' | 'code')}>
+      <Tabs defaultValue="preview" className="mt-6" onValueChange={(value) => setEditorMode(value as 'preview' | 'code')}>
         <TabsList className="mb-4">
           <TabsTrigger value="preview">Layout Properties</TabsTrigger>
           <TabsTrigger value="code">Edit Layout Code</TabsTrigger>
