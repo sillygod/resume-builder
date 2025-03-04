@@ -360,7 +360,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   const [editorMode, setEditorMode] = useState<'preview' | 'code'>('preview');
   const [codeError, setCodeError] = useState<string | null>(null);
 
-  // Initialize editor value as soon as component mounts or layout changes
+  // Load the initial template code when component mounts
   useEffect(() => {
     if (selectedLayout) {
       // Set the layoutProps
@@ -369,19 +369,29 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         setLayoutProps(LayoutComponent.defaultProps || {});
       }
       
-      // Initialize the editor value
-      const templateCode = getLayoutSourceCode(selectedLayout);
-      setEditorValue(customCode || templateCode);
+      // Initialize the editor value with either customCode or template
+      if (customCode) {
+        setEditorValue(customCode);
+      } else {
+        const templateCode = getLayoutSourceCode(selectedLayout);
+        setEditorValue(templateCode);
+        setCustomCode(templateCode);
+      }
     }
-  }, [selectedLayout]);
+  }, [selectedLayout, customCode]);
   
-  // Handle tab change correctly
+  // Initialize when switching to code tab
   useEffect(() => {
-    if (editorMode === 'code' && !editorValue) {
-      const templateCode = getLayoutSourceCode(selectedLayout);
-      setEditorValue(templateCode);
+    if (editorMode === 'code' && (!editorValue || editorValue.trim() === '')) {
+      if (customCode) {
+        setEditorValue(customCode);
+      } else {
+        const templateCode = getLayoutSourceCode(selectedLayout);
+        setEditorValue(templateCode);
+        setCustomCode(templateCode);
+      }
     }
-  }, [editorMode]);
+  }, [editorMode, customCode, selectedLayout, editorValue]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -390,16 +400,15 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
 
   const handleCodeChange = (editor: any, data: any, value: string) => {
     setEditorValue(value);
+    setCustomCode(value);
     
+    // Validate code format
     let codeToValidate = value.trim();
-    
     if (!codeToValidate.startsWith('(') || !codeToValidate.endsWith(')')) {
       setCodeError("Warning: JSX code should be wrapped in parentheses for proper rendering");
     } else {
       setCodeError(null);
     }
-    
-    setCustomCode(value);
   };
 
   const resetCustomCode = () => {
@@ -466,8 +475,8 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
             </p>
             
             <div className="p-2 mb-3 bg-blue-50 border border-blue-200 rounded text-blue-700 text-sm">
-              <strong>Note:</strong> Due to browser security limitations, custom layouts are limited to 
-              the template formats. Make sure your code is wrapped in parentheses and follows the format in the examples.
+              <strong>Note:</strong> Your JSX code must be wrapped in parentheses like the example below:
+              <pre className="mt-1 text-xs overflow-x-auto">{`(\n  <div>\n    <h1>{personalInfo.fullName}</h1>\n  </div>\n)`}</pre>
             </div>
             
             <div className="border rounded overflow-hidden mb-4">
