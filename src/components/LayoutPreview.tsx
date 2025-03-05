@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SimpleLayout } from './resume-layouts/SimpleLayout';
 import { ModernLayout } from './resume-layouts/ModernLayout';
 import { SidebarLayout } from './resume-layouts/SidebarLayout';
@@ -39,7 +39,15 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
   skills
 }) => {
   const { currentTheme } = useTheme();
+  const [lastRenderedTheme, setLastRenderedTheme] = useState<string>(currentTheme);
   const LayoutComponent = layouts[selectedLayout];
+
+  // Track theme changes to force re-render
+  useEffect(() => {
+    if (lastRenderedTheme !== currentTheme) {
+      setLastRenderedTheme(currentTheme);
+    }
+  }, [currentTheme, lastRenderedTheme]);
   
   const renderCustomCode = () => {
     if (!customCode) return null;

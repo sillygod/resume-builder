@@ -368,6 +368,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   const [editorValue, setEditorValue] = useState<string>('');
   const [editorMode, setEditorMode] = useState<'preview' | 'code'>('preview');
   const [codeError, setCodeError] = useState<string | null>(null);
+  const [prevTheme, setPrevTheme] = useState<string>('');
   const { currentTheme } = useTheme();
 
   useEffect(() => {
@@ -389,12 +390,15 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   }, [selectedLayout, setCustomCode, setLayoutProps]);
   
   useEffect(() => {
-    if (!customCode || customCode === getLayoutSourceCode(selectedLayout)) {
+    if (prevTheme !== currentTheme) {
+      setPrevTheme(currentTheme);
       const templateCode = getLayoutSourceCode(selectedLayout);
       setEditorValue(templateCode);
       setCustomCode(templateCode);
+      
+      toast.info(`Theme updated to ${currentTheme}`);
     }
-  }, [currentTheme, selectedLayout]);
+  }, [currentTheme, selectedLayout, prevTheme]);
   
   useEffect(() => {
     if (editorMode === 'code' && (!editorValue || editorValue.trim() === '')) {
