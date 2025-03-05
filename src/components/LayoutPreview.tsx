@@ -47,19 +47,26 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
   education,
   skills
 }) => {
-  const { currentTheme } = useTheme();
-  const [lastRenderedTheme, setLastRenderedTheme] = useState<string>(currentTheme);
-  const LayoutComponent = layouts[selectedLayout];
-
-  // Map the selected layout to the appropriate theme if needed
-  const effectiveTheme = layoutToThemeMap[selectedLayout] || currentTheme;
-
-  // Track theme changes to force re-render
+  const { currentTheme, setTheme } = useTheme();
+  const [prevSelectedLayout, setPrevSelectedLayout] = useState<string>('');
+  
+  // Update theme when the layout changes
   useEffect(() => {
-    if (lastRenderedTheme !== currentTheme) {
-      setLastRenderedTheme(currentTheme);
+    if (selectedLayout && selectedLayout !== prevSelectedLayout) {
+      // Map layout selection to the matching theme
+      const mappedTheme = layoutToThemeMap[selectedLayout];
+      if (mappedTheme && mappedTheme !== currentTheme) {
+        setTheme(mappedTheme);
+        setPrevSelectedLayout(selectedLayout);
+      }
     }
-  }, [currentTheme, lastRenderedTheme]);
+  }, [selectedLayout, prevSelectedLayout, currentTheme, setTheme]);
+  
+  // Get the layout component based on selection
+  const LayoutComponent = layouts[selectedLayout];
+  
+  // Determine the effective theme for styling
+  const effectiveTheme = layoutToThemeMap[selectedLayout] || currentTheme;
   
   const renderCustomCode = () => {
     if (!customCode) return null;
@@ -110,7 +117,7 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
           workExperience, 
           education, 
           skills, 
-          currentTheme,
+          effectiveTheme, // Use the correct mapped theme here
           Mail,
           Phone,
           MapPin,

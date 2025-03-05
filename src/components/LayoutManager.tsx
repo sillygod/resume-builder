@@ -19,6 +19,7 @@ const LayoutManager: React.FC<LayoutManagerProps> = ({
   education,
   skills 
 }) => {
+  // Initialize with a default layout - this ensures we always have a selected layout
   const [selectedLayout, setSelectedLayout] = useState('Simple');
   const [layoutProps, setLayoutProps] = useState({});
   const [customCode, setCustomCode] = useState<string | null>(null);

@@ -511,39 +511,32 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   const [editorValue, setEditorValue] = useState<string>('');
   const [editorMode, setEditorMode] = useState<'preview' | 'code' | 'json'>('preview');
   const [codeError, setCodeError] = useState<string | null>(null);
-  const [prevTheme, setPrevTheme] = useState<string>('');
+  const [prevSelectedLayout, setPrevSelectedLayout] = useState<string>('');
   const [jsonValue, setJsonValue] = useState<string>('');
-  const { currentTheme } = useTheme();
+  const { currentTheme, setTheme } = useTheme();
 
+  // Update editor value when selected layout changes
   useEffect(() => {
-    if (selectedLayout) {
+    if (selectedLayout && selectedLayout !== prevSelectedLayout) {
+      setPrevSelectedLayout(selectedLayout);
+      const templateCode = getLayoutSourceCode(selectedLayout);
+      setEditorValue(templateCode);
+      setCustomCode(templateCode);
+      
+      // Reset any properties when switching layouts
       const LayoutComponent = layouts[selectedLayout];
       if (LayoutComponent) {
         setLayoutProps(LayoutComponent.defaultProps || {});
       }
       
-      const templateCode = getLayoutSourceCode(selectedLayout);
+      // Update theme to match the layout for consistency
+      setTheme(selectedLayout.toLowerCase() as any);
       
-      if (!customCode) {
-        setEditorValue(templateCode);
-        setCustomCode(templateCode);
-      } else {
-        setEditorValue(customCode);
-      }
+      toast.info(`Layout changed to ${selectedLayout}`);
     }
-  }, [selectedLayout, setCustomCode, setLayoutProps]);
+  }, [selectedLayout, setCustomCode, setLayoutProps, prevSelectedLayout, setTheme]);
   
-  useEffect(() => {
-    if (prevTheme !== currentTheme) {
-      setPrevTheme(currentTheme);
-      const templateCode = getLayoutSourceCode(selectedLayout);
-      setEditorValue(templateCode);
-      setCustomCode(templateCode);
-      
-      toast.info(`Theme updated to ${currentTheme}`);
-    }
-  }, [currentTheme, selectedLayout, prevTheme, setCustomCode]);
-  
+  // Handle editor mode changes
   useEffect(() => {
     if (editorMode === 'code' && (!editorValue || editorValue.trim() === '')) {
       if (customCode) {
