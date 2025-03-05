@@ -10,13 +10,21 @@ import { EducationEntry } from './Education';
 import { toast } from 'sonner';
 import * as Babel from '@babel/standalone';
 import { Card } from './ui/card';
-import { useTheme } from '@/themes/ThemeContext';
+import { useTheme, ThemeName } from '@/themes/ThemeContext';
 
 const layouts = {
   Simple: SimpleLayout,
   Modern: ModernLayout,
   Sidebar: SidebarLayout,
   Centered: CenteredLayout,
+};
+
+// Map selected layout names to theme names to ensure consistency
+const layoutToThemeMap: Record<string, ThemeName> = {
+  'Simple': 'simple',
+  'Modern': 'modern',
+  'Sidebar': 'sidebar',
+  'Centered': 'centered'
 };
 
 interface LayoutPreviewProps {
@@ -41,6 +49,9 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
   const { currentTheme } = useTheme();
   const [lastRenderedTheme, setLastRenderedTheme] = useState<string>(currentTheme);
   const LayoutComponent = layouts[selectedLayout];
+
+  // Map the selected layout to the appropriate theme if needed
+  const effectiveTheme = layoutToThemeMap[selectedLayout] || currentTheme;
 
   // Track theme changes to force re-render
   useEffect(() => {
@@ -86,7 +97,6 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
           `
         );
 
-        
         // Execute the function with our dependencies including currentTheme
         const element = renderFunction(React, React.createElement, personalInfo, workExperience, education, skills, currentTheme);
         return element();
@@ -137,10 +147,10 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
       <div className="w-[210mm] max-w-full">
         <Card 
           className={`w-full p-8 bg-white shadow-lg animate-fade-in relative ${
-            currentTheme === 'sidebar' ? 'h-auto min-h-[297mm]' : 'h-[297mm]'
+            effectiveTheme === 'sidebar' ? 'h-auto min-h-[297mm]' : 'h-[297mm]'
           }`}
         >
-          <div ref={null} className={`${currentTheme === "sidebar" ? "flex" : ""}`}>
+          <div ref={null} className={`${effectiveTheme === "sidebar" ? "flex" : ""}`}>
             {customCode ? (
               renderCustomCode()
             ) : LayoutComponent ? (
