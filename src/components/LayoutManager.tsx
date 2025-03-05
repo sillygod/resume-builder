@@ -32,6 +32,10 @@ const LayoutManager: React.FC<LayoutManagerProps> = ({
         setLayoutProps={setLayoutProps}
         customCode={customCode}
         setCustomCode={setCustomCode}
+        personalInfo={personalInfo}
+        workExperience={workExperience}
+        education={education}
+        skills={skills}
       />
       <LayoutPreview 
         selectedLayout={selectedLayout} 
