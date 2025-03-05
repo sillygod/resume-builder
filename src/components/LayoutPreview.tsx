@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import * as Babel from '@babel/standalone';
 import { Card } from './ui/card';
 import { useTheme, ThemeName } from '@/themes/ThemeContext';
+import { Mail, Phone, MapPin, Link } from 'lucide-react';
 
 const layouts = {
   Simple: SimpleLayout,
@@ -87,6 +88,10 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
           'education', 
           'skills',
           'currentTheme',
+          'Mail',
+          'Phone',
+          'MapPin',
+          'Link',
           `
           try {
             return () => (${transformedCode.substring(0, transformedCode.length - 1)});
@@ -97,8 +102,20 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
           `
         );
 
-        // Execute the function with our dependencies including currentTheme
-        const element = renderFunction(React, React.createElement, personalInfo, workExperience, education, skills, currentTheme);
+        // Execute the function with our dependencies including currentTheme and icons
+        const element = renderFunction(
+          React, 
+          React.createElement, 
+          personalInfo, 
+          workExperience, 
+          education, 
+          skills, 
+          currentTheme,
+          Mail,
+          Phone,
+          MapPin,
+          Link
+        );
         return element();
       } catch (transformError) {
         console.error("Babel transformation error:", transformError);

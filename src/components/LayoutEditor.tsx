@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { SimpleLayout } from './resume-layouts/SimpleLayout';
 import { ModernLayout } from './resume-layouts/ModernLayout';
@@ -13,9 +14,11 @@ import { toast } from 'sonner';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/jsx/jsx';
+import 'codemirror/mode/javascript/javascript';
 import 'codemirror/theme/material.css';
 import { themes } from '@/themes/ThemeContext';
 import { useTheme } from '@/themes/ThemeContext';
+import { exportToJsonResume } from '@/utils/jsonResume';
 
 const layouts = {
   Simple: SimpleLayout,
@@ -42,13 +45,58 @@ const getLayoutSourceCode = (layoutName: string) => {
           </p>
           
           <div className="${themes.simple.personalInfo.contactContainerClass}">
-            {personalInfo.email && <div className="${themes.simple.personalInfo.contactItemClass}">{personalInfo.email}</div>}
-            {personalInfo.phone && <div className="${themes.simple.personalInfo.contactItemClass}">{personalInfo.phone}</div>}
-            {personalInfo.location && <div className="${themes.simple.personalInfo.contactItemClass}">{personalInfo.location}</div>}
+            {personalInfo.email && (
+              <div className="${themes.simple.personalInfo.contactItemClass}">
+                <Mail size={12} />
+                <span>{personalInfo.email}</span>
+              </div>
+            )}
+            {personalInfo.phone && (
+              <div className="${themes.simple.personalInfo.contactItemClass}">
+                <Phone size={12} />
+                <span>{personalInfo.phone}</span>
+              </div>
+            )}
+            {personalInfo.location && (
+              <div className="${themes.simple.personalInfo.contactItemClass}">
+                <MapPin size={12} />
+                <span>{personalInfo.location}</span>
+              </div>
+            )}
+            {personalInfo.website && (
+              <div className="${themes.simple.personalInfo.contactItemClass}">
+                <Link size={12} />
+                <span>{personalInfo.website}</span>
+              </div>
+            )}
           </div>
+        </div>
+
+        <div className="${themes.simple.personalInfo.avatarContainerClass}">
+          {personalInfo.photoUrl ? (
+            <img
+              src={personalInfo.photoUrl}
+              alt={personalInfo.fullName || "Profile"}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-300 flex items-center justify-center text-gray-500">
+              Photo
+            </div>
+          )}
         </div>
       </div>
     </div>
+
+    {/* Summary Section */}
+    {personalInfo.summary && (
+      <section className="${themes.simple.section.containerClass}">
+        <h2 className="${themes.simple.section.titleClass}">Summary</h2>
+        <div className="${themes.simple.section.contentClass}">
+          <p className="text-sm text-gray-600">{personalInfo.summary}</p>
+        </div>
+      </section>
+    )}
 
     {/* Work Experience Section */}
     {workExperience.length > 0 && (
@@ -105,32 +153,67 @@ const getLayoutSourceCode = (layoutName: string) => {
     {/* Personal Info Section */}
     <div className="${themes.modern.personalInfo.containerClass}">
       <div className="${themes.modern.personalInfo.gridClass}">
-        {personalInfo.photoUrl ? (
-          <div className="${themes.modern.personalInfo.avatarContainerClass}">
+        <div className="${themes.modern.personalInfo.avatarContainerClass}">
+          {personalInfo.photoUrl ? (
             <img
               src={personalInfo.photoUrl}
               alt={personalInfo.fullName || "Profile"}
               className="w-full h-full object-cover"
             />
-          </div>
-        ) : (
-          <div className="${themes.modern.personalInfo.avatarContainerClass} flex items-center justify-center text-gray-500">
-            Photo
-          </div>
-        )}
+          ) : (
+            <div className="w-full h-full bg-gray-300 flex items-center justify-center text-gray-500">
+              Photo
+            </div>
+          )}
+        </div>
 
         <div className="${themes.modern.personalInfo.infoContainerClass}">
-          <h1 className="${themes.modern.personalInfo.titleClass}">{personalInfo.fullName || "Your Name"}</h1>
-          <p className="${themes.modern.personalInfo.subtitleClass}">{personalInfo.jobTitle || "Your Profession"}</p>
+          <h1 className="${themes.modern.personalInfo.titleClass}">
+            {personalInfo.fullName || "Your Name"}
+          </h1>
+          <p className="${themes.modern.personalInfo.subtitleClass}">
+            {personalInfo.jobTitle || "Your Profession"}
+          </p>
           
           <div className="${themes.modern.personalInfo.contactContainerClass}">
-            {personalInfo.email && <div className="${themes.modern.personalInfo.contactItemClass}">{personalInfo.email}</div>}
-            {personalInfo.phone && <div className="${themes.modern.personalInfo.contactItemClass}">{personalInfo.phone}</div>}
-            {personalInfo.location && <div className="${themes.modern.personalInfo.contactItemClass}">{personalInfo.location}</div>}
+            {personalInfo.email && (
+              <div className="${themes.modern.personalInfo.contactItemClass}">
+                <Mail size={12} />
+                <span>{personalInfo.email}</span>
+              </div>
+            )}
+            {personalInfo.phone && (
+              <div className="${themes.modern.personalInfo.contactItemClass}">
+                <Phone size={12} />
+                <span>{personalInfo.phone}</span>
+              </div>
+            )}
+            {personalInfo.location && (
+              <div className="${themes.modern.personalInfo.contactItemClass}">
+                <MapPin size={12} />
+                <span>{personalInfo.location}</span>
+              </div>
+            )}
+            {personalInfo.website && (
+              <div className="${themes.modern.personalInfo.contactItemClass}">
+                <Link size={12} />
+                <span>{personalInfo.website}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
+
+    {/* Summary Section */}
+    {personalInfo.summary && (
+      <section className="${themes.modern.section.containerClass}">
+        <h2 className="${themes.modern.section.titleClass}">Summary</h2>
+        <div className="${themes.modern.section.contentClass}">
+          <p className="text-sm text-gray-600">{personalInfo.summary}</p>
+        </div>
+      </section>
+    )}
 
     {/* Work Experience Section */}
     {workExperience.length > 0 && (
@@ -205,9 +288,30 @@ const getLayoutSourceCode = (layoutName: string) => {
         <p className="${themes.sidebar.personalInfo.subtitleClass}">{personalInfo.jobTitle || "Your Profession"}</p>
         
         <div className="${themes.sidebar.personalInfo.contactContainerClass}">
-          {personalInfo.email && <div className="${themes.sidebar.personalInfo.contactItemClass}">{personalInfo.email}</div>}
-          {personalInfo.phone && <div className="${themes.sidebar.personalInfo.contactItemClass}">{personalInfo.phone}</div>}
-          {personalInfo.location && <div className="${themes.sidebar.personalInfo.contactItemClass}">{personalInfo.location}</div>}
+          {personalInfo.email && (
+            <div className="${themes.sidebar.personalInfo.contactItemClass}">
+              <Mail size={12} />
+              <span>{personalInfo.email}</span>
+            </div>
+          )}
+          {personalInfo.phone && (
+            <div className="${themes.sidebar.personalInfo.contactItemClass}">
+              <Phone size={12} />
+              <span>{personalInfo.phone}</span>
+            </div>
+          )}
+          {personalInfo.location && (
+            <div className="${themes.sidebar.personalInfo.contactItemClass}">
+              <MapPin size={12} />
+              <span>{personalInfo.location}</span>
+            </div>
+          )}
+          {personalInfo.website && (
+            <div className="${themes.sidebar.personalInfo.contactItemClass}">
+              <Link size={12} />
+              <span>{personalInfo.website}</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -287,24 +391,41 @@ const getLayoutSourceCode = (layoutName: string) => {
           <p className="${themes.centered.personalInfo.subtitleClass}">{personalInfo.jobTitle || "Your Profession"}</p>
           
           <div className="${themes.centered.personalInfo.contactContainerClass}">
-            {personalInfo.email && <div className="${themes.centered.personalInfo.contactItemClass}">{personalInfo.email}</div>}
-            {personalInfo.phone && <div className="${themes.centered.personalInfo.contactItemClass}">{personalInfo.phone}</div>}
-            {personalInfo.location && <div className="${themes.centered.personalInfo.contactItemClass}">{personalInfo.location}</div>}
+            {personalInfo.email && (
+              <div className="${themes.centered.personalInfo.contactItemClass}">
+                <Mail size={12} />
+                <span>{personalInfo.email}</span>
+              </div>
+            )}
+            {personalInfo.phone && (
+              <div className="${themes.centered.personalInfo.contactItemClass}">
+                <Phone size={12} />
+                <span>{personalInfo.phone}</span>
+              </div>
+            )}
+            {personalInfo.location && (
+              <div className="${themes.centered.personalInfo.contactItemClass}">
+                <MapPin size={12} />
+                <span>{personalInfo.location}</span>
+              </div>
+            )}
+            {personalInfo.website && (
+              <div className="${themes.centered.personalInfo.contactItemClass}">
+                <Link size={12} />
+                <span>{personalInfo.website}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
 
-    {/* Skills Section */}
-    {skills.length > 0 && (
-      <section className="${themes.centered.skills.containerClass}">
-        <h2 className="${themes.centered.skills.titleClass}">Skills</h2>
-        <div className="${themes.centered.skills.skillsListClass}">
-          {skills.map((skill) => (
-            <span key={skill} className="${themes.centered.skills.skillItemClass}">
-              {skill}
-            </span>
-          ))}
+    {/* Summary Section */}
+    {personalInfo.summary && (
+      <section className="${themes.centered.section.containerClass}">
+        <h2 className="${themes.centered.section.titleClass}">Summary</h2>
+        <div className="${themes.centered.section.contentClass}">
+          <p className="text-sm text-gray-600">{personalInfo.summary}</p>
         </div>
       </section>
     )}
@@ -313,7 +434,7 @@ const getLayoutSourceCode = (layoutName: string) => {
     {workExperience.length > 0 && (
       <section className="${themes.centered.workExperience.containerClass}">
         <h2 className="${themes.centered.workExperience.titleClass}">Work Experience</h2>
-        <div className="space-y-6">
+        <div className="space-y-4">
           {workExperience.map((exp) => (
             <div key={exp.id} className="${themes.centered.workExperience.entryClass}">
               <h3 className="${themes.centered.workExperience.jobTitleClass}">{exp.position}</h3>
@@ -330,13 +451,27 @@ const getLayoutSourceCode = (layoutName: string) => {
     {education.length > 0 && (
       <section className="${themes.centered.education.containerClass}">
         <h2 className="${themes.centered.education.titleClass}">Education</h2>
-        <div className="space-y-6">
+        <div className="space-y-4">
           {education.map((edu) => (
             <div key={edu.id} className="${themes.centered.education.entryClass}">
               <h3 className="${themes.centered.education.institutionClass}">{edu.institution}</h3>
               <p className="${themes.centered.education.degreeClass}">{edu.degree} in {edu.field}</p>
               <p className="${themes.centered.education.periodClass}">Graduated: {edu.graduationDate}</p>
             </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {/* Skills Section */}
+    {skills.length > 0 && (
+      <section className="${themes.centered.skills.containerClass}">
+        <h2 className="${themes.centered.skills.titleClass}">Skills</h2>
+        <div className="${themes.centered.skills.skillsListClass}">
+          {skills.map((skill) => (
+            <span key={skill} className="${themes.centered.skills.skillItemClass}">
+              {skill}
+            </span>
           ))}
         </div>
       </section>
@@ -355,6 +490,10 @@ interface LayoutEditorProps {
   setLayoutProps: (props: Record<string, any>) => void;
   customCode: string | null;
   setCustomCode: (code: string | null) => void;
+  personalInfo: any;
+  workExperience: any[];
+  education: any[];
+  skills: string[];
 }
 
 const LayoutEditor: React.FC<LayoutEditorProps> = ({ 
@@ -363,12 +502,17 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   layoutProps, 
   setLayoutProps,
   customCode,
-  setCustomCode 
+  setCustomCode,
+  personalInfo,
+  workExperience,
+  education,
+  skills
 }) => {
   const [editorValue, setEditorValue] = useState<string>('');
-  const [editorMode, setEditorMode] = useState<'preview' | 'code'>('preview');
+  const [editorMode, setEditorMode] = useState<'preview' | 'code' | 'json'>('preview');
   const [codeError, setCodeError] = useState<string | null>(null);
   const [prevTheme, setPrevTheme] = useState<string>('');
+  const [jsonValue, setJsonValue] = useState<string>('');
   const { currentTheme } = useTheme();
 
   useEffect(() => {
@@ -398,7 +542,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       
       toast.info(`Theme updated to ${currentTheme}`);
     }
-  }, [currentTheme, selectedLayout, prevTheme]);
+  }, [currentTheme, selectedLayout, prevTheme, setCustomCode]);
   
   useEffect(() => {
     if (editorMode === 'code' && (!editorValue || editorValue.trim() === '')) {
@@ -409,8 +553,12 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         setEditorValue(templateCode);
         setCustomCode(templateCode);
       }
+    } else if (editorMode === 'json') {
+      // Generate JSON from the current resume data
+      const jsonResume = exportToJsonResume(personalInfo, workExperience, education, skills, currentTheme);
+      setJsonValue(JSON.stringify(jsonResume, null, 2));
     }
-  }, [editorMode, customCode, selectedLayout, editorValue]);
+  }, [editorMode, customCode, selectedLayout, editorValue, personalInfo, workExperience, education, skills, currentTheme]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -429,12 +577,28 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
     }
   };
 
+  const handleJsonChange = (editor: any, data: any, value: string) => {
+    setJsonValue(value);
+  };
+
   const resetCustomCode = () => {
     const templateCode = getLayoutSourceCode(selectedLayout);
     setEditorValue(templateCode);
     setCustomCode(templateCode);
     setCodeError(null);
     toast.info("Reset to template layout");
+  };
+
+  const applyJsonChanges = () => {
+    try {
+      // This would be integrated with your import function
+      // For now we'll just validate the JSON
+      JSON.parse(jsonValue);
+      toast.success("JSON is valid! Import functionality would apply changes here.");
+      // In a real implementation, you would use importFromJsonResume and update the app state
+    } catch (error) {
+      toast.error("Invalid JSON format. Please check your syntax.");
+    }
   };
 
   return (
@@ -455,10 +619,11 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         </Select>
       </div>
       
-      <Tabs defaultValue="preview" className="mt-6" onValueChange={(value) => setEditorMode(value as 'preview' | 'code')}>
+      <Tabs defaultValue="preview" className="mt-6" onValueChange={(value) => setEditorMode(value as 'preview' | 'code' | 'json')}>
         <TabsList className="mb-4">
           <TabsTrigger value="preview">Layout Properties</TabsTrigger>
           <TabsTrigger value="code">Edit Layout Code</TabsTrigger>
+          <TabsTrigger value="json">Edit JSON</TabsTrigger>
         </TabsList>
         
         <TabsContent value="preview">
@@ -519,6 +684,33 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
             
             <div className="flex gap-2">
               <Button onClick={resetCustomCode} variant="outline">Reset to Template</Button>
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="json">
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold mb-2">Edit Resume JSON</h3>
+            <p className="text-sm text-gray-600 mb-2">
+              Edit the JSON representation of your resume data. You can modify the data and apply changes.
+            </p>
+            
+            <div className="border rounded overflow-hidden mb-4">
+              <CodeMirror
+                value={jsonValue}
+                options={{
+                  mode: 'javascript',
+                  theme: 'material',
+                  lineNumbers: true,
+                  lineWrapping: true,
+                }}
+                onBeforeChange={handleJsonChange}
+                className="min-h-[300px]"
+              />
+            </div>
+            
+            <div className="flex gap-2">
+              <Button onClick={applyJsonChanges} variant="outline">Apply JSON Changes</Button>
             </div>
           </div>
         </TabsContent>
