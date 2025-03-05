@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { SimpleLayout } from './resume-layouts/SimpleLayout';
 import { ModernLayout } from './resume-layouts/ModernLayout';
