@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import LayoutEditor from './LayoutEditor';
 import LayoutPreview from './LayoutPreview';
 import { PersonalInfoData } from './PersonalInfo';
 import { WorkExperienceEntry } from './WorkExperience';
@@ -38,34 +37,8 @@ const LayoutManager: React.FC<LayoutManagerProps> = ({
     setEditedSkills(skills);
   }, [personalInfo, workExperience, education, skills]);
 
-  // Apply resume changes from the editor to our local state
-  const handleApplyResumeChanges = (
-    newPersonalInfo: PersonalInfoData,
-    newWorkExperience: WorkExperienceEntry[],
-    newEducation: EducationEntry[],
-    newSkills: string[]
-  ) => {
-    setEditedPersonalInfo(newPersonalInfo);
-    setEditedWorkExperience(newWorkExperience);
-    setEditedEducation(newEducation);
-    setEditedSkills(newSkills);
-  };
-
   return (
-    <div className="layout-manager grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <LayoutEditor
-        selectedLayout={selectedLayout}
-        setSelectedLayout={setSelectedLayout}
-        layoutProps={layoutProps}
-        setLayoutProps={setLayoutProps}
-        customCode={customCode}
-        setCustomCode={setCustomCode}
-        personalInfo={editedPersonalInfo}
-        workExperience={editedWorkExperience}
-        education={editedEducation}
-        skills={editedSkills}
-        onApplyResumeChanges={handleApplyResumeChanges}
-      />
+    <div className="layout-manager">
       <LayoutPreview 
         selectedLayout={selectedLayout} 
         layoutProps={layoutProps}

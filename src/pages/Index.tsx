@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PersonalInfo, PersonalInfoData } from "@/components/PersonalInfo";
@@ -15,6 +14,7 @@ import { useTheme, ThemeName } from "@/themes/ThemeContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShowPreviewButton } from "@/components/ShowPreviewButton";
 import LayoutManager from '@/components/LayoutManager';
+import LayoutEditor from '@/components/LayoutEditor';
 
 const Index = () => {
   const { currentTheme, setTheme } = useTheme();
@@ -23,15 +23,17 @@ const Index = () => {
     email: "",
     phone: "",
     location: "",
-    jobTitle: "", // Added the missing jobTitle property
+    jobTitle: "",
   });
   const [workExperience, setWorkExperience] = useState<WorkExperienceEntry[]>([]);
   const [education, setEducation] = useState<EducationEntry[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
   const [showPreview, setShowPreview] = useState(false);
   const [isFolded, setIsFolded] = useState(false);
-  const [selectedLayout, setSelectedLayout] = useState<string>("");
+  const [selectedLayout, setSelectedLayout] = useState<string>("Modern");
   const [layoutProps, setLayoutProps] = useState<any>({});
+  const [customCode, setCustomCode] = useState<string | null>(null);
+  const [editorTabActive, setEditorTabActive] = useState("content");
 
   const handleExport = () => {
     const jsonResume = exportToJsonResume(
@@ -39,7 +41,7 @@ const Index = () => {
       workExperience,
       education,
       skills,
-      currentTheme // Pass the current theme to export function
+      currentTheme
     );
     const blob = new Blob([JSON.stringify(jsonResume, null, 2)], {
       type: "application/json",
@@ -74,7 +76,6 @@ const Index = () => {
           setEducation(newEducation);
           setSkills(newSkills);
           
-          // Apply the imported theme if available
           if (newTheme) {
             setTheme(newTheme);
           }
@@ -86,13 +87,23 @@ const Index = () => {
     }
   };
 
-  // Function to handle PDF preview from ResumePreview component
   const handlePreviewPdf = () => {
-    // This will be passed to the ResumePreview component
     const previewButton = document.getElementById('preview-pdf-button');
     if (previewButton) {
       previewButton.click();
     }
+  };
+
+  const handleApplyResumeChanges = (
+    newPersonalInfo: PersonalInfoData,
+    newWorkExperience: WorkExperienceEntry[],
+    newEducation: EducationEntry[],
+    newSkills: string[]
+  ) => {
+    setPersonalInfo(newPersonalInfo);
+    setWorkExperience(newWorkExperience);
+    setEducation(newEducation);
+    setSkills(newSkills);
   };
 
   return (
@@ -102,7 +113,6 @@ const Index = () => {
           <h1 className="text-4xl font-bold text-primary">Resume Builder</h1>
           
           <div className="flex flex-wrap gap-2 items-center">
-            {/* Theme Switcher */}
             <ThemeSwitcher />
             
             <input
@@ -138,19 +148,43 @@ const Index = () => {
           <TabsList className="mb-4">
             <TabsTrigger value="editor">Editor</TabsTrigger>
             <TabsTrigger value="assistant">AI Assistant</TabsTrigger>
-            <TabsTrigger value="layout-editor">Layout Editor</TabsTrigger>
           </TabsList>
           
           <TabsContent value="editor">
             <div className="grid gap-8 lg:grid-cols-2">
               <FoldablePanel setIsFolded={setIsFolded} isFolded={isFolded}>
-                <PersonalInfo data={personalInfo} onChange={setPersonalInfo} />
-                <WorkExperience
-                  experiences={workExperience}
-                  onChange={setWorkExperience}
-                />
-                <Education education={education} onChange={setEducation} />
-                <Skills skills={skills} onChange={setSkills} />
+                <Tabs defaultValue={editorTabActive} onValueChange={setEditorTabActive}>
+                  <TabsList className="mb-4">
+                    <TabsTrigger value="content">Resume Content</TabsTrigger>
+                    <TabsTrigger value="layout">Layout Editor</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="content">
+                    <PersonalInfo data={personalInfo} onChange={setPersonalInfo} />
+                    <WorkExperience
+                      experiences={workExperience}
+                      onChange={setWorkExperience}
+                    />
+                    <Education education={education} onChange={setEducation} />
+                    <Skills skills={skills} onChange={setSkills} />
+                  </TabsContent>
+                  
+                  <TabsContent value="layout">
+                    <LayoutEditor
+                      selectedLayout={selectedLayout}
+                      setSelectedLayout={setSelectedLayout}
+                      layoutProps={layoutProps}
+                      setLayoutProps={setLayoutProps}
+                      customCode={customCode}
+                      setCustomCode={setCustomCode}
+                      personalInfo={personalInfo}
+                      workExperience={workExperience}
+                      education={education}
+                      skills={skills}
+                      onApplyResumeChanges={handleApplyResumeChanges}
+                    />
+                  </TabsContent>
+                </Tabs>
               </FoldablePanel>
 
               {showPreview && (
@@ -160,8 +194,8 @@ const Index = () => {
                     workExperience={workExperience}
                     education={education}
                     skills={skills}
-                    theme={currentTheme} // Pass theme to preview
-                    onPreviewPdf={handlePreviewPdf} // Pass the PDF preview handler
+                    theme={currentTheme}
+                    onPreviewPdf={handlePreviewPdf}
                   />
                 </div>
               )}
@@ -186,19 +220,10 @@ const Index = () => {
                   education={education}
                   skills={skills}
                   theme={currentTheme}
-                  onPreviewPdf={handlePreviewPdf} // Pass the PDF preview handler
+                  onPreviewPdf={handlePreviewPdf}
                 />
               </div>
             </div>
-          </TabsContent>
-          
-          <TabsContent value="layout-editor">
-            <LayoutManager 
-              personalInfo={personalInfo}
-              workExperience={workExperience}
-              education={education}
-              skills={skills}
-            />
           </TabsContent>
         </Tabs>
       </div>
