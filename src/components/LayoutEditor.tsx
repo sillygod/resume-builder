@@ -199,6 +199,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
     setEditedWorkExperience([
       ...editedWorkExperience,
       {
+        id: Date.now().toString(), // Add the required id property
         company: 'New Company',
         position: 'New Position',
         startDate: 'Start Date',
@@ -220,11 +221,11 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
     setEditedEducation([
       ...editedEducation,
       {
+        id: Date.now().toString(), // Add the required id property
         institution: 'New Institution',
         degree: 'New Degree',
-        startDate: 'Start Date',
-        endDate: 'End Date',
-        description: 'Education description...'
+        field: '', // Use the correct properties from EducationEntry
+        graduationDate: '', // Use the correct properties from EducationEntry
       }
     ]);
   };
@@ -440,30 +441,21 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                           </div>
                           <div className="grid grid-cols-2 gap-2">
                             <div>
-                              <Label htmlFor={`eduStartDate-${index}`}>Start Date</Label>
+                              <Label htmlFor={`field-${index}`}>Field of Study</Label>
                               <Input 
-                                id={`eduStartDate-${index}`} 
-                                value={edu.startDate} 
-                                onChange={(e) => handleEducationChange(index, 'startDate', e.target.value)} 
+                                id={`field-${index}`} 
+                                value={edu.field} 
+                                onChange={(e) => handleEducationChange(index, 'field', e.target.value)} 
                               />
                             </div>
                             <div>
-                              <Label htmlFor={`eduEndDate-${index}`}>End Date</Label>
+                              <Label htmlFor={`graduationDate-${index}`}>Graduation Date</Label>
                               <Input 
-                                id={`eduEndDate-${index}`} 
-                                value={edu.endDate} 
-                                onChange={(e) => handleEducationChange(index, 'endDate', e.target.value)} 
+                                id={`graduationDate-${index}`} 
+                                value={edu.graduationDate} 
+                                onChange={(e) => handleEducationChange(index, 'graduationDate', e.target.value)} 
                               />
                             </div>
-                          </div>
-                          <div>
-                            <Label htmlFor={`eduDescription-${index}`}>Description</Label>
-                            <Textarea 
-                              id={`eduDescription-${index}`} 
-                              value={edu.description} 
-                              onChange={(e) => handleEducationChange(index, 'description', e.target.value)}
-                              rows={3}
-                            />
                           </div>
                         </div>
                       </div>
