@@ -28,6 +28,7 @@ interface ResumePreviewProps {
   skills: string[];
   theme?: ThemeName; // Make theme optional with a default
   onPreviewPdf?: () => void; // Add prop to handle PDF preview
+  extraData?: Record<string, any>; // Add extraData prop
 }
 
 export function ResumePreview({
@@ -37,6 +38,7 @@ export function ResumePreview({
   skills,
   theme = "modern",
   onPreviewPdf,
+  extraData = {}, // Add default value
 }: ResumePreviewProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -99,7 +101,8 @@ export function ResumePreview({
       personalInfo,
       workExperience,
       education,
-      skills
+      skills,
+      extraData, // Pass extraData to layout components
     };
 
     switch (theme) {

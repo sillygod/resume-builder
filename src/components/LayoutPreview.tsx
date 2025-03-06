@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { SimpleLayout } from './resume-layouts/SimpleLayout';
 import { ModernLayout } from './resume-layouts/ModernLayout';
@@ -35,6 +36,7 @@ interface LayoutPreviewProps {
   workExperience: WorkExperienceEntry[];
   education: EducationEntry[];
   skills: string[];
+  extraData?: Record<string, any>; // Added extraData prop
 }
 
 const LayoutPreview: React.FC<LayoutPreviewProps> = ({ 
@@ -44,7 +46,8 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
   personalInfo,
   workExperience,
   education,
-  skills
+  skills,
+  extraData = {} // Add default value
 }) => {
   const { currentTheme, setTheme } = useTheme();
   const [prevSelectedLayout, setPrevSelectedLayout] = useState<string>('');
@@ -98,6 +101,7 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
           'Phone',
           'MapPin',
           'Link',
+          'extraData', // Add extraData to function parameters
           `
           try {
             return () => (${transformedCode.substring(0, transformedCode.length - 1)});
@@ -120,7 +124,8 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
           Mail,
           Phone,
           MapPin,
-          Link
+          Link,
+          extraData // Pass extraData to the custom code
         );
         return element();
       } catch (transformError) {
@@ -182,6 +187,7 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
                 workExperience={workExperience}
                 education={education}
                 skills={skills}
+                extraData={extraData} // Pass extraData to layout component
                 {...layoutProps} 
               />
             ) : (
