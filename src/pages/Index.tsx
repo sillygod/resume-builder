@@ -33,7 +33,7 @@ const Index = () => {
   const [selectedLayout, setSelectedLayout] = useState<string>("Modern");
   const [layoutProps, setLayoutProps] = useState<any>({});
   const [customCode, setCustomCode] = useState<string | null>(null);
-  const [editorTabActive, setEditorTabActive] = useState("content");
+  const [extraData, setExtraData] = useState<Record<string, any>>({});
 
   const handleExport = () => {
     const jsonResume = exportToJsonResume(
@@ -98,12 +98,16 @@ const Index = () => {
     newPersonalInfo: PersonalInfoData,
     newWorkExperience: WorkExperienceEntry[],
     newEducation: EducationEntry[],
-    newSkills: string[]
+    newSkills: string[],
+    newExtraData?: Record<string, any>
   ) => {
     setPersonalInfo(newPersonalInfo);
     setWorkExperience(newWorkExperience);
     setEducation(newEducation);
     setSkills(newSkills);
+    if (newExtraData) {
+      setExtraData(newExtraData);
+    }
   };
 
   return (
@@ -153,38 +157,20 @@ const Index = () => {
           <TabsContent value="editor">
             <div className="grid gap-8 lg:grid-cols-2">
               <FoldablePanel setIsFolded={setIsFolded} isFolded={isFolded}>
-                <Tabs defaultValue={editorTabActive} onValueChange={setEditorTabActive}>
-                  <TabsList className="mb-4">
-                    <TabsTrigger value="content">Resume Content</TabsTrigger>
-                    <TabsTrigger value="layout">Layout Editor</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="content">
-                    <PersonalInfo data={personalInfo} onChange={setPersonalInfo} />
-                    <WorkExperience
-                      experiences={workExperience}
-                      onChange={setWorkExperience}
-                    />
-                    <Education education={education} onChange={setEducation} />
-                    <Skills skills={skills} onChange={setSkills} />
-                  </TabsContent>
-                  
-                  <TabsContent value="layout">
-                    <LayoutEditor
-                      selectedLayout={selectedLayout}
-                      setSelectedLayout={setSelectedLayout}
-                      layoutProps={layoutProps}
-                      setLayoutProps={setLayoutProps}
-                      customCode={customCode}
-                      setCustomCode={setCustomCode}
-                      personalInfo={personalInfo}
-                      workExperience={workExperience}
-                      education={education}
-                      skills={skills}
-                      onApplyResumeChanges={handleApplyResumeChanges}
-                    />
-                  </TabsContent>
-                </Tabs>
+                <LayoutEditor
+                  selectedLayout={selectedLayout}
+                  setSelectedLayout={setSelectedLayout}
+                  layoutProps={layoutProps}
+                  setLayoutProps={setLayoutProps}
+                  customCode={customCode}
+                  setCustomCode={setCustomCode}
+                  personalInfo={personalInfo}
+                  workExperience={workExperience}
+                  education={education}
+                  skills={skills}
+                  extraData={extraData}
+                  onApplyResumeChanges={handleApplyResumeChanges}
+                />
               </FoldablePanel>
 
               {showPreview && (
@@ -196,6 +182,7 @@ const Index = () => {
                     skills={skills}
                     theme={currentTheme}
                     onPreviewPdf={handlePreviewPdf}
+                    extraData={extraData}
                   />
                 </div>
               )}
@@ -221,6 +208,7 @@ const Index = () => {
                   skills={skills}
                   theme={currentTheme}
                   onPreviewPdf={handlePreviewPdf}
+                  extraData={extraData}
                 />
               </div>
             </div>

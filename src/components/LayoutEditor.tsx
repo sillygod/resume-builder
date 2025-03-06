@@ -17,7 +17,7 @@ import 'codemirror/mode/javascript/javascript';
 import 'codemirror/theme/material.css';
 import { themes } from '@/themes/ThemeContext';
 import { useTheme } from '@/themes/ThemeContext';
-import { exportToJsonResume } from '@/utils/jsonResume';
+import { exportToJsonResume, importFromJsonResume } from '@/utils/jsonResume';
 import { getLayoutJSXString } from './resume-layouts/layoutTemplates';
 import { PersonalInfoData } from './PersonalInfo';
 import { WorkExperienceEntry } from './WorkExperience';
@@ -44,11 +44,13 @@ interface LayoutEditorProps {
   workExperience: WorkExperienceEntry[];
   education: EducationEntry[];
   skills: string[];
+  extraData?: Record<string, any>;
   onApplyResumeChanges?: (
     personalInfo: PersonalInfoData, 
     workExperience: WorkExperienceEntry[], 
     education: EducationEntry[], 
-    skills: string[]
+    skills: string[],
+    extraData?: Record<string, any>
   ) => void;
 }
 
@@ -63,6 +65,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   workExperience,
   education,
   skills,
+  extraData = {},
   onApplyResumeChanges
 }) => {
   const [editorValue, setEditorValue] = useState<string>('');
@@ -76,13 +79,15 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   const [editedWorkExperience, setEditedWorkExperience] = useState<WorkExperienceEntry[]>(workExperience);
   const [editedEducation, setEditedEducation] = useState<EducationEntry[]>(education);
   const [editedSkills, setEditedSkills] = useState<string[]>(skills);
+  const [editedExtraData, setEditedExtraData] = useState<Record<string, any>>(extraData || {});
 
   useEffect(() => {
     setEditedPersonalInfo(personalInfo);
     setEditedWorkExperience(workExperience);
     setEditedEducation(education);
     setEditedSkills(skills);
-  }, [personalInfo, workExperience, education, skills]);
+    setEditedExtraData(extraData || {});
+  }, [personalInfo, workExperience, education, skills, extraData]);
 
   useEffect(() => {
     if (selectedLayout && selectedLayout !== prevSelectedLayout) {
@@ -112,10 +117,17 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         setCustomCode(templateCode);
       }
     } else if (editorMode === 'json') {
-      const jsonResume = exportToJsonResume(editedPersonalInfo, editedWorkExperience, editedEducation, editedSkills, currentTheme);
+      const jsonResume = exportToJsonResume(
+        editedPersonalInfo, 
+        editedWorkExperience, 
+        editedEducation, 
+        editedSkills, 
+        currentTheme,
+        editedExtraData
+      );
       setJsonValue(JSON.stringify(jsonResume, null, 2));
     }
-  }, [editorMode, customCode, selectedLayout, editorValue, editedPersonalInfo, editedWorkExperience, editedEducation, editedSkills, currentTheme]);
+  }, [editorMode, customCode, selectedLayout, editorValue, editedPersonalInfo, editedWorkExperience, editedEducation, editedSkills, currentTheme, editedExtraData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -148,8 +160,25 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
 
   const applyJsonChanges = () => {
     try {
-      JSON.parse(jsonValue);
-      toast.success("JSON is valid! Import functionality would apply changes here.");
+      const parsedJson = JSON.parse(jsonValue);
+      const imported = importFromJsonResume(parsedJson);
+      
+      setEditedPersonalInfo(imported.personalInfo);
+      setEditedWorkExperience(imported.workExperience);
+      setEditedEducation(imported.education);
+      setEditedSkills(imported.skills);
+      setEditedExtraData(imported.extraData || {});
+      
+      if (onApplyResumeChanges) {
+        onApplyResumeChanges(
+          imported.personalInfo,
+          imported.workExperience,
+          imported.education,
+          imported.skills,
+          imported.extraData
+        );
+        toast.success("Applied JSON changes to resume");
+      }
     } catch (error) {
       toast.error("Invalid JSON format. Please check your syntax.");
     }
@@ -231,7 +260,8 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         editedPersonalInfo,
         editedWorkExperience,
         editedEducation,
-        editedSkills
+        editedSkills,
+        editedExtraData
       );
       toast.success("Resume data updated successfully");
     } else {
@@ -241,7 +271,41 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       console.log("Updated Work Experience:", editedWorkExperience);
       console.log("Updated Education:", editedEducation);
       console.log("Updated Skills:", editedSkills);
+      console.log("Updated Extra Data:", editedExtraData);
     }
+  };
+
+  const renderExtraDataAccordion = () => {
+    if (!editedExtraData || Object.keys(editedExtraData).length === 0) {
+      return (
+        <div className="border p-3 rounded mb-4">
+          <p className="text-sm text-gray-500">
+            No additional data fields. You can add custom fields in the JSON editor tab.
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="border p-3 rounded mb-4">
+        <h3 className="font-medium mb-3">Custom Fields</h3>
+        <div className="space-y-3">
+          {Object.entries(editedExtraData).map(([key, value]) => (
+            <div key={key} className="space-y-1">
+              <p className="text-sm font-medium">{key}</p>
+              <p className="text-sm text-gray-600 border p-2 rounded bg-gray-50">
+                {typeof value === 'object' 
+                  ? JSON.stringify(value, null, 2) 
+                  : String(value)}
+              </p>
+            </div>
+          ))}
+        </div>
+        <p className="text-xs text-gray-500 mt-3">
+          Note: To modify these custom fields, please use the JSON Editor tab.
+        </p>
+      </div>
+    );
   };
 
   return (
@@ -262,9 +326,9 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         </Select>
       </div>
       
-      <Tabs defaultValue="preview" className="mt-6" onValueChange={(value) => setEditorMode(value as 'preview' | 'code' | 'json')}>
+      <Tabs defaultValue="preview" className="mt-6" onValueChange={(value) => setEditorMode(value as any)}>
         <TabsList className="mb-4">
-          <TabsTrigger value="preview">Layout Properties</TabsTrigger>
+          <TabsTrigger value="preview">Resume Data</TabsTrigger>
           <TabsTrigger value="code">Edit Layout Code</TabsTrigger>
           <TabsTrigger value="json">Edit JSON</TabsTrigger>
         </TabsList>
@@ -478,6 +542,13 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                     </div>
                   </AccordionContent>
                 </AccordionItem>
+
+                <AccordionItem value="extra-data">
+                  <AccordionTrigger className="text-md font-medium">Additional Fields</AccordionTrigger>
+                  <AccordionContent>
+                    {renderExtraDataAccordion()}
+                  </AccordionContent>
+                </AccordionItem>
               </Accordion>
               
               <div className="mt-4">
@@ -557,7 +628,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
           <div className="mb-4">
             <h3 className="text-lg font-semibold mb-2">Edit Resume JSON</h3>
             <p className="text-sm text-gray-600 mb-2">
-              Edit the JSON representation of your resume data. You can modify the data and apply changes.
+              Edit the JSON representation of your resume data, including custom fields. Changes will be applied to your resume when you click "Apply JSON Changes".
             </p>
             
             <div className="border rounded overflow-hidden mb-4">

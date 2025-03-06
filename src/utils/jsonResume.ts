@@ -13,26 +13,30 @@ export interface JsonResume {
     phone: string;
     jobTitle?: string;
     location: {
-      city: string;
+      city?: string;
       countryCode: string;
     };
   };
   work: Array<{
-    name: string;
-    position: string;
-    startDate: string;
-    endDate: string;
-    description: string;
+    [key: string]: any;
+    name?: string;
+    position?: string;
+    startDate?: string;
+    endDate?: string;
+    description?: string;
   }>;
   education: Array<{
-    institution: string;
-    area: string;
-    studyType: string;
-    endDate: string;
+    [key: string]: any;
+    institution?: string;
+    area?: string;
+    studyType?: string;
+    endDate?: string;
   }>;
   skills: Array<{
+    [key: string]: any;
     name: string;
   }>;
+  [key: string]: any; // Allow for additional top-level properties
 }
 
 export const exportToJsonResume = (
@@ -40,7 +44,8 @@ export const exportToJsonResume = (
   workExperience: WorkExperienceEntry[],
   education: EducationEntry[],
   skills: string[],
-  theme: ThemeName
+  theme: ThemeName,
+  extraData?: Record<string, any>
 ): JsonResume => {
   // Create basics object with all personal info fields
   const basics: any = {
@@ -60,7 +65,7 @@ export const exportToJsonResume = (
     }
   });
 
-  return {
+  const result: JsonResume = {
     theme,
     basics,
     work: workExperience.map((exp) => ({
@@ -80,6 +85,15 @@ export const exportToJsonResume = (
       name: skill,
     })),
   };
+
+  // Add any extra data fields at the top level
+  if (extraData) {
+    Object.entries(extraData).forEach(([key, value]) => {
+      result[key] = value;
+    });
+  }
+
+  return result;
 };
 
 export const importFromJsonResume = (
@@ -90,41 +104,60 @@ export const importFromJsonResume = (
   education: EducationEntry[];
   skills: string[];
   theme: ThemeName;
+  extraData: Record<string, any>;
 } => {
   // Create personalInfo object with required fields
   const personalInfo: PersonalInfoData = {
     fullName: jsonResume.basics.name,
     email: jsonResume.basics.email,
     phone: jsonResume.basics.phone,
-    location: jsonResume.basics.location.city,
+    location: jsonResume.basics.location.city || '',
     jobTitle: jsonResume.basics.jobTitle || "",
   };
 
   // Add any additional fields from the JSON
   Object.entries(jsonResume.basics).forEach(([key, value]) => {
-    if (!['name', 'email', 'phone', 'location'].includes(key) && typeof value === 'string') {
+    if (!['name', 'email', 'phone', 'location'].includes(key) && typeof value !== 'object') {
       personalInfo[key] = value;
+    }
+  });
+
+  // Extract work experience
+  const workExperience = jsonResume.work.map((work) => ({
+    id: Date.now().toString() + Math.random(),
+    company: work.name || '',
+    position: work.position || '',
+    startDate: work.startDate || '',
+    endDate: work.endDate || '',
+    description: work.description || '',
+  }));
+
+  // Extract education
+  const education = jsonResume.education.map((edu) => ({
+    id: Date.now().toString() + Math.random(),
+    institution: edu.institution || '',
+    field: edu.area || '',
+    degree: edu.studyType || '',
+    graduationDate: edu.endDate || '',
+  }));
+
+  // Extract skills
+  const skills = jsonResume.skills.map((skill) => skill.name);
+
+  // Extract extra data (any top-level properties that are not standard)
+  const extraData: Record<string, any> = {};
+  Object.entries(jsonResume).forEach(([key, value]) => {
+    if (!['theme', 'basics', 'work', 'education', 'skills'].includes(key)) {
+      extraData[key] = value;
     }
   });
 
   return {
     personalInfo,
-    workExperience: jsonResume.work.map((work) => ({
-      id: Date.now().toString() + Math.random(),
-      company: work.name,
-      position: work.position,
-      startDate: work.startDate,
-      endDate: work.endDate,
-      description: work.description,
-    })),
-    education: jsonResume.education.map((edu) => ({
-      id: Date.now().toString() + Math.random(),
-      institution: edu.institution,
-      field: edu.area,
-      degree: edu.studyType,
-      graduationDate: edu.endDate,
-    })),
-    skills: jsonResume.skills.map((skill) => skill.name),
+    workExperience,
+    education,
+    skills,
     theme: jsonResume.theme || 'modern',
+    extraData,
   };
 };

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import LayoutPreview from './LayoutPreview';
 import { PersonalInfoData } from './PersonalInfo';
 import { WorkExperienceEntry } from './WorkExperience';
@@ -10,13 +10,15 @@ interface LayoutManagerProps {
   workExperience: WorkExperienceEntry[];
   education: EducationEntry[];
   skills: string[];
+  extraData?: Record<string, any>;
 }
 
 const LayoutManager: React.FC<LayoutManagerProps> = ({ 
   personalInfo,
   workExperience,
   education,
-  skills 
+  skills,
+  extraData = {}
 }) => {
   // Initialize with a default layout - this ensures we always have a selected layout
   const [selectedLayout, setSelectedLayout] = useState('Simple');
@@ -28,14 +30,16 @@ const LayoutManager: React.FC<LayoutManagerProps> = ({
   const [editedWorkExperience, setEditedWorkExperience] = useState<WorkExperienceEntry[]>(workExperience);
   const [editedEducation, setEditedEducation] = useState<EducationEntry[]>(education);
   const [editedSkills, setEditedSkills] = useState<string[]>(skills);
+  const [editedExtraData, setEditedExtraData] = useState<Record<string, any>>(extraData);
 
   // Update local state when props change
-  React.useEffect(() => {
+  useEffect(() => {
     setEditedPersonalInfo(personalInfo);
     setEditedWorkExperience(workExperience);
     setEditedEducation(education);
     setEditedSkills(skills);
-  }, [personalInfo, workExperience, education, skills]);
+    setEditedExtraData(extraData);
+  }, [personalInfo, workExperience, education, skills, extraData]);
 
   return (
     <div className="layout-manager">
@@ -47,6 +51,7 @@ const LayoutManager: React.FC<LayoutManagerProps> = ({
         workExperience={editedWorkExperience}
         education={editedEducation}
         skills={editedSkills}
+        extraData={editedExtraData}
       />
     </div>
   );
