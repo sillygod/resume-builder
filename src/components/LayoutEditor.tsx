@@ -131,12 +131,12 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
 
   const applyJsonChanges = () => {
     try {
-      const parsedJson = JSON.parse(jsonValue);
-      // Assume imported JSON Resume shape
+      const cleaned = jsonValue.trim();
+      const fixed = cleaned.replace(/,\s*}/g, '}').replace(/,\s*]/g, ']');
+      const parsedJson = JSON.parse(fixed);
       setResumeData(parsedJson);
 
       if (onApplyResumeChanges) {
-        // Optionally, convert JSON Resume back to your old shape if needed
         toast.success("Applied JSON changes to resume");
       }
     } catch (error) {
