@@ -36,18 +36,9 @@ interface LayoutEditorProps {
   setLayoutProps: (props: Record<string, any>) => void;
   customCode: string | null;
   setCustomCode: (code: string | null) => void;
-  personalInfo: PersonalInfoData;
-  workExperience: WorkExperienceEntry[];
-  education: EducationEntry[];
-  skills: string[];
-  extraData?: Record<string, any>;
-  onApplyResumeChanges?: (
-    personalInfo: PersonalInfoData, 
-    workExperience: WorkExperienceEntry[], 
-    education: EducationEntry[], 
-    skills: string[],
-    extraData?: Record<string, any>
-  ) => void;
+  resumeData: any;
+  setResumeData: (data: any) => void;
+  onApplyResumeChanges?: (data: any) => void;
 }
 
 const LayoutEditor: React.FC<LayoutEditorProps> = ({ 
@@ -57,11 +48,8 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   setLayoutProps,
   customCode,
   setCustomCode,
-  personalInfo,
-  workExperience,
-  education,
-  skills,
-  extraData = {},
+  resumeData,
+  setResumeData,
   onApplyResumeChanges
 }) => {
   const [editorValue, setEditorValue] = useState<string>('');
@@ -70,64 +58,6 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   const [prevSelectedLayout, setPrevSelectedLayout] = useState<string>('');
   const [jsonValue, setJsonValue] = useState<string>('');
   const { currentTheme, setTheme } = useTheme();
-
-  const [resumeData, setResumeData] = useState({
-    basics: {
-      name: personalInfo.fullName,
-      email: personalInfo.email,
-      phone: personalInfo.phone,
-      jobTitle: personalInfo.jobTitle,
-      location: {
-        city: personalInfo.location,
-        countryCode: "US",
-      },
-    },
-    work: workExperience.map((exp) => ({
-      company: exp.company,
-      position: exp.position,
-      startDate: exp.startDate,
-      endDate: exp.endDate,
-      description: exp.description,
-    })),
-    education: education.map((edu) => ({
-      institution: edu.institution,
-      degree: edu.degree,
-      field: edu.field,
-      graduationDate: edu.graduationDate,
-    })),
-    skills: skills,
-    extraData: extraData || {},
-  });
-
-  useEffect(() => {
-    setResumeData({
-      basics: {
-        name: personalInfo.fullName,
-        email: personalInfo.email,
-        phone: personalInfo.phone,
-        jobTitle: personalInfo.jobTitle,
-        location: {
-          city: personalInfo.location,
-          countryCode: "US",
-        },
-      },
-      work: workExperience.map((exp) => ({
-        company: exp.company,
-        position: exp.position,
-        startDate: exp.startDate,
-        endDate: exp.endDate,
-        description: exp.description,
-      })),
-      education: education.map((edu) => ({
-        institution: edu.institution,
-        degree: edu.degree,
-        field: edu.field,
-        graduationDate: edu.graduationDate,
-      })),
-      skills: skills,
-      extraData: extraData || {},
-    });
-  }, [personalInfo, workExperience, education, skills, extraData]);
 
   useEffect(() => {
     if (selectedLayout && selectedLayout !== prevSelectedLayout) {
@@ -299,7 +229,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
 
   const applyResumeChanges = () => {
     if (onApplyResumeChanges) {
-      // Optionally convert JSON Resume back to your old shape here if needed
+      onApplyResumeChanges(resumeData);
       toast.success("Resume data updated successfully");
     } else {
       toast.info("Resume data updates will be applied in a future implementation");
