@@ -13,6 +13,7 @@ interface ModernLayoutProps {
 export const ModernLayout: React.FC<ModernLayoutProps> = ({
   resumeData,
 }) => {
+  resumeData = resumeData || {};
   const personalInfo = resumeData.basics || {};
   const workExperience = resumeData.work || [];
   const education = resumeData.education || [];
