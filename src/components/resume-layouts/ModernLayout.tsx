@@ -1,8 +1,5 @@
 
 import React from 'react';
-import { PersonalInfoData } from '../PersonalInfo';
-import { WorkExperienceEntry } from '../WorkExperience';
-import { EducationEntry } from '../Education';
 import { Mail, Phone, MapPin, Link as LinkIcon } from 'lucide-react';
 import { themes } from '@/themes/ThemeContext';
 
