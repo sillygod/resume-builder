@@ -8,6 +8,7 @@ interface SimpleLayoutProps {
 export const SimpleLayout: React.FC<SimpleLayoutProps> = ({
   resumeData,
 }) => {
+  resumeData = resumeData || {};
   const personalInfo = resumeData.basics || {};
   const workExperience = resumeData.work || [];
   const education = resumeData.education || [];
