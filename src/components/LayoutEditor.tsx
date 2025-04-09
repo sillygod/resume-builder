@@ -47,7 +47,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   customCode,
   setCustomCode,
   resumeData,
-  setResumeData,
+  setResumeData = () => {},
   onApplyResumeChanges
 }) => {
   // Defensive defaults to avoid undefined errors
