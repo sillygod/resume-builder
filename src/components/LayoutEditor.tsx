@@ -70,19 +70,23 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   const [prevSelectedLayout, setPrevSelectedLayout] = useState<string>('');
   const [jsonValue, setJsonValue] = useState<string>('');
   const { currentTheme, setTheme } = useTheme();
-  
-  const [editedPersonalInfo, setEditedPersonalInfo] = useState<PersonalInfoData>(personalInfo);
-  const [editedWorkExperience, setEditedWorkExperience] = useState<WorkExperienceEntry[]>(workExperience);
-  const [editedEducation, setEditedEducation] = useState<EducationEntry[]>(education);
-  const [editedSkills, setEditedSkills] = useState<string[]>(skills);
-  const [editedExtraData, setEditedExtraData] = useState<Record<string, any>>(extraData || {});
+
+  const [resumeData, setResumeData] = useState({
+    personalInfo,
+    workExperience,
+    education,
+    skills,
+    extraData: extraData || {},
+  });
 
   useEffect(() => {
-    setEditedPersonalInfo(personalInfo);
-    setEditedWorkExperience(workExperience);
-    setEditedEducation(education);
-    setEditedSkills(skills);
-    setEditedExtraData(extraData || {});
+    setResumeData({
+      personalInfo,
+      workExperience,
+      education,
+      skills,
+      extraData: extraData || {},
+    });
   }, [personalInfo, workExperience, education, skills, extraData]);
 
   useEffect(() => {
@@ -114,16 +118,16 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       }
     } else if (editorMode === 'json') {
       const jsonResume = exportToJsonResume(
-        editedPersonalInfo, 
-        editedWorkExperience, 
-        editedEducation, 
-        editedSkills, 
+        resumeData.personalInfo,
+        resumeData.workExperience,
+        resumeData.education,
+        resumeData.skills,
         currentTheme,
-        editedExtraData
+        resumeData.extraData
       );
       setJsonValue(JSON.stringify(jsonResume, null, 2));
     }
-  }, [editorMode, customCode, selectedLayout, editorValue, editedPersonalInfo, editedWorkExperience, editedEducation, editedSkills, currentTheme, editedExtraData]);
+  }, [editorMode, customCode, selectedLayout, editorValue, resumeData, currentTheme]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -158,13 +162,15 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
     try {
       const parsedJson = JSON.parse(jsonValue);
       const imported = importFromJsonResume(parsedJson);
-      
-      setEditedPersonalInfo(imported.personalInfo);
-      setEditedWorkExperience(imported.workExperience);
-      setEditedEducation(imported.education);
-      setEditedSkills(imported.skills);
-      setEditedExtraData(imported.extraData || {});
-      
+
+      setResumeData({
+        personalInfo: imported.personalInfo,
+        workExperience: imported.workExperience,
+        education: imported.education,
+        skills: imported.skills,
+        extraData: imported.extraData || {},
+      });
+
       if (onApplyResumeChanges) {
         onApplyResumeChanges(
           imported.personalInfo,
@@ -182,97 +188,111 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
 
   const handlePersonalInfoChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setEditedPersonalInfo(prev => ({
+    setResumeData(prev => ({
       ...prev,
-      [name]: value
+      personalInfo: {
+        ...prev.personalInfo,
+        [name]: value,
+      },
     }));
   };
 
   const handleSkillsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const skillsArray = e.target.value.split(',').map(skill => skill.trim()).filter(skill => skill !== '');
-    setEditedSkills(skillsArray);
+    setResumeData(prev => ({
+      ...prev,
+      skills: skillsArray,
+    }));
   };
 
   const handleWorkExperienceChange = (index: number, field: keyof WorkExperienceEntry, value: string) => {
-    const updatedExperiences = [...editedWorkExperience];
-    updatedExperiences[index] = {
-      ...updatedExperiences[index],
-      [field]: value
-    };
-    setEditedWorkExperience(updatedExperiences);
+    setResumeData(prev => {
+      const updated = [...prev.workExperience];
+      updated[index] = { ...updated[index], [field]: value };
+      return { ...prev, workExperience: updated };
+    });
   };
 
   const handleEducationChange = (index: number, field: keyof EducationEntry, value: string) => {
-    const updatedEducation = [...editedEducation];
-    updatedEducation[index] = {
-      ...updatedEducation[index],
-      [field]: value
-    };
-    setEditedEducation(updatedEducation);
+    setResumeData(prev => {
+      const updated = [...prev.education];
+      updated[index] = { ...updated[index], [field]: value };
+      return { ...prev, education: updated };
+    });
   };
 
   const addWorkExperience = () => {
-    setEditedWorkExperience([
-      ...editedWorkExperience,
-      {
-        id: Date.now().toString(),
-        company: 'New Company',
-        position: 'New Position',
-        startDate: 'Start Date',
-        endDate: 'End Date',
-        description: 'Job description...'
-      }
-    ]);
+    setResumeData(prev => ({
+      ...prev,
+      workExperience: [
+        ...prev.workExperience,
+        {
+          id: Date.now().toString(),
+          company: 'New Company',
+          position: 'New Position',
+          startDate: 'Start Date',
+          endDate: 'End Date',
+          description: 'Job description...',
+        },
+      ],
+    }));
   };
 
   const removeWorkExperience = (index: number) => {
-    const updatedExperiences = [...editedWorkExperience];
-    updatedExperiences.splice(index, 1);
-    setEditedWorkExperience(updatedExperiences);
+    setResumeData(prev => {
+      const updated = [...prev.workExperience];
+      updated.splice(index, 1);
+      return { ...prev, workExperience: updated };
+    });
   };
 
   const addEducation = () => {
-    setEditedEducation([
-      ...editedEducation,
-      {
-        id: Date.now().toString(),
-        institution: 'New Institution',
-        degree: 'New Degree',
-        field: '',
-        graduationDate: ''
-      }
-    ]);
+    setResumeData(prev => ({
+      ...prev,
+      education: [
+        ...prev.education,
+        {
+          id: Date.now().toString(),
+          institution: 'New Institution',
+          degree: 'New Degree',
+          field: '',
+          graduationDate: '',
+        },
+      ],
+    }));
   };
 
   const removeEducation = (index: number) => {
-    const updatedEducation = [...editedEducation];
-    updatedEducation.splice(index, 1);
-    setEditedEducation(updatedEducation);
+    setResumeData(prev => {
+      const updated = [...prev.education];
+      updated.splice(index, 1);
+      return { ...prev, education: updated };
+    });
   };
 
   const applyResumeChanges = () => {
     if (onApplyResumeChanges) {
       onApplyResumeChanges(
-        editedPersonalInfo,
-        editedWorkExperience,
-        editedEducation,
-        editedSkills,
-        editedExtraData
+        resumeData.personalInfo,
+        resumeData.workExperience,
+        resumeData.education,
+        resumeData.skills,
+        resumeData.extraData
       );
       toast.success("Resume data updated successfully");
     } else {
       toast.info("Resume data updates will be applied in a future implementation");
-      
-      console.log("Updated Personal Info:", editedPersonalInfo);
-      console.log("Updated Work Experience:", editedWorkExperience);
-      console.log("Updated Education:", editedEducation);
-      console.log("Updated Skills:", editedSkills);
-      console.log("Updated Extra Data:", editedExtraData);
+
+      console.log("Updated Personal Info:", resumeData.personalInfo);
+      console.log("Updated Work Experience:", resumeData.workExperience);
+      console.log("Updated Education:", resumeData.education);
+      console.log("Updated Skills:", resumeData.skills);
+      console.log("Updated Extra Data:", resumeData.extraData);
     }
   };
 
   const renderExtraDataAccordion = () => {
-    if (!editedExtraData || Object.keys(editedExtraData).length === 0) {
+    if (!resumeData.extraData || Object.keys(resumeData.extraData).length === 0) {
       return (
         <div className="border p-3 rounded mb-4">
           <p className="text-sm text-gray-500">
@@ -286,7 +306,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       <div className="border p-3 rounded mb-4">
         <h3 className="font-medium mb-3">Custom Fields</h3>
         <div className="space-y-3">
-          {Object.entries(editedExtraData).map(([key, value]) => (
+          {Object.entries(resumeData.extraData).map(([key, value]) => (
             <div key={key} className="space-y-1">
               <p className="text-sm font-medium">{key}</p>
               <p className="text-sm text-gray-600 border p-2 rounded bg-gray-50">
@@ -343,7 +363,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                       <Input 
                         id="fullName" 
                         name="fullName" 
-                        value={editedPersonalInfo.fullName} 
+                        value={resumeData.personalInfo.fullName} 
                         onChange={handlePersonalInfoChange} 
                       />
                     </div>
@@ -352,7 +372,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                       <Input 
                         id="jobTitle" 
                         name="jobTitle" 
-                        value={editedPersonalInfo.jobTitle} 
+                        value={resumeData.personalInfo.jobTitle} 
                         onChange={handlePersonalInfoChange} 
                       />
                     </div>
@@ -361,7 +381,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                       <Input 
                         id="email" 
                         name="email" 
-                        value={editedPersonalInfo.email} 
+                        value={resumeData.personalInfo.email} 
                         onChange={handlePersonalInfoChange} 
                       />
                     </div>
@@ -370,7 +390,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                       <Input 
                         id="phone" 
                         name="phone" 
-                        value={editedPersonalInfo.phone} 
+                        value={resumeData.personalInfo.phone} 
                         onChange={handlePersonalInfoChange} 
                       />
                     </div>
@@ -379,7 +399,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                       <Input 
                         id="location" 
                         name="location" 
-                        value={editedPersonalInfo.location} 
+                        value={resumeData.personalInfo.location} 
                         onChange={handlePersonalInfoChange} 
                       />
                     </div>
@@ -389,7 +409,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                 <AccordionItem value="work-experience">
                   <AccordionTrigger className="text-md font-medium">Work Experience</AccordionTrigger>
                   <AccordionContent>
-                    {editedWorkExperience.map((exp, index) => (
+                    {resumeData.workExperience.map((exp, index) => (
                       <div key={index} className="border p-3 rounded mb-4">
                         <div className="flex justify-between items-center mb-2">
                           <h4 className="font-medium">Experience {index + 1}</h4>
@@ -461,7 +481,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                 <AccordionItem value="education">
                   <AccordionTrigger className="text-md font-medium">Education</AccordionTrigger>
                   <AccordionContent>
-                    {editedEducation.map((edu, index) => (
+                    {resumeData.education.map((edu, index) => (
                       <div key={index} className="border p-3 rounded mb-4">
                         <div className="flex justify-between items-center mb-2">
                           <h4 className="font-medium">Education {index + 1}</h4>
@@ -530,7 +550,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                       </Label>
                       <Textarea 
                         id="skills" 
-                        value={editedSkills.join(', ')} 
+                        value={resumeData.skills.join(', ')} 
                         onChange={handleSkillsChange}
                         rows={5}
                         placeholder="Enter skills separated by commas"
