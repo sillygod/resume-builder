@@ -276,6 +276,32 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
     );
   };
 
+  let renderedLayout: React.ReactNode = null;
+  try {
+    if (editorValue && editorValue.trim().startsWith('(')) {
+      const scope = {
+        basics: resumeData.basics,
+        work: resumeData.work,
+        education: resumeData.education,
+        skills: resumeData.skills,
+        extraData: resumeData.extraData,
+        personalInfo: resumeData.basics, // for backward compatibility
+        workExperience: resumeData.work,
+      };
+      const func = new Function('React', ...Object.keys(scope), `return ${editorValue}`);
+      renderedLayout = func(React, ...Object.values(scope));
+    } else {
+      const LayoutComponent = layouts[selectedLayout] || layouts['Simple'];
+      renderedLayout = <LayoutComponent resumeData={resumeData} />;
+    }
+  } catch (err) {
+    renderedLayout = (
+      <div className="p-4 text-red-600">
+        Error rendering layout: {(err as Error).message}
+      </div>
+    );
+  }
+
   return (
     <Card className="p-4 bg-white rounded shadow-md max-w-full overflow-x-auto">
       <h2 className="text-xl font-bold mb-4">Layout Editor</h2>
@@ -302,6 +328,9 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         </TabsList>
 
         <TabsContent value="preview">
+          <div className="mb-6">
+            {renderedLayout}
+          </div>
           <ScrollArea className="h-[600px] pr-4">
             <div className="mb-6">
               <h3 className="text-lg font-semibold mb-4">Resume Data Editor</h3>
