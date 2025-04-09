@@ -91,14 +91,14 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         setEditorValue(templateCode);
         setCustomCode(templateCode);
       }
-    } else if (editorMode === 'json') {
+    } else if (editorMode === 'json' && jsonValue.trim() === '') {
       const jsonResume = {
         ...resumeData,
         theme: currentTheme,
       };
       setJsonValue(JSON.stringify(jsonResume, null, 2));
     }
-  }, [editorMode, customCode, selectedLayout, editorValue, resumeData, currentTheme]);
+  }, [editorMode, customCode, selectedLayout, editorValue, resumeData, currentTheme, jsonValue]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
