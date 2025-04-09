@@ -7,15 +7,15 @@ import { WorkExperienceEntry } from "../WorkExperience";
 import { EducationEntry } from "../Education";
 
 export interface ResumeLayoutProps {
-  personalInfo: PersonalInfoData;
-  workExperience: WorkExperienceEntry[];
-  education: EducationEntry[];
-  skills: string[];
+  resumeData: any;
 }
 
-// This function returns the JSX for the Simple layout
 export const getSimpleLayoutJSX = (props: ResumeLayoutProps) => {
-  const { personalInfo, workExperience, education, skills } = props;
+  const resumeData = props.resumeData;
+  const personalInfo = resumeData.basics || {};
+  const workExperience = resumeData.work || [];
+  const education = resumeData.education || [];
+  const skills = resumeData.skills || [];
   const theme = themes.simple;
 
   return (
@@ -149,9 +149,12 @@ export const getSimpleLayoutJSX = (props: ResumeLayoutProps) => {
   );
 };
 
-// This function returns the JSX for the Modern layout
 export const getModernLayoutJSX = (props: ResumeLayoutProps) => {
-  const { personalInfo, workExperience, education, skills } = props;
+  const resumeData = props.resumeData;
+  const personalInfo = resumeData.basics || {};
+  const workExperience = resumeData.work || [];
+  const education = resumeData.education || [];
+  const skills = resumeData.skills || [];
   const theme = themes.modern;
 
   return (
@@ -285,9 +288,12 @@ export const getModernLayoutJSX = (props: ResumeLayoutProps) => {
   );
 };
 
-// This function returns the JSX for the Sidebar layout
 export const getSidebarLayoutJSX = (props: ResumeLayoutProps) => {
-  const { personalInfo, workExperience, education, skills } = props;
+  const resumeData = props.resumeData;
+  const personalInfo = resumeData.basics || {};
+  const workExperience = resumeData.work || [];
+  const education = resumeData.education || [];
+  const skills = resumeData.skills || [];
   const theme = themes.sidebar;
 
   return (
@@ -412,9 +418,12 @@ export const getSidebarLayoutJSX = (props: ResumeLayoutProps) => {
   );
 };
 
-// This function returns the JSX for the Centered layout
 export const getCenteredLayoutJSX = (props: ResumeLayoutProps) => {
-  const { personalInfo, workExperience, education, skills } = props;
+  const resumeData = props.resumeData;
+  const personalInfo = resumeData.basics || {};
+  const workExperience = resumeData.work || [];
+  const education = resumeData.education || [];
+  const skills = resumeData.skills || [];
   const theme = themes.centered;
 
   return (

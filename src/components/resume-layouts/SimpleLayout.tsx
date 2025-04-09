@@ -5,20 +5,17 @@ import { EducationEntry } from '../Education';
 import { Mail, Phone, MapPin, Link as LinkIcon } from 'lucide-react';
 
 interface SimpleLayoutProps {
-  personalInfo: PersonalInfoData;
-  workExperience: WorkExperienceEntry[];
-  education: EducationEntry[];
-  skills: string[];
-  extraData?: Record<string, any>; // Add extraData prop
+  resumeData: any;
 }
 
 export const SimpleLayout: React.FC<SimpleLayoutProps> = ({
-  personalInfo,
-  workExperience,
-  education,
-  skills,
-  extraData = {}, // Add default value
+  resumeData,
 }) => {
+  const personalInfo = resumeData.basics || {};
+  const workExperience = resumeData.work || [];
+  const education = resumeData.education || [];
+  const skills = resumeData.skills || [];
+  const extraData = resumeData.extraData || {};
   return (
     <div className="simple-layout">
       <header className="mb-4">

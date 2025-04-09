@@ -5,20 +5,17 @@ import { EducationEntry } from '../Education';
 import { Mail, Phone, MapPin, Link as LinkIcon } from 'lucide-react';
 
 interface CenteredLayoutProps {
-  personalInfo: PersonalInfoData;
-  workExperience: WorkExperienceEntry[];
-  education: EducationEntry[];
-  skills: string[];
-  extraData?: Record<string, any>; // Add extraData prop
+  resumeData: any;
 }
 
 export const CenteredLayout: React.FC<CenteredLayoutProps> = ({
-  personalInfo,
-  workExperience,
-  education,
-  skills,
-  extraData = {}, // Add default value
+  resumeData,
 }) => {
+  const personalInfo = resumeData.basics || {};
+  const workExperience = resumeData.work || [];
+  const education = resumeData.education || [];
+  const skills = resumeData.skills || [];
+  const extraData = resumeData.extraData || {};
   return (
     <div className="flex flex-col items-center">
       <header className="text-center mb-8">

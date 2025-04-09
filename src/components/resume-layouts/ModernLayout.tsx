@@ -7,20 +7,17 @@ import { Mail, Phone, MapPin, Link as LinkIcon } from 'lucide-react';
 import { themes } from '@/themes/ThemeContext';
 
 interface ModernLayoutProps {
-  personalInfo: PersonalInfoData;
-  workExperience: WorkExperienceEntry[];
-  education: EducationEntry[];
-  skills: string[];
-  extraData?: Record<string, any>;
+  resumeData: any;
 }
 
 export const ModernLayout: React.FC<ModernLayoutProps> = ({
-  personalInfo,
-  workExperience,
-  education,
-  skills,
-  extraData = {},
+  resumeData,
 }) => {
+  const personalInfo = resumeData.basics || {};
+  const workExperience = resumeData.work || [];
+  const education = resumeData.education || [];
+  const skills = resumeData.skills || [];
+  const extraData = resumeData.extraData || {};
   const theme = themes.modern;
 
   return (
