@@ -34,7 +34,13 @@ export const CenteredLayout: React.FC<CenteredLayoutProps> = ({
           {personalInfo.location && (
             <div className="flex items-center mr-4">
               <MapPin className="h-4 w-4 mr-1" />
-              <span>{personalInfo.location}</span>
+              <span>
+                {typeof personalInfo.location === 'object' && personalInfo.location.city
+                  ? personalInfo.location.city
+                  : typeof personalInfo.location === 'string'
+                  ? personalInfo.location
+                  : ''}
+              </span>
             </div>
           )}
           {personalInfo.linkedin && (

@@ -22,7 +22,11 @@ export const SimpleLayout: React.FC<SimpleLayoutProps> = ({
           {personalInfo.location && (
             <div className="flex items-center">
               <MapPin className="h-4 w-4 mr-1" />
-              {personalInfo.location}
+              {typeof personalInfo.location === 'object' && personalInfo.location.city
+                ? personalInfo.location.city
+                : typeof personalInfo.location === 'string'
+                ? personalInfo.location
+                : ''}
             </div>
           )}
           {personalInfo.phone && (

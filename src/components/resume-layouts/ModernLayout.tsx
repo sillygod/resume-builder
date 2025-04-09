@@ -61,7 +61,13 @@ export const ModernLayout: React.FC<ModernLayoutProps> = ({
               {personalInfo.location && (
                 <div className={theme.personalInfo.contactItemClass}>
                   <MapPin size={12} />
-                  <span>{personalInfo.location}</span>
+                  <span>
+                    {typeof personalInfo.location === 'object' && personalInfo.location.city
+                      ? personalInfo.location.city
+                      : typeof personalInfo.location === 'string'
+                      ? personalInfo.location
+                      : ''}
+                  </span>
                 </div>
               )}
               {personalInfo.website && (
