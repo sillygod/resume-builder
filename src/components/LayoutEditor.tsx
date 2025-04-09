@@ -52,6 +52,13 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   setResumeData,
   onApplyResumeChanges
 }) => {
+  // Defensive defaults to avoid undefined errors
+  resumeData = resumeData || {};
+  resumeData.basics = resumeData.basics || { name: '', email: '', phone: '', jobTitle: '', location: { city: '', countryCode: 'US' } };
+  resumeData.work = resumeData.work || [];
+  resumeData.education = resumeData.education || [];
+  resumeData.skills = resumeData.skills || [];
+  resumeData.extraData = resumeData.extraData || {};
   const [editorValue, setEditorValue] = useState<string>('');
   const [editorMode, setEditorMode] = useState<'preview' | 'code' | 'json'>('preview');
   const [codeError, setCodeError] = useState<string | null>(null);
