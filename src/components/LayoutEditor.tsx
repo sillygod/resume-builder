@@ -279,7 +279,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
 
   let renderedLayout: React.ReactNode = null;
   try {
-    if (editorValue && editorValue.trim().startsWith('(')) {
+    if (editorMode === 'code' && editorValue && editorValue.trim().startsWith('(')) {
       const scope = {
         basics: resumeData.basics,
         work: resumeData.work,
