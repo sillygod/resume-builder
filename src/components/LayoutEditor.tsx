@@ -141,6 +141,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       }
     } catch (error) {
       toast.error("Invalid JSON format. Please check your syntax.");
+      console.log(error);
     }
   };
 
