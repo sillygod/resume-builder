@@ -15,8 +15,6 @@ import { themes } from '@/themes/ThemeContext';
 import { useTheme } from '@/themes/ThemeContext';
 import { exportToJsonResume, importFromJsonResume } from '@/utils/jsonResume';
 import { getLayoutJSXString } from './resume-layouts/layoutTemplates';
-import { PersonalInfoData } from './PersonalInfo';
-import { WorkExperienceEntry } from './WorkExperience';
 import { EducationEntry } from './Education';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Textarea } from '@/components/ui/textarea';
@@ -41,10 +39,10 @@ interface LayoutEditorProps {
   onApplyResumeChanges?: (data: any) => void;
 }
 
-const LayoutEditor: React.FC<LayoutEditorProps> = ({ 
-  selectedLayout, 
-  setSelectedLayout, 
-  layoutProps, 
+const LayoutEditor: React.FC<LayoutEditorProps> = ({
+  selectedLayout,
+  setSelectedLayout,
+  layoutProps,
   setLayoutProps,
   customCode,
   setCustomCode,
@@ -72,18 +70,18 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       const templateCode = getLayoutJSXString(selectedLayout);
       setEditorValue(templateCode);
       setCustomCode(templateCode);
-      
+
       const LayoutComponent = layouts[selectedLayout];
       if (LayoutComponent) {
         setLayoutProps(LayoutComponent.defaultProps || {});
       }
-      
+
       setTheme(selectedLayout.toLowerCase() as any);
-      
+
       toast.info(`Layout changed to ${selectedLayout}`);
     }
   }, [selectedLayout, setCustomCode, setLayoutProps, prevSelectedLayout, setTheme]);
-  
+
   useEffect(() => {
     if (editorMode === 'code' && (!editorValue || editorValue.trim() === '')) {
       if (customCode) {
@@ -110,7 +108,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   const handleCodeChange = (editor: any, data: any, value: string) => {
     setEditorValue(value);
     setCustomCode(value);
-    
+
     let codeToValidate = value.trim();
     if (!codeToValidate.startsWith('(') || !codeToValidate.endsWith(')')) {
       setCodeError("Warning: JSX code should be wrapped in parentheses for proper rendering");
@@ -264,8 +262,8 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
             <div key={key} className="space-y-1">
               <p className="text-sm font-medium">{key}</p>
               <p className="text-sm text-gray-600 border p-2 rounded bg-gray-50">
-                {typeof value === 'object' 
-                  ? JSON.stringify(value, null, 2) 
+                {typeof value === 'object'
+                  ? JSON.stringify(value, null, 2)
                   : String(value)}
               </p>
             </div>
@@ -281,7 +279,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   return (
     <Card className="p-4 bg-white rounded shadow-md max-w-full overflow-x-auto">
       <h2 className="text-xl font-bold mb-4">Layout Editor</h2>
-      
+
       <div className="mb-4">
         <Label htmlFor="layout-select">Select Layout Template</Label>
         <Select value={selectedLayout} onValueChange={setSelectedLayout}>
@@ -295,71 +293,71 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
           </SelectContent>
         </Select>
       </div>
-      
+
       <Tabs defaultValue="preview" className="mt-6" onValueChange={(value) => setEditorMode(value as any)}>
         <TabsList className="mb-4">
           <TabsTrigger value="preview">Resume Data</TabsTrigger>
           <TabsTrigger value="code">Edit Layout Code</TabsTrigger>
           <TabsTrigger value="json">Edit JSON</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="preview">
           <ScrollArea className="h-[600px] pr-4">
             <div className="mb-6">
               <h3 className="text-lg font-semibold mb-4">Resume Data Editor</h3>
-              
+
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="personal-info">
                   <AccordionTrigger className="text-md font-medium">Personal Information</AccordionTrigger>
                   <AccordionContent className="space-y-3">
                     <div>
                       <Label htmlFor="fullName">Full Name</Label>
-                      <Input 
-                        id="fullName" 
-                        name="fullName" 
-                        value={resumeData.basics.name} 
-                        onChange={handlePersonalInfoChange} 
+                      <Input
+                        id="fullName"
+                        name="fullName"
+                        value={resumeData.basics.name}
+                        onChange={handlePersonalInfoChange}
                       />
                     </div>
                     <div>
                       <Label htmlFor="jobTitle">Job Title</Label>
-                      <Input 
-                        id="jobTitle" 
-                        name="jobTitle" 
-                        value={resumeData.basics.jobTitle || ''} 
-                        onChange={handlePersonalInfoChange} 
+                      <Input
+                        id="jobTitle"
+                        name="jobTitle"
+                        value={resumeData.basics.jobTitle || ''}
+                        onChange={handlePersonalInfoChange}
                       />
                     </div>
                     <div>
                       <Label htmlFor="email">Email</Label>
-                      <Input 
-                        id="email" 
-                        name="email" 
-                        value={resumeData.basics.email} 
-                        onChange={handlePersonalInfoChange} 
+                      <Input
+                        id="email"
+                        name="email"
+                        value={resumeData.basics.email}
+                        onChange={handlePersonalInfoChange}
                       />
                     </div>
                     <div>
                       <Label htmlFor="phone">Phone</Label>
-                      <Input 
-                        id="phone" 
-                        name="phone" 
-                        value={resumeData.basics.phone} 
-                        onChange={handlePersonalInfoChange} 
+                      <Input
+                        id="phone"
+                        name="phone"
+                        value={resumeData.basics.phone}
+                        onChange={handlePersonalInfoChange}
                       />
                     </div>
                     <div>
                       <Label htmlFor="location">Location</Label>
-                      <Input 
-                        id="location" 
-                        name="location" 
-                        value={resumeData.basics.location?.city || ''} 
-                        onChange={handlePersonalInfoChange} 
+                      <Input
+                        id="location"
+                        name="location"
+                        value={resumeData.basics.location?.city || ''}
+                        onChange={handlePersonalInfoChange}
                       />
                     </div>
                   </AccordionContent>
                 </AccordionItem>
-                
+
                 <AccordionItem value="work-experience">
                   <AccordionTrigger className="text-md font-medium">Work Experience</AccordionTrigger>
                   <AccordionContent>
@@ -367,9 +365,9 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                       <div key={index} className="border p-3 rounded mb-4">
                         <div className="flex justify-between items-center mb-2">
                           <h4 className="font-medium">Experience {index + 1}</h4>
-                          <Button 
-                            variant="destructive" 
-                            size="sm" 
+                          <Button
+                            variant="destructive"
+                            size="sm"
                             onClick={() => removeWorkExperience(index)}
                           >
                             Remove
@@ -378,43 +376,43 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                         <div className="space-y-3">
                           <div>
                             <Label htmlFor={`company-${index}`}>Company</Label>
-                            <Input 
-                              id={`company-${index}`} 
-                              value={exp.company} 
-                              onChange={(e) => handleWorkExperienceChange(index, 'company', e.target.value)} 
+                            <Input
+                              id={`company-${index}`}
+                              value={exp.company}
+                              onChange={(e) => handleWorkExperienceChange(index, 'company', e.target.value)}
                             />
                           </div>
                           <div>
                             <Label htmlFor={`position-${index}`}>Position</Label>
-                            <Input 
-                              id={`position-${index}`} 
-                              value={exp.position} 
-                              onChange={(e) => handleWorkExperienceChange(index, 'position', e.target.value)} 
+                            <Input
+                              id={`position-${index}`}
+                              value={exp.position}
+                              onChange={(e) => handleWorkExperienceChange(index, 'position', e.target.value)}
                             />
                           </div>
                           <div className="grid grid-cols-2 gap-2">
                             <div>
                               <Label htmlFor={`startDate-${index}`}>Start Date</Label>
-                              <Input 
-                                id={`startDate-${index}`} 
-                                value={exp.startDate} 
-                                onChange={(e) => handleWorkExperienceChange(index, 'startDate', e.target.value)} 
+                              <Input
+                                id={`startDate-${index}`}
+                                value={exp.startDate}
+                                onChange={(e) => handleWorkExperienceChange(index, 'startDate', e.target.value)}
                               />
                             </div>
                             <div>
                               <Label htmlFor={`endDate-${index}`}>End Date</Label>
-                              <Input 
-                                id={`endDate-${index}`} 
-                                value={exp.endDate} 
-                                onChange={(e) => handleWorkExperienceChange(index, 'endDate', e.target.value)} 
+                              <Input
+                                id={`endDate-${index}`}
+                                value={exp.endDate}
+                                onChange={(e) => handleWorkExperienceChange(index, 'endDate', e.target.value)}
                               />
                             </div>
                           </div>
                           <div>
                             <Label htmlFor={`description-${index}`}>Description</Label>
-                            <Textarea 
-                              id={`description-${index}`} 
-                              value={exp.description} 
+                            <Textarea
+                              id={`description-${index}`}
+                              value={exp.description}
                               onChange={(e) => handleWorkExperienceChange(index, 'description', e.target.value)}
                               rows={3}
                             />
@@ -422,16 +420,16 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                         </div>
                       </div>
                     ))}
-                    <Button 
-                      variant="outline" 
-                      onClick={addWorkExperience} 
+                    <Button
+                      variant="outline"
+                      onClick={addWorkExperience}
                       className="w-full"
                     >
                       Add Work Experience
                     </Button>
                   </AccordionContent>
                 </AccordionItem>
-                
+
                 <AccordionItem value="education">
                   <AccordionTrigger className="text-md font-medium">Education</AccordionTrigger>
                   <AccordionContent>
@@ -439,9 +437,9 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                       <div key={index} className="border p-3 rounded mb-4">
                         <div className="flex justify-between items-center mb-2">
                           <h4 className="font-medium">Education {index + 1}</h4>
-                          <Button 
-                            variant="destructive" 
-                            size="sm" 
+                          <Button
+                            variant="destructive"
+                            size="sm"
                             onClick={() => removeEducation(index)}
                           >
                             Remove
@@ -450,51 +448,51 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                         <div className="space-y-3">
                           <div>
                             <Label htmlFor={`institution-${index}`}>Institution</Label>
-                            <Input 
-                              id={`institution-${index}`} 
-                              value={edu.institution} 
-                              onChange={(e) => handleEducationChange(index, 'institution', e.target.value)} 
+                            <Input
+                              id={`institution-${index}`}
+                              value={edu.institution}
+                              onChange={(e) => handleEducationChange(index, 'institution', e.target.value)}
                             />
                           </div>
                           <div>
                             <Label htmlFor={`degree-${index}`}>Degree</Label>
-                            <Input 
-                              id={`degree-${index}`} 
-                              value={edu.degree} 
-                              onChange={(e) => handleEducationChange(index, 'degree', e.target.value)} 
+                            <Input
+                              id={`degree-${index}`}
+                              value={edu.degree}
+                              onChange={(e) => handleEducationChange(index, 'degree', e.target.value)}
                             />
                           </div>
                           <div className="grid grid-cols-2 gap-2">
                             <div>
                               <Label htmlFor={`field-${index}`}>Field of Study</Label>
-                              <Input 
-                                id={`field-${index}`} 
-                                value={edu.field} 
-                                onChange={(e) => handleEducationChange(index, 'field', e.target.value)} 
+                              <Input
+                                id={`field-${index}`}
+                                value={edu.field}
+                                onChange={(e) => handleEducationChange(index, 'field', e.target.value)}
                               />
                             </div>
                             <div>
                               <Label htmlFor={`graduationDate-${index}`}>Graduation Date</Label>
-                              <Input 
-                                id={`graduationDate-${index}`} 
-                                value={edu.graduationDate} 
-                                onChange={(e) => handleEducationChange(index, 'graduationDate', e.target.value)} 
+                              <Input
+                                id={`graduationDate-${index}`}
+                                value={edu.graduationDate}
+                                onChange={(e) => handleEducationChange(index, 'graduationDate', e.target.value)}
                               />
                             </div>
                           </div>
                         </div>
                       </div>
                     ))}
-                    <Button 
-                      variant="outline" 
-                      onClick={addEducation} 
+                    <Button
+                      variant="outline"
+                      onClick={addEducation}
                       className="w-full"
                     >
                       Add Education
                     </Button>
                   </AccordionContent>
                 </AccordionItem>
-                
+
                 <AccordionItem value="skills">
                   <AccordionTrigger className="text-md font-medium">Skills</AccordionTrigger>
                   <AccordionContent>
@@ -502,9 +500,9 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                       <Label htmlFor="skills">
                         Skills (comma-separated)
                       </Label>
-                      <Textarea 
-                        id="skills" 
-                        value={resumeData.skills.join(', ')} 
+                      <Textarea
+                        id="skills"
+                        value={resumeData.skills.join(', ')}
                         onChange={handleSkillsChange}
                         rows={5}
                         placeholder="Enter skills separated by commas"
@@ -520,14 +518,14 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
-              
+
               <div className="mt-4">
                 <Button onClick={applyResumeChanges} className="w-full">
                   Apply Resume Changes
                 </Button>
               </div>
             </div>
-            
+
             <div className="mb-4">
               <h3 className="text-lg font-semibold">Layout Properties</h3>
               {Object.keys(layoutProps).length > 0 ? (
@@ -551,7 +549,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
             </div>
           </ScrollArea>
         </TabsContent>
-        
+
         <TabsContent value="code">
           <div className="mb-4">
             <h3 className="text-lg font-semibold mb-2">Edit Resume Layout JSX</h3>
@@ -562,12 +560,12 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
               <code className="mx-1 px-1 bg-gray-100 rounded text-xs">education</code>
               <code className="mx-1 px-1 bg-gray-100 rounded text-xs">skills</code>
             </p>
-            
+
             <div className="p-2 mb-3 bg-blue-50 border border-blue-200 rounded text-blue-700 text-sm">
               <strong>Note:</strong> Your JSX code must be wrapped in parentheses like the example below:
               <pre className="mt-1 text-xs overflow-x-auto">{`(\n  <div>\n    <h1>{personalInfo.fullName}</h1>\n  </div>\n)`}</pre>
             </div>
-            
+
             <div className="border rounded overflow-hidden mb-4">
               <MonacoEditor
                 height="300px"
@@ -595,13 +593,13 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                 }}
               />
             </div>
-            
+
             {codeError && (
               <div className="p-2 mb-4 bg-yellow-50 border border-yellow-200 rounded text-yellow-700 text-sm">
                 {codeError}
               </div>
             )}
-            
+
             <div className="flex gap-2">
               <Button onClick={resetCustomCode} variant="outline">Reset to Template</Button>
             </div>
@@ -614,7 +612,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
             <p className="text-sm text-gray-600 mb-2">
               Edit the JSON representation of your resume data, including custom fields. Changes will be applied to your resume when you click "Apply JSON Changes".
             </p>
-            
+
             <div className="border rounded overflow-hidden mb-4">
               <MonacoEditor
                 height="300px"
@@ -634,7 +632,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                 }}
               />
             </div>
-            
+
             <div className="flex gap-2">
               <Button onClick={applyJsonChanges} variant="outline">Apply JSON Changes</Button>
             </div>
