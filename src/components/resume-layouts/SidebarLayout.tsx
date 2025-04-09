@@ -10,8 +10,8 @@ interface SidebarLayoutProps {
 export const SidebarLayout: React.FC<SidebarLayoutProps> = ({
   resumeData,
 }) => {
+  resumeData = resumeData || {};
   const personalInfo = resumeData.basics || {};
-    console.log(personalInfo);
   const workExperience = resumeData.work || [];
   const education = resumeData.education || [];
   const skills = resumeData.skills || [];
