@@ -10,11 +10,7 @@ import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import { Controlled as CodeMirror } from 'react-codemirror2';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/mode/jsx/jsx';
-import 'codemirror/mode/javascript/javascript';
-import 'codemirror/theme/material.css';
+import MonacoEditor from '@monaco-editor/react';
 import { themes } from '@/themes/ThemeContext';
 import { useTheme } from '@/themes/ThemeContext';
 import { exportToJsonResume, importFromJsonResume } from '@/utils/jsonResume';
@@ -599,16 +595,30 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
             </div>
             
             <div className="border rounded overflow-hidden mb-4">
-              <CodeMirror
+              <MonacoEditor
+                height="300px"
+                defaultLanguage="javascript"
+                language="javascript"
+                theme="vs-dark"
                 value={editorValue}
-                options={{
-                  mode: 'jsx',
-                  theme: 'material',
-                  lineNumbers: true,
-                  lineWrapping: true,
+                onChange={(value) => {
+                  setEditorValue(value ?? '');
+                  setCustomCode(value ?? '');
+
+                  const codeToValidate = (value ?? '').trim();
+                  if (!codeToValidate.startsWith('(') || !codeToValidate.endsWith(')')) {
+                    setCodeError("Warning: JSX code should be wrapped in parentheses for proper rendering");
+                  } else {
+                    setCodeError(null);
+                  }
                 }}
-                onBeforeChange={handleCodeChange}
-                className="min-h-[300px]"
+                options={{
+                  wordWrap: 'on',
+                  minimap: { enabled: false },
+                  fontSize: 14,
+                  scrollBeyondLastLine: false,
+                  automaticLayout: true,
+                }}
               />
             </div>
             
@@ -632,16 +642,22 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
             </p>
             
             <div className="border rounded overflow-hidden mb-4">
-              <CodeMirror
+              <MonacoEditor
+                height="300px"
+                defaultLanguage="json"
+                language="json"
+                theme="vs-dark"
                 value={jsonValue}
-                options={{
-                  mode: 'javascript',
-                  theme: 'material',
-                  lineNumbers: true,
-                  lineWrapping: true,
+                onChange={(value) => {
+                  setJsonValue(value ?? '');
                 }}
-                onBeforeChange={handleJsonChange}
-                className="min-h-[300px]"
+                options={{
+                  wordWrap: 'on',
+                  minimap: { enabled: false },
+                  fontSize: 14,
+                  scrollBeyondLastLine: false,
+                  automaticLayout: true,
+                }}
               />
             </div>
             
