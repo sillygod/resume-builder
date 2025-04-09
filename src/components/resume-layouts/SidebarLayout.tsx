@@ -11,6 +11,7 @@ export const SidebarLayout: React.FC<SidebarLayoutProps> = ({
   resumeData,
 }) => {
   const personalInfo = resumeData.basics || {};
+    console.log(personalInfo);
   const workExperience = resumeData.work || [];
   const education = resumeData.education || [];
   const skills = resumeData.skills || [];
@@ -84,7 +85,7 @@ export const SidebarLayout: React.FC<SidebarLayoutProps> = ({
             </div>
           </section>
         )}
-        
+
         {/* Display extraData if available */}
         {extraData && Object.keys(extraData).length > 0 && (
           <section className={theme.section.containerClass}>
@@ -97,7 +98,7 @@ export const SidebarLayout: React.FC<SidebarLayoutProps> = ({
                     <ul className="list-disc pl-4 text-xs">
                       {value.map((item, index) => (
                         <li key={index}>
-                          {typeof item === 'object' 
+                          {typeof item === 'object'
                             ? Object.entries(item).map(([k, v]) => `${k}: ${v}`).join(', ')
                             : item.toString()}
                         </li>
