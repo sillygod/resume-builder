@@ -72,19 +72,59 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   const { currentTheme, setTheme } = useTheme();
 
   const [resumeData, setResumeData] = useState({
-    personalInfo,
-    workExperience,
-    education,
-    skills,
+    basics: {
+      name: personalInfo.fullName,
+      email: personalInfo.email,
+      phone: personalInfo.phone,
+      jobTitle: personalInfo.jobTitle,
+      location: {
+        city: personalInfo.location,
+        countryCode: "US",
+      },
+    },
+    work: workExperience.map((exp) => ({
+      company: exp.company,
+      position: exp.position,
+      startDate: exp.startDate,
+      endDate: exp.endDate,
+      description: exp.description,
+    })),
+    education: education.map((edu) => ({
+      institution: edu.institution,
+      degree: edu.degree,
+      field: edu.field,
+      graduationDate: edu.graduationDate,
+    })),
+    skills: skills,
     extraData: extraData || {},
   });
 
   useEffect(() => {
     setResumeData({
-      personalInfo,
-      workExperience,
-      education,
-      skills,
+      basics: {
+        name: personalInfo.fullName,
+        email: personalInfo.email,
+        phone: personalInfo.phone,
+        jobTitle: personalInfo.jobTitle,
+        location: {
+          city: personalInfo.location,
+          countryCode: "US",
+        },
+      },
+      work: workExperience.map((exp) => ({
+        company: exp.company,
+        position: exp.position,
+        startDate: exp.startDate,
+        endDate: exp.endDate,
+        description: exp.description,
+      })),
+      education: education.map((edu) => ({
+        institution: edu.institution,
+        degree: edu.degree,
+        field: edu.field,
+        graduationDate: edu.graduationDate,
+      })),
+      skills: skills,
       extraData: extraData || {},
     });
   }, [personalInfo, workExperience, education, skills, extraData]);
@@ -117,14 +157,10 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         setCustomCode(templateCode);
       }
     } else if (editorMode === 'json') {
-      const jsonResume = exportToJsonResume(
-        resumeData.personalInfo,
-        resumeData.workExperience,
-        resumeData.education,
-        resumeData.skills,
-        currentTheme,
-        resumeData.extraData
-      );
+      const jsonResume = {
+        ...resumeData,
+        theme: currentTheme,
+      };
       setJsonValue(JSON.stringify(jsonResume, null, 2));
     }
   }, [editorMode, customCode, selectedLayout, editorValue, resumeData, currentTheme]);
@@ -161,24 +197,11 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   const applyJsonChanges = () => {
     try {
       const parsedJson = JSON.parse(jsonValue);
-      const imported = importFromJsonResume(parsedJson);
-
-      setResumeData({
-        personalInfo: imported.personalInfo,
-        workExperience: imported.workExperience,
-        education: imported.education,
-        skills: imported.skills,
-        extraData: imported.extraData || {},
-      });
+      // Assume imported JSON Resume shape
+      setResumeData(parsedJson);
 
       if (onApplyResumeChanges) {
-        onApplyResumeChanges(
-          imported.personalInfo,
-          imported.workExperience,
-          imported.education,
-          imported.skills,
-          imported.extraData
-        );
+        // Optionally, convert JSON Resume back to your old shape if needed
         toast.success("Applied JSON changes to resume");
       }
     } catch (error) {
@@ -188,13 +211,19 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
 
   const handlePersonalInfoChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setResumeData(prev => ({
-      ...prev,
-      personalInfo: {
-        ...prev.personalInfo,
-        [name]: value,
-      },
-    }));
+    setResumeData(prev => {
+      const basics = { ...prev.basics };
+      if (name === 'location') {
+        basics.location = { ...basics.location, city: value };
+      } else if (name === 'jobTitle') {
+        basics.jobTitle = value;
+      } else if (name === 'fullName' || name === 'name') {
+        basics.name = value;
+      } else {
+        basics[name] = value;
+      }
+      return { ...prev, basics };
+    });
   };
 
   const handleSkillsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -205,15 +234,15 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
     }));
   };
 
-  const handleWorkExperienceChange = (index: number, field: keyof WorkExperienceEntry, value: string) => {
+  const handleWorkExperienceChange = (index: number, field: string, value: string) => {
     setResumeData(prev => {
-      const updated = [...prev.workExperience];
+      const updated = [...prev.work];
       updated[index] = { ...updated[index], [field]: value };
-      return { ...prev, workExperience: updated };
+      return { ...prev, work: updated };
     });
   };
 
-  const handleEducationChange = (index: number, field: keyof EducationEntry, value: string) => {
+  const handleEducationChange = (index: number, field: string, value: string) => {
     setResumeData(prev => {
       const updated = [...prev.education];
       updated[index] = { ...updated[index], [field]: value };
@@ -224,10 +253,9 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   const addWorkExperience = () => {
     setResumeData(prev => ({
       ...prev,
-      workExperience: [
-        ...prev.workExperience,
+      work: [
+        ...prev.work,
         {
-          id: Date.now().toString(),
           company: 'New Company',
           position: 'New Position',
           startDate: 'Start Date',
@@ -240,9 +268,9 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
 
   const removeWorkExperience = (index: number) => {
     setResumeData(prev => {
-      const updated = [...prev.workExperience];
+      const updated = [...prev.work];
       updated.splice(index, 1);
-      return { ...prev, workExperience: updated };
+      return { ...prev, work: updated };
     });
   };
 
@@ -252,7 +280,6 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       education: [
         ...prev.education,
         {
-          id: Date.now().toString(),
           institution: 'New Institution',
           degree: 'New Degree',
           field: '',
@@ -272,22 +299,12 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
 
   const applyResumeChanges = () => {
     if (onApplyResumeChanges) {
-      onApplyResumeChanges(
-        resumeData.personalInfo,
-        resumeData.workExperience,
-        resumeData.education,
-        resumeData.skills,
-        resumeData.extraData
-      );
+      // Optionally convert JSON Resume back to your old shape here if needed
       toast.success("Resume data updated successfully");
     } else {
       toast.info("Resume data updates will be applied in a future implementation");
 
-      console.log("Updated Personal Info:", resumeData.personalInfo);
-      console.log("Updated Work Experience:", resumeData.workExperience);
-      console.log("Updated Education:", resumeData.education);
-      console.log("Updated Skills:", resumeData.skills);
-      console.log("Updated Extra Data:", resumeData.extraData);
+      console.log("Updated Resume Data:", resumeData);
     }
   };
 
@@ -363,7 +380,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                       <Input 
                         id="fullName" 
                         name="fullName" 
-                        value={resumeData.personalInfo.fullName} 
+                        value={resumeData.basics.name} 
                         onChange={handlePersonalInfoChange} 
                       />
                     </div>
@@ -372,7 +389,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                       <Input 
                         id="jobTitle" 
                         name="jobTitle" 
-                        value={resumeData.personalInfo.jobTitle} 
+                        value={resumeData.basics.jobTitle || ''} 
                         onChange={handlePersonalInfoChange} 
                       />
                     </div>
@@ -381,7 +398,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                       <Input 
                         id="email" 
                         name="email" 
-                        value={resumeData.personalInfo.email} 
+                        value={resumeData.basics.email} 
                         onChange={handlePersonalInfoChange} 
                       />
                     </div>
@@ -390,7 +407,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                       <Input 
                         id="phone" 
                         name="phone" 
-                        value={resumeData.personalInfo.phone} 
+                        value={resumeData.basics.phone} 
                         onChange={handlePersonalInfoChange} 
                       />
                     </div>
@@ -399,7 +416,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                       <Input 
                         id="location" 
                         name="location" 
-                        value={resumeData.personalInfo.location} 
+                        value={resumeData.basics.location?.city || ''} 
                         onChange={handlePersonalInfoChange} 
                       />
                     </div>
@@ -409,7 +426,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                 <AccordionItem value="work-experience">
                   <AccordionTrigger className="text-md font-medium">Work Experience</AccordionTrigger>
                   <AccordionContent>
-                    {resumeData.workExperience.map((exp, index) => (
+                    {resumeData.work.map((exp, index) => (
                       <div key={index} className="border p-3 rounded mb-4">
                         <div className="flex justify-between items-center mb-2">
                           <h4 className="font-medium">Experience {index + 1}</h4>
