@@ -4,21 +4,14 @@ import { ModernLayout } from './resume-layouts/ModernLayout';
 import { SidebarLayout } from './resume-layouts/SidebarLayout';
 import { CenteredLayout } from './resume-layouts/CenteredLayout';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import MonacoEditor from '@monaco-editor/react';
-import { themes } from '@/themes/ThemeContext';
 import { useTheme } from '@/themes/ThemeContext';
-import { exportToJsonResume, importFromJsonResume } from '@/utils/jsonResume';
 import { getLayoutJSXString } from './resume-layouts/layoutTemplates';
-import { EducationEntry } from './Education';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Textarea } from '@/components/ui/textarea';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 const layouts = {
   Simple: SimpleLayout,
@@ -34,9 +27,25 @@ interface LayoutEditorProps {
   setLayoutProps: (props: Record<string, any>) => void;
   customCode: string | null;
   setCustomCode: (code: string | null) => void;
-  resumeData: any;
-  setResumeData: (data: any) => void;
-  onApplyResumeChanges?: (data: any) => void;
+  resumeData?: any;
+  setResumeData?: (data: any) => void;
+  onApplyResumeChanges?: (
+    newPersonalInfo: any,
+    newWorkExperience: any[],
+    newEducation: any[],
+    newSkills: any[],
+    newExtraData?: Record<string, any>
+  ) => void;
+  // New props for lifted state and data
+  personalInfo: any;
+  workExperience: any[];
+  education: any[];
+  skills: any[];
+  extraData: Record<string, any>;
+  editorMode: 'preview' | 'code' | 'json';
+  setEditorMode: (mode: 'preview' | 'code' | 'json') => void;
+  editorValue: string;
+  setEditorValue: (value: string) => void;
 }
 
 const LayoutEditor: React.FC<LayoutEditorProps> = ({
@@ -48,7 +57,9 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   setCustomCode,
   resumeData,
   setResumeData = () => {},
-  onApplyResumeChanges
+  onApplyResumeChanges,
+  editorValue,
+  setEditorValue
 }) => {
   // Defensive defaults to avoid undefined errors
   resumeData = resumeData || {};
@@ -57,7 +68,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   resumeData.education = resumeData.education || [];
   resumeData.skills = resumeData.skills || [];
   resumeData.extraData = resumeData.extraData || {};
-  const [editorValue, setEditorValue] = useState<string>('');
+  // Use lifted state for editorValue and setEditorValue from props
   const [editorMode, setEditorMode] = useState<'preview' | 'code' | 'json'>('preview');
   const [codeError, setCodeError] = useState<string | null>(null);
   const [prevSelectedLayout, setPrevSelectedLayout] = useState<string>('');
@@ -105,22 +116,6 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
     setLayoutProps({ ...layoutProps, [name]: value });
   };
 
-  const handleCodeChange = (editor: any, data: any, value: string) => {
-    setEditorValue(value);
-    setCustomCode(value);
-
-    let codeToValidate = value.trim();
-    if (!codeToValidate.startsWith('(') || !codeToValidate.endsWith(')')) {
-      setCodeError("Warning: JSX code should be wrapped in parentheses for proper rendering");
-    } else {
-      setCodeError(null);
-    }
-  };
-
-  const handleJsonChange = (editor: any, data: any, value: string) => {
-    setJsonValue(value);
-  };
-
   const resetCustomCode = () => {
     const templateCode = getLayoutJSXString(selectedLayout);
     setEditorValue(templateCode);
@@ -129,153 +124,6 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
     toast.info("Reset to template layout");
   };
 
-  const applyJsonChanges = () => {
-    try {
-      const cleaned = jsonValue.trim();
-      const fixed = cleaned.replace(/,\s*}/g, '}').replace(/,\s*]/g, ']');
-      const parsedJson = JSON.parse(fixed);
-      setResumeData(parsedJson);
-
-      if (onApplyResumeChanges) {
-        toast.success("Applied JSON changes to resume");
-      }
-    } catch (error) {
-      toast.error("Invalid JSON format. Please check your syntax.");
-      console.log(error);
-    }
-  };
-
-  const handlePersonalInfoChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setResumeData(prev => {
-      const basics = { ...prev.basics };
-      if (name === 'location') {
-        basics.location = { ...basics.location, city: value };
-      } else if (name === 'jobTitle') {
-        basics.jobTitle = value;
-      } else if (name === 'fullName' || name === 'name') {
-        basics.name = value;
-      } else {
-        basics[name] = value;
-      }
-      return { ...prev, basics };
-    });
-  };
-
-  const handleSkillsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const skillsArray = e.target.value.split(',').map(skill => skill.trim()).filter(skill => skill !== '');
-    setResumeData(prev => ({
-      ...prev,
-      skills: skillsArray,
-    }));
-  };
-
-  const handleWorkExperienceChange = (index: number, field: string, value: string) => {
-    setResumeData(prev => {
-      const updated = [...prev.work];
-      updated[index] = { ...updated[index], [field]: value };
-      return { ...prev, work: updated };
-    });
-  };
-
-  const handleEducationChange = (index: number, field: string, value: string) => {
-    setResumeData(prev => {
-      const updated = [...prev.education];
-      updated[index] = { ...updated[index], [field]: value };
-      return { ...prev, education: updated };
-    });
-  };
-
-  const addWorkExperience = () => {
-    setResumeData(prev => ({
-      ...prev,
-      work: [
-        ...prev.work,
-        {
-          company: 'New Company',
-          position: 'New Position',
-          startDate: 'Start Date',
-          endDate: 'End Date',
-          description: 'Job description...',
-        },
-      ],
-    }));
-  };
-
-  const removeWorkExperience = (index: number) => {
-    setResumeData(prev => {
-      const updated = [...prev.work];
-      updated.splice(index, 1);
-      return { ...prev, work: updated };
-    });
-  };
-
-  const addEducation = () => {
-    setResumeData(prev => ({
-      ...prev,
-      education: [
-        ...prev.education,
-        {
-          institution: 'New Institution',
-          degree: 'New Degree',
-          field: '',
-          graduationDate: '',
-        },
-      ],
-    }));
-  };
-
-  const removeEducation = (index: number) => {
-    setResumeData(prev => {
-      const updated = [...prev.education];
-      updated.splice(index, 1);
-      return { ...prev, education: updated };
-    });
-  };
-
-  const applyResumeChanges = () => {
-    if (onApplyResumeChanges) {
-      onApplyResumeChanges(resumeData);
-      toast.success("Resume data updated successfully");
-    } else {
-      toast.info("Resume data updates will be applied in a future implementation");
-
-      console.log("Updated Resume Data:", resumeData);
-    }
-  };
-
-  const renderExtraDataAccordion = () => {
-    if (!resumeData.extraData || Object.keys(resumeData.extraData).length === 0) {
-      return (
-        <div className="border p-3 rounded mb-4">
-          <p className="text-sm text-gray-500">
-            No additional data fields. You can add custom fields in the JSON editor tab.
-          </p>
-        </div>
-      );
-    }
-
-    return (
-      <div className="border p-3 rounded mb-4">
-        <h3 className="font-medium mb-3">Custom Fields</h3>
-        <div className="space-y-3">
-          {Object.entries(resumeData.extraData).map(([key, value]) => (
-            <div key={key} className="space-y-1">
-              <p className="text-sm font-medium">{key}</p>
-              <p className="text-sm text-gray-600 border p-2 rounded bg-gray-50">
-                {typeof value === 'object'
-                  ? JSON.stringify(value, null, 2)
-                  : String(value)}
-              </p>
-            </div>
-          ))}
-        </div>
-        <p className="text-xs text-gray-500 mt-3">
-          Note: To modify these custom fields, please use the JSON Editor tab.
-        </p>
-      </div>
-    );
-  };
 
   let renderedLayout: React.ReactNode = null;
   try {
@@ -321,9 +169,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         </Select>
       </div>
 
-      <div className="mb-6">
-        {renderedLayout}
-      </div>
+      {/* Removed the small preview above the code editor */}
 
       <Tabs defaultValue="code" className="mt-6" onValueChange={(value) => setEditorMode(value as any)}>
         <TabsList className="mb-4">
@@ -355,10 +201,13 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                 theme="vs-dark"
                 value={editorValue}
                 onChange={(value) => {
-                  setEditorValue(value ?? '');
-                  setCustomCode(value ?? '');
+                  // Remove single-line and multi-line comments before validation
+                  let code = value ?? '';
+                  code = code.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '');
+                  setEditorValue(code);
+                  setCustomCode(code);
 
-                  const codeToValidate = (value ?? '').trim();
+                  const codeToValidate = code.trim();
                   if (!codeToValidate.startsWith('(') || !codeToValidate.endsWith(')')) {
                     setCodeError("Warning: JSX code should be wrapped in parentheses for proper rendering");
                   } else {
@@ -403,6 +252,39 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                 value={jsonValue}
                 onChange={(value) => {
                   setJsonValue(value ?? '');
+                  // Debounce auto-apply
+                  if (window.__jsonApplyTimeout) clearTimeout(window.__jsonApplyTimeout);
+                  window.__jsonApplyTimeout = setTimeout(() => {
+                    try {
+                      const cleaned = (value ?? '').trim();
+                      const fixed = cleaned.replace(/,\s*}/g, '}').replace(/,\s*]/g, ']');
+                      const parsedJson = JSON.parse(fixed);
+
+                      if (onApplyResumeChanges) {
+                        const basics = parsedJson.basics || {};
+                        const work = parsedJson.work || [];
+                        const education = parsedJson.education || [];
+                        const skills = parsedJson.skills || [];
+                        const extraData = parsedJson.extraData || {};
+
+                        onApplyResumeChanges(
+                          {
+                            fullName: basics.name || "",
+                            email: basics.email || "",
+                            phone: basics.phone || "",
+                            location: basics.location?.city || "",
+                            jobTitle: basics.jobTitle || "",
+                          },
+                          work,
+                          education,
+                          skills,
+                          extraData
+                        );
+                      }
+                    } catch (error) {
+                      // Ignore parse errors, don't apply
+                    }
+                  }, 500);
                 }}
                 options={{
                   wordWrap: 'on',
@@ -413,10 +295,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                 }}
               />
             </div>
-
-            <div className="flex gap-2">
-              <Button onClick={applyJsonChanges} variant="outline">Apply JSON Changes</Button>
-            </div>
+            {/* Button removed: now auto-applies */}
           </div>
         </TabsContent>
       </Tabs>

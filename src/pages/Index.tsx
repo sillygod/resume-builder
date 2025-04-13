@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { PersonalInfo, PersonalInfoData } from "@/components/PersonalInfo";
 import { WorkExperience, WorkExperienceEntry } from "@/components/WorkExperience";
 import { Education, EducationEntry } from "@/components/Education";
-import { Skills } from "@/components/Skills";
 import { ResumePreview } from "@/components/ResumePreview";
 import { ResumeAssistant } from "@/components/ResumeAssistant";
 import { Download, Upload } from "lucide-react";
@@ -13,7 +12,6 @@ import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { useTheme, ThemeName } from "@/themes/ThemeContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShowPreviewButton } from "@/components/ShowPreviewButton";
-import LayoutManager from '@/components/LayoutManager';
 import LayoutEditor from '@/components/LayoutEditor';
 
 const Index = () => {
@@ -34,6 +32,9 @@ const Index = () => {
   const [layoutProps, setLayoutProps] = useState<any>({});
   const [customCode, setCustomCode] = useState<string | null>(null);
   const [extraData, setExtraData] = useState<Record<string, any>>({});
+  // LIFTED STATE FOR LAYOUT CODE EDITOR
+  const [editorMode, setEditorMode] = useState<'preview' | 'code' | 'json'>('preview');
+  const [editorValue, setEditorValue] = useState<string>("");
 
   const handleExport = () => {
     const jsonResume = exportToJsonResume(
@@ -170,6 +171,11 @@ const Index = () => {
                   skills={skills}
                   extraData={extraData}
                   onApplyResumeChanges={handleApplyResumeChanges}
+                  // LIFTED STATE FOR LAYOUT CODE EDITOR
+                  editorMode={editorMode}
+                  setEditorMode={setEditorMode}
+                  editorValue={editorValue}
+                  setEditorValue={setEditorValue}
                 />
               </FoldablePanel>
 
@@ -183,6 +189,9 @@ const Index = () => {
                     theme={currentTheme}
                     onPreviewPdf={handlePreviewPdf}
                     extraData={extraData}
+                    // Pass custom layout code and mode to preview
+                    customLayoutCode={editorValue}
+                    customLayoutMode={editorMode}
                   />
                 </div>
               )}
@@ -209,6 +218,7 @@ const Index = () => {
                   theme={currentTheme}
                   onPreviewPdf={handlePreviewPdf}
                   extraData={extraData}
+                  // Do not pass custom code in assistant tab
                 />
               </div>
             </div>

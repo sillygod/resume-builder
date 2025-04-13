@@ -26,9 +26,11 @@ interface ResumePreviewProps {
   workExperience: WorkExperienceEntry[];
   education: EducationEntry[];
   skills: string[];
-  theme?: ThemeName; // Make theme optional with a default
-  onPreviewPdf?: () => void; // Add prop to handle PDF preview
-  extraData?: Record<string, any>; // Add extraData prop
+  theme?: ThemeName;
+  onPreviewPdf?: () => void;
+  extraData?: Record<string, any>;
+  customLayoutCode?: string;
+  customLayoutMode?: string;
 }
 
 export function ResumePreview({
@@ -38,7 +40,9 @@ export function ResumePreview({
   skills,
   theme = "modern",
   onPreviewPdf,
-  extraData = {}, // Add default value
+  extraData = {},
+  customLayoutCode,
+  customLayoutMode,
 }: ResumePreviewProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -97,25 +101,49 @@ export function ResumePreview({
   });
 
   const renderLayout = () => {
-    const layoutProps = {
-      personalInfo,
-      workExperience,
+    const resumeData = {
+      basics: personalInfo,
+      work: workExperience,
       education,
       skills,
-      extraData, // Pass extraData to layout components
+      extraData,
     };
+
+    // If in code mode and custom code is provided, render it dynamically
+    if (customLayoutMode === "code" && customLayoutCode && customLayoutCode.trim().startsWith("(")) {
+      try {
+        const scope = {
+          basics: personalInfo,
+          work: workExperience,
+          education,
+          skills,
+          extraData,
+          personalInfo,
+          workExperience,
+        };
+        // eslint-disable-next-line no-new-func
+        const func = new Function("React", ...Object.keys(scope), `return ${customLayoutCode}`);
+        return func(require("react"), ...Object.values(scope));
+      } catch (err) {
+        return (
+          <div className="p-4 text-red-600">
+            Error rendering custom layout: {(err as Error).message}
+          </div>
+        );
+      }
+    }
 
     switch (theme) {
       case "simple":
-        return <SimpleLayout {...layoutProps} />;
+        return <SimpleLayout resumeData={resumeData} />;
       case "modern":
-        return <ModernLayout {...layoutProps} />;
+        return <ModernLayout resumeData={resumeData} />;
       case "centered":
-        return <CenteredLayout {...layoutProps} />;
+        return <CenteredLayout resumeData={resumeData} />;
       case "sidebar":
-        return <SidebarLayout {...layoutProps} />;
+        return <SidebarLayout resumeData={resumeData} />;
       default:
-        return <ModernLayout {...layoutProps} />;
+        return <ModernLayout resumeData={resumeData} />;
     }
   };
 
