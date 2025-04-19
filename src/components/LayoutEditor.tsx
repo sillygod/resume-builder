@@ -58,6 +58,8 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   resumeData,
   setResumeData = () => {},
   onApplyResumeChanges,
+  editorMode,
+  setEditorMode,
   editorValue,
   setEditorValue
 }) => {
@@ -69,7 +71,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   resumeData.skills = resumeData.skills || [];
   resumeData.extraData = resumeData.extraData || {};
   // Use lifted state for editorValue and setEditorValue from props
-  const [editorMode, setEditorMode] = useState<'preview' | 'code' | 'json'>('preview');
+  // Removed duplicate state declaration for editorMode
   const [codeError, setCodeError] = useState<string | null>(null);
   const [prevSelectedLayout, setPrevSelectedLayout] = useState<string>('');
   const [jsonValue, setJsonValue] = useState<string>('');
@@ -127,7 +129,8 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
 
   let renderedLayout: React.ReactNode = null;
   try {
-    if (editorMode === 'code' && editorValue && editorValue.trim().startsWith('(')) {
+    // Always use custom JSX code if present and valid, regardless of editorMode
+    if (editorValue && editorValue.trim().startsWith('(')) {
       const scope = {
         basics: resumeData.basics,
         work: resumeData.work,
