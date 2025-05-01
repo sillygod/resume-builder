@@ -13,6 +13,13 @@ import MonacoEditor from '@monaco-editor/react';
 import { useTheme } from '@/themes/ThemeContext';
 import { getLayoutJSXString } from './resume-layouts/layoutTemplates';
 
+// @ts-ignore
+declare global {
+  interface Window {
+    __jsonApplyTimeout?: any;
+  }
+}
+
 const layouts = {
   Simple: SimpleLayout,
   Modern: ModernLayout,
@@ -46,6 +53,8 @@ interface LayoutEditorProps {
   setEditorMode: (mode: 'preview' | 'code' | 'json') => void;
   editorValue: string;
   setEditorValue: (value: string) => void;
+  jsonValue: string;
+  setJsonValue: (value: string) => void;
 }
 
 const LayoutEditor: React.FC<LayoutEditorProps> = ({
@@ -61,7 +70,9 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   editorMode,
   setEditorMode,
   editorValue,
-  setEditorValue
+  setEditorValue,
+  jsonValue,
+  setJsonValue
 }) => {
   // Defensive defaults to avoid undefined errors
   resumeData = resumeData || {};
@@ -74,7 +85,6 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   // Removed duplicate state declaration for editorMode
   const [codeError, setCodeError] = useState<string | null>(null);
   const [prevSelectedLayout, setPrevSelectedLayout] = useState<string>('');
-  const [jsonValue, setJsonValue] = useState<string>('');
   const { currentTheme, setTheme } = useTheme();
 
   useEffect(() => {
@@ -111,7 +121,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       };
       setJsonValue(JSON.stringify(jsonResume, null, 2));
     }
-  }, [editorMode, customCode, selectedLayout, editorValue, resumeData, currentTheme, jsonValue]);
+  }, [editorMode, customCode, selectedLayout, editorValue, resumeData, currentTheme, jsonValue, setEditorValue, setCustomCode, setJsonValue]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

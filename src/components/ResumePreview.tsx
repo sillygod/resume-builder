@@ -24,7 +24,6 @@ interface ResumePreviewProps {
   onPreviewPdf?: () => void;
   extraData?: Record<string, any>;
   customLayoutCode?: string;
-  customLayoutMode?: string;
 }
 
 export function ResumePreview({
@@ -36,7 +35,6 @@ export function ResumePreview({
   onPreviewPdf,
   extraData = {},
   customLayoutCode,
-  customLayoutMode,
 }: ResumePreviewProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -103,25 +101,24 @@ export function ResumePreview({
       extraData,
     };
 
-    console.log(customLayoutMode); // TODO: do we need a mode?
-    console.log(customLayoutCode);
 
     // If in code mode and custom code is provided, render it dynamically
     if (customLayoutCode) {
       let codeToTransform = customLayoutCode.trim();
-      // Remove any import statements and comments for safety
+      // Remove any import statements and comments for safety (do this BEFORE handling parentheses)
       codeToTransform = codeToTransform
         .replace(/import[^;]+;?/g, "") // remove import statements
         .replace(/\/\*.*?\*\//gs, "") // remove block comments
         .replace(/\/\/.*$/gm, ""); // remove line comments
+      // Now remove leading and trailing parentheses if present
+      codeToTransform = codeToTransform.trim();
+      if (codeToTransform.startsWith("(") && codeToTransform.endsWith(")")) {
+        codeToTransform = codeToTransform.slice(1, -1);
+      }
       // If the code does not define CustomLayout, wrap it
       if (
         !/const\s+CustomLayout|function\s+CustomLayout/.test(codeToTransform)
       ) {
-        // Remove leading and trailing parentheses if present
-        if (codeToTransform.startsWith("(") && codeToTransform.endsWith(")")) {
-          codeToTransform = codeToTransform.slice(1, -1);
-        }
         codeToTransform = `const CustomLayout = (props) => (<React.Fragment>${codeToTransform}</React.Fragment>);`;
       }
       let transformedCode = "";

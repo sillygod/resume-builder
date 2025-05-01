@@ -35,6 +35,7 @@ const Index = () => {
   // LIFTED STATE FOR LAYOUT CODE EDITOR
   const [editorMode, setEditorMode] = useState<'preview' | 'code' | 'json'>('preview');
   const [editorValue, setEditorValue] = useState<string>("");
+  const [jsonValue, setJsonValue] = useState<string>("");
 
   const handleExport = () => {
     const jsonResume = exportToJsonResume(
@@ -67,19 +68,28 @@ const Index = () => {
           const { 
             personalInfo: newPersonalInfo, 
             workExperience: newWorkExperience, 
-            education: newEducation, 
+            education: newNewEducation, 
             skills: newSkills,
             theme: newTheme
           } = importFromJsonResume(jsonResume);
 
           setPersonalInfo(newPersonalInfo);
           setWorkExperience(newWorkExperience);
-          setEducation(newEducation);
+          setEducation(newNewEducation);
           setSkills(newSkills);
           
           if (newTheme) {
             setTheme(newTheme);
           }
+
+          // Update the JSON editor as well
+          setJsonValue(JSON.stringify({
+            basics: newPersonalInfo,
+            work: newWorkExperience,
+            education: newNewEducation,
+            skills: newSkills,
+            theme: newTheme,
+          }, null, 2));
         } catch (error) {
           console.error("Error importing resume:", error);
         }
@@ -176,6 +186,8 @@ const Index = () => {
                   setEditorMode={setEditorMode}
                   editorValue={editorValue}
                   setEditorValue={setEditorValue}
+                  jsonValue={jsonValue}
+                  setJsonValue={setJsonValue}
                 />
               </FoldablePanel>
 
@@ -189,9 +201,7 @@ const Index = () => {
                     theme={currentTheme}
                     onPreviewPdf={handlePreviewPdf}
                     extraData={extraData}
-                    // Pass custom layout code and mode to preview
                     customLayoutCode={editorValue}
-                    customLayoutMode={editorMode}
                   />
                 </div>
               )}
@@ -218,7 +228,6 @@ const Index = () => {
                   theme={currentTheme}
                   onPreviewPdf={handlePreviewPdf}
                   extraData={extraData}
-                  // Do not pass custom code in assistant tab
                 />
               </div>
             </div>
