@@ -14,24 +14,36 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShowPreviewButton } from "@/components/ShowPreviewButton";
 import LayoutEditor from '@/components/LayoutEditor';
 
-const Index = () => {
-  const { currentTheme, setTheme } = useTheme();
-  const [personalInfo, setPersonalInfo] = useState<PersonalInfoData>({
+interface ResumeDataState {
+  personalInfo: PersonalInfoData;
+  workExperience: WorkExperienceEntry[];
+  education: EducationEntry[];
+  skills: string[];
+  extraData: Record<string, any>;
+}
+
+const initialResumeData: ResumeDataState = {
+  personalInfo: {
     fullName: "",
     email: "",
     phone: "",
     location: "",
     jobTitle: "",
-  });
-  const [workExperience, setWorkExperience] = useState<WorkExperienceEntry[]>([]);
-  const [education, setEducation] = useState<EducationEntry[]>([]);
-  const [skills, setSkills] = useState<string[]>([]);
+  },
+  workExperience: [],
+  education: [],
+  skills: [],
+  extraData: {},
+};
+
+const Index = () => {
+  const { currentTheme, setTheme } = useTheme();
+  const [resumeData, setResumeData] = useState<ResumeDataState>(initialResumeData);
   const [showPreview, setShowPreview] = useState(false);
   const [isFolded, setIsFolded] = useState(false);
   const [selectedLayout, setSelectedLayout] = useState<string>("Modern");
   const [layoutProps, setLayoutProps] = useState<any>({});
   const [customCode, setCustomCode] = useState<string | null>(null);
-  const [extraData, setExtraData] = useState<Record<string, any>>({});
   // LIFTED STATE FOR LAYOUT CODE EDITOR
   const [editorMode, setEditorMode] = useState<'preview' | 'code' | 'json'>('preview');
   const [editorValue, setEditorValue] = useState<string>("");
@@ -39,10 +51,7 @@ const Index = () => {
 
   const handleExport = () => {
     const jsonResume = exportToJsonResume(
-      personalInfo,
-      workExperience,
-      education,
-      skills,
+      resumeData, // Pass the entire resumeData object
       currentTheme
     );
     const blob = new Blob([JSON.stringify(jsonResume, null, 2)], {
@@ -65,30 +74,29 @@ const Index = () => {
       reader.onload = (e) => {
         try {
           const jsonResume = JSON.parse(e.target?.result as string);
-          const { 
-            personalInfo: newPersonalInfo, 
-            workExperience: newWorkExperience, 
-            education: newNewEducation, 
-            skills: newSkills,
-            theme: newTheme
-          } = importFromJsonResume(jsonResume);
+          const importedData = importFromJsonResume(jsonResume);
 
-          setPersonalInfo(newPersonalInfo);
-          setWorkExperience(newWorkExperience);
-          setEducation(newNewEducation);
-          setSkills(newSkills);
+          setResumeData({
+            personalInfo: importedData.personalInfo,
+            workExperience: importedData.workExperience,
+            education: importedData.education,
+            skills: importedData.skills,
+            extraData: importedData.extraData || {},
+          });
           
-          if (newTheme) {
-            setTheme(newTheme);
+          if (importedData.theme) {
+            setTheme(importedData.theme as ThemeName);
           }
 
           // Update the JSON editor as well
+          // Ensure this reflects the new resumeData structure and includes extraData
           setJsonValue(JSON.stringify({
-            basics: newPersonalInfo,
-            work: newWorkExperience,
-            education: newNewEducation,
-            skills: newSkills,
-            theme: newTheme,
+            basics: importedData.personalInfo,
+            work: importedData.workExperience,
+            education: importedData.education,
+            skills: importedData.skills,
+            theme: importedData.theme, // theme is still separate
+            extraData: importedData.extraData,
           }, null, 2));
         } catch (error) {
           console.error("Error importing resume:", error);
@@ -112,13 +120,14 @@ const Index = () => {
     newSkills: string[],
     newExtraData?: Record<string, any>
   ) => {
-    setPersonalInfo(newPersonalInfo);
-    setWorkExperience(newWorkExperience);
-    setEducation(newEducation);
-    setSkills(newSkills);
-    if (newExtraData) {
-      setExtraData(newExtraData);
-    }
+    setResumeData(prev => ({
+      ...prev,
+      personalInfo: newPersonalInfo,
+      workExperience: newWorkExperience,
+      education: newEducation,
+      skills: newSkills,
+      extraData: newExtraData || prev.extraData,
+    }));
   };
 
   return (
@@ -175,11 +184,7 @@ const Index = () => {
                   setLayoutProps={setLayoutProps}
                   customCode={customCode}
                   setCustomCode={setCustomCode}
-                  personalInfo={personalInfo}
-                  workExperience={workExperience}
-                  education={education}
-                  skills={skills}
-                  extraData={extraData}
+                  resumeDataSource={resumeData} // Pass the entire resumeData object
                   onApplyResumeChanges={handleApplyResumeChanges}
                   // LIFTED STATE FOR LAYOUT CODE EDITOR
                   editorMode={editorMode}
@@ -194,13 +199,13 @@ const Index = () => {
               {showPreview && (
                 <div className={`${isFolded ? "col-span-2" : "lg:col-span-1"}`}>
                   <ResumePreview
-                    personalInfo={personalInfo}
-                    workExperience={workExperience}
-                    education={education}
-                    skills={skills}
+                    personalInfo={resumeData.personalInfo}
+                    workExperience={resumeData.workExperience}
+                    education={resumeData.education}
+                    skills={resumeData.skills}
                     theme={currentTheme}
                     onPreviewPdf={handlePreviewPdf}
-                    extraData={extraData}
+                    extraData={resumeData.extraData}
                     customLayoutCode={editorValue}
                   />
                 </div>
@@ -212,22 +217,22 @@ const Index = () => {
             <div className="grid gap-8 lg:grid-cols-2">
               <div className="lg:col-span-1">
                 <ResumeAssistant 
-                  personalInfo={personalInfo}
-                  workExperience={workExperience}
-                  education={education}
-                  skills={skills}
+                  personalInfo={resumeData.personalInfo}
+                  workExperience={resumeData.workExperience}
+                  education={resumeData.education}
+                  skills={resumeData.skills}
                 />
               </div>
               
               <div className="lg:col-span-1">
                 <ResumePreview
-                  personalInfo={personalInfo}
-                  workExperience={workExperience}
-                  education={education}
-                  skills={skills}
+                  personalInfo={resumeData.personalInfo}
+                  workExperience={resumeData.workExperience}
+                  education={resumeData.education}
+                  skills={resumeData.skills}
                   theme={currentTheme}
                   onPreviewPdf={handlePreviewPdf}
-                  extraData={extraData}
+                  extraData={resumeData.extraData}
                 />
               </div>
             </div>

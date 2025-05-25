@@ -4,6 +4,15 @@ import { WorkExperienceEntry } from "@/components/WorkExperience";
 import { EducationEntry } from "@/components/Education";
 import { ThemeName } from "@/themes/ThemeContext";
 
+// Define ResumeDataState interface
+interface ResumeDataState {
+  personalInfo: PersonalInfoData;
+  workExperience: WorkExperienceEntry[];
+  education: EducationEntry[];
+  skills: string[];
+  extraData: Record<string, any>;
+}
+
 export interface JsonResume {
   theme: ThemeName;
   basics: {
@@ -40,27 +49,24 @@ export interface JsonResume {
 }
 
 export const exportToJsonResume = (
-  personalInfo: PersonalInfoData,
-  workExperience: WorkExperienceEntry[],
-  education: EducationEntry[],
-  skills: string[],
-  theme: ThemeName,
-  extraData?: Record<string, any>
+  resumeData: ResumeDataState,
+  theme: ThemeName
 ): JsonResume => {
   // Create basics object with all personal info fields
   const basics: any = {
-    name: personalInfo.fullName,
-    email: personalInfo.email,
-    phone: personalInfo.phone,
+    name: resumeData.personalInfo.fullName,
+    email: resumeData.personalInfo.email,
+    phone: resumeData.personalInfo.phone,
     location: {
-      city: personalInfo.location,
-      countryCode: "US",
+      city: resumeData.personalInfo.location,
+      countryCode: "US", // Default countryCode, can be made dynamic if needed
     },
+    jobTitle: resumeData.personalInfo.jobTitle, // Ensure jobTitle is included
   };
 
-  // Add any additional fields from personalInfo
-  Object.entries(personalInfo).forEach(([key, value]) => {
-    if (!['fullName', 'email', 'phone', 'location'].includes(key)) {
+  // Add any additional fields from personalInfo (excluding already mapped ones and objects)
+  Object.entries(resumeData.personalInfo).forEach(([key, value]) => {
+    if (!['fullName', 'email', 'phone', 'location', 'jobTitle'].includes(key) && typeof value === 'string') {
       basics[key] = value;
     }
   });
@@ -68,27 +74,27 @@ export const exportToJsonResume = (
   const result: JsonResume = {
     theme,
     basics,
-    work: workExperience.map((exp) => ({
+    work: resumeData.workExperience.map((exp) => ({
       name: exp.company,
       position: exp.position,
       startDate: exp.startDate,
       endDate: exp.endDate,
       description: exp.description,
     })),
-    education: education.map((edu) => ({
+    education: resumeData.education.map((edu) => ({
       institution: edu.institution,
       area: edu.field,
       studyType: edu.degree,
       endDate: edu.graduationDate,
     })),
-    skills: skills.map((skill) => ({
+    skills: resumeData.skills.map((skill) => ({
       name: skill,
     })),
   };
 
   // Add any extra data fields at the top level
-  if (extraData) {
-    Object.entries(extraData).forEach(([key, value]) => {
+  if (resumeData.extraData) {
+    Object.entries(resumeData.extraData).forEach(([key, value]) => {
       result[key] = value;
     });
   }

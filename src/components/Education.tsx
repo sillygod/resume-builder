@@ -12,11 +12,11 @@ export interface EducationEntry {
 }
 
 interface EducationProps {
-  education: EducationEntry[];
-  onChange: (education: EducationEntry[]) => void;
+  entries: EducationEntry[];
+  onChange: (entries: EducationEntry[]) => void;
 }
 
-export function Education({ education, onChange }: EducationProps) {
+export function Education({ entries, onChange }: EducationProps) {
   const addEducation = () => {
     const newEducation: EducationEntry = {
       id: Date.now().toString(),
@@ -25,19 +25,19 @@ export function Education({ education, onChange }: EducationProps) {
       field: "",
       graduationDate: "",
     };
-    onChange([...education, newEducation]);
+    onChange([...entries, newEducation]);
   };
 
   const updateEducation = (id: string, field: keyof EducationEntry, value: string) => {
     onChange(
-      education.map((edu) =>
+      entries.map((edu) =>
         edu.id === id ? { ...edu, [field]: value } : edu
       )
     );
   };
 
-  const removeEducation = (id: string) => {
-    onChange(education.filter((edu) => edu.id !== id));
+  const removeEducation = (id:string) => {
+    onChange(entries.filter((edu) => edu.id !== id));
   };
 
   return (
@@ -50,7 +50,7 @@ export function Education({ education, onChange }: EducationProps) {
         </Button>
       </div>
       <div className="space-y-6">
-        {education.map((edu) => (
+        {entries.map((edu) => (
           <div key={edu.id} className="p-4 relative border rounded-md">
             <Button
               variant="ghost"

@@ -14,11 +14,11 @@ export interface WorkExperienceEntry {
 }
 
 interface WorkExperienceProps {
-  experiences: WorkExperienceEntry[];
-  onChange: (experiences: WorkExperienceEntry[]) => void;
+  entries: WorkExperienceEntry[];
+  onChange: (entries: WorkExperienceEntry[]) => void;
 }
 
-export function WorkExperience({ experiences, onChange }: WorkExperienceProps) {
+export function WorkExperience({ entries, onChange }: WorkExperienceProps) {
   const addExperience = () => {
     const newExperience: WorkExperienceEntry = {
       id: Date.now().toString(),
@@ -28,19 +28,19 @@ export function WorkExperience({ experiences, onChange }: WorkExperienceProps) {
       endDate: "",
       description: "",
     };
-    onChange([...experiences, newExperience]);
+    onChange([...entries, newExperience]);
   };
 
   const updateExperience = (id: string, field: keyof WorkExperienceEntry, value: string) => {
     onChange(
-      experiences.map((exp) =>
+      entries.map((exp) =>
         exp.id === id ? { ...exp, [field]: value } : exp
       )
     );
   };
 
   const removeExperience = (id: string) => {
-    onChange(experiences.filter((exp) => exp.id !== id));
+    onChange(entries.filter((exp) => exp.id !== id));
   };
 
   return (
@@ -53,7 +53,7 @@ export function WorkExperience({ experiences, onChange }: WorkExperienceProps) {
         </Button>
       </div>
       <div className="space-y-6">
-        {experiences.map((experience) => (
+        {entries.map((experience) => (
           <div key={experience.id} className="p-4 relative border rounded-md">
             <Button
               variant="ghost"
