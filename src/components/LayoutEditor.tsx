@@ -208,7 +208,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
 
             <div className="border rounded overflow-hidden mb-4">
               <MonacoEditor
-                height="300px"
+                height="500px"
                 defaultLanguage="javascript"
                 language="javascript"
                 theme="vs-dark"
