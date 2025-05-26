@@ -76,16 +76,18 @@ export const exportToJsonResume = (
     basics,
     work: resumeData.workExperience.map((exp) => ({
       name: exp.company,
-      position: exp.position,
+      position: exp.jobTitle, // ResumeDataState uses jobTitle for work experience
       startDate: exp.startDate,
       endDate: exp.endDate,
-      description: exp.description,
+      summary: exp.description, // JSON Resume uses summary for work description
     })),
     education: resumeData.education.map((edu) => ({
       institution: edu.institution,
-      area: edu.field,
-      studyType: edu.degree,
-      endDate: edu.graduationDate,
+      area: edu.field, // ResumeDataState uses field
+      studyType: edu.degree, // ResumeDataState uses degree
+      startDate: edu.startDate, // Added startDate
+      endDate: edu.graduationDate, // ResumeDataState uses graduationDate
+      summary: edu.description, // Added summary/description
     })),
     skills: resumeData.skills.map((skill) => ({
       name: skill,
@@ -117,8 +119,8 @@ export const importFromJsonResume = (
     fullName: jsonResume.basics.name,
     email: jsonResume.basics.email,
     phone: jsonResume.basics.phone,
-    location: jsonResume.basics.location.city || '',
-    jobTitle: jsonResume.basics.jobTitle || "",
+    location: jsonResume.basics.location?.city || '', // Added safe navigation
+    jobTitle: jsonResume.basics.jobTitle || jsonResume.basics.label || "", // Prefer jobTitle, fallback to label
   };
 
   // Add any additional fields from the JSON
@@ -129,31 +131,33 @@ export const importFromJsonResume = (
   });
 
   // Extract work experience
-  const workExperience = jsonResume.work.map((work) => ({
+  const workExperience = (jsonResume.work || []).map((work) => ({
     id: Date.now().toString() + Math.random(),
     company: work.name || '',
-    position: work.position || '',
+    jobTitle: work.position || '', // Map 'position' from JSON Resume to 'jobTitle' in WorkExperienceEntry
     startDate: work.startDate || '',
     endDate: work.endDate || '',
-    description: work.description || '',
+    description: work.summary || '', // Map 'summary' from JSON Resume to 'description'
   }));
 
   // Extract education
-  const education = jsonResume.education.map((edu) => ({
+  const education = (jsonResume.education || []).map((edu) => ({
     id: Date.now().toString() + Math.random(),
     institution: edu.institution || '',
-    field: edu.area || '',
-    degree: edu.studyType || '',
-    graduationDate: edu.endDate || '',
+    field: edu.area || '', // 'area' from JSON Resume maps to 'field'
+    degree: edu.studyType || '', // 'studyType' from JSON Resume maps to 'degree'
+    startDate: edu.startDate || '', // Added startDate
+    graduationDate: edu.endDate || '', // 'endDate' from JSON Resume maps to 'graduationDate'
+    description: edu.summary || '', // Added summary/description
   }));
 
   // Extract skills
-  const skills = jsonResume.skills.map((skill) => skill.name);
+  const skills = (jsonResume.skills || []).map((skill) => skill.name);
 
   // Extract extra data (any top-level properties that are not standard)
   const extraData: Record<string, any> = {};
   Object.entries(jsonResume).forEach(([key, value]) => {
-    if (!['theme', 'basics', 'work', 'education', 'skills'].includes(key)) {
+    if (!['theme', 'basics', 'work', 'education', 'skills', 'meta'].includes(key)) { // Exclude 'meta' as well
       extraData[key] = value;
     }
   });
@@ -163,7 +167,7 @@ export const importFromJsonResume = (
     workExperience,
     education,
     skills,
-    theme: jsonResume.theme || 'modern',
+    theme: jsonResume.meta?.theme || jsonResume.theme || 'modern', // Prefer meta.theme
     extraData,
   };
 };

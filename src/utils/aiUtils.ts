@@ -109,7 +109,12 @@ export async function callAIAPI(
     }
 
     const data = await response.json() as ChatResponse;
-    return data.choices[0].message.content;
+    const content = data.choices[0]?.message?.content;
+
+    if (typeof content !== 'string' || content.trim() === "") {
+      throw new Error("No valid content received from AI response" + (content === undefined ? " (content undefined)" : content === null ? " (content null)" : " (content empty)"));
+    }
+    return content;
   } catch (error) {
     console.error("Error calling AI API:", error);
     toast.error("Failed to get AI response. Please check your API key, URL, and model selection.");
