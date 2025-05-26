@@ -15,6 +15,7 @@ import { toast } from 'sonner';
 import MonacoEditor from '@monaco-editor/react';
 import { useTheme } from '@/themes/ThemeContext';
 import { getLayoutJSXString } from './resume-layouts/layoutTemplates';
+import { ResumeDataState } from '../utils/jsonResume'; // Import ResumeDataState
 
 // @ts-ignore
 declare global {
@@ -45,12 +46,8 @@ interface LayoutEditorProps {
     newSkills: string[],
     newExtraData?: Record<string, any>
   ) => void;
-  // Data props passed from Index.tsx
-  personalInfo: PersonalInfoData;
-  workExperience: WorkExperienceEntry[];
-  education: EducationEntry[];
-  skills: string[];
-  extraData: Record<string, any>;
+  // New prop for consolidated resume data
+  resumeDataSource: ResumeDataState;
   editorMode: 'preview' | 'code' | 'json';
   setEditorMode: (mode: 'preview' | 'code' | 'json') => void;
   editorValue: string;
@@ -69,12 +66,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   // resumeData, // No longer a direct prop
   // setResumeData = () => {}, // No longer a direct prop
   onApplyResumeChanges,
-  // Destructure data props that are now passed directly
-  personalInfo,
-  workExperience,
-  education,
-  skills,
-  extraData,
+  resumeDataSource,
   editorMode,
   setEditorMode,
   editorValue,
@@ -82,13 +74,13 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   jsonValue,
   setJsonValue
 }) => {
-  // Use the directly passed props, providing fallbacks for potentially undefined structured objects
-  // This assumes Index.tsx passes valid, even if empty, structures.
-  const currentPersonalInfo = personalInfo || { fullName: "", email: "", phone: "", jobTitle: "", location: "" } as PersonalInfoData;
-  const currentWorkExperience = workExperience || [];
-  const currentEducation = education || [];
-  const currentSkills = skills || [];
-  const currentExtraData = extraData || {};
+
+  // Extract data from resumeDataSource, providing fallbacks for robustness
+  const currentPersonalInfo = resumeDataSource.personalInfo || { fullName: "", email: "", phone: "", jobTitle: "", location: "" } as PersonalInfoData;
+  const currentWorkExperience = resumeDataSource.workExperience || [];
+  const currentEducation = resumeDataSource.education || [];
+  const currentSkills = resumeDataSource.skills || [];
+  const currentExtraData = resumeDataSource.extraData || {};
 
   const [codeError, setCodeError] = useState<string | null>(null);
   const [prevSelectedLayout, setPrevSelectedLayout] = useState<string>('');
@@ -123,17 +115,20 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       }
     } else if (editorMode === 'json' && jsonValue.trim() === '') {
       // Construct jsonToEdit from individual props passed from Index.tsx
-      const jsonToEdit = {
-        basics: currentPersonalInfo, // Map personalInfo to basics for JSON structure
+
+      const currentResumeStructure = {
+        basics: currentPersonalInfo,
+
         work: currentWorkExperience,
         education: currentEducation,
         skills: currentSkills,
         extraData: currentExtraData,
-        theme: currentTheme, // Add current theme for completeness in JSON editor
+        theme: currentTheme,
       };
-      setJsonValue(JSON.stringify(jsonToEdit, null, 2));
+      setJsonValue(JSON.stringify(currentResumeStructure, null, 2));
     }
-  }, [editorMode, customCode, selectedLayout, editorValue, currentPersonalInfo, currentWorkExperience, currentEducation, currentSkills, currentExtraData, currentTheme, jsonValue, setEditorValue, setCustomCode, setJsonValue]);
+  }, [editorMode, customCode, selectedLayout, editorValue, resumeDataSource, currentTheme, jsonValue, setEditorValue, setCustomCode, setJsonValue]);
+  // Note: resumeDataSource is added to dependency array of above useEffect
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -153,30 +148,32 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   try {
     // Always use custom JSX code if present and valid, regardless of editorMode
     if (editorValue && editorValue.trim().startsWith('(')) {
-      // Scope for custom code execution should use the direct props
+      // Scope for custom code execution using resumeDataSource
       const scope = {
-        personalInfo: currentPersonalInfo,
-        workExperience: currentWorkExperience,
-        education: currentEducation,
-        skills: currentSkills,
-        extraData: currentExtraData,
-        // For backward compatibility with templates expecting 'basics', 'work'
-        basics: currentPersonalInfo, // Map personalInfo to basics
-        work: currentWorkExperience, // Map workExperience to work
+        basics: resumeDataSource.personalInfo,
+        work: resumeDataSource.workExperience,
+        education: resumeDataSource.education,
+        skills: resumeDataSource.skills,
+        extraData: resumeDataSource.extraData,
+        // For backward compatibility
+        personalInfo: resumeDataSource.personalInfo,
+        workExperience: resumeDataSource.workExperience,
+
       };
       const func = new Function('React', ...Object.keys(scope), `return ${editorValue}`);
       renderedLayout = func(React, ...Object.values(scope));
     } else {
       // Default rendering if not custom code
       const LayoutComponent = layouts[selectedLayout] || layouts['Simple'];
-      // Pass the structured data to the layout component
+
       // Standard layouts expect a single resumeData prop with basics, work, etc.
       const resumeDataForLayout = {
-        basics: currentPersonalInfo, // Map personalInfo to basics
-        work: currentWorkExperience,
-        education: currentEducation,
-        skills: currentSkills,
-        extraData: currentExtraData,
+        basics: resumeDataSource.personalInfo,
+        work: resumeDataSource.workExperience,
+        education: resumeDataSource.education,
+        skills: resumeDataSource.skills,
+        extraData: resumeDataSource.extraData,
+
       };
       renderedLayout = <LayoutComponent resumeData={resumeDataForLayout} />;
     }

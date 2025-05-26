@@ -184,11 +184,7 @@ const Index = () => {
                   setLayoutProps={setLayoutProps}
                   customCode={customCode}
                   setCustomCode={setCustomCode}
-                  personalInfo={resumeData.personalInfo}
-                  workExperience={resumeData.workExperience}
-                  education={resumeData.education}
-                  skills={resumeData.skills}
-                  extraData={resumeData.extraData}
+                  resumeDataSource={resumeData} // Pass the entire resumeData object
                   onApplyResumeChanges={handleApplyResumeChanges}
                   // LIFTED STATE FOR LAYOUT CODE EDITOR
                   editorMode={editorMode}
