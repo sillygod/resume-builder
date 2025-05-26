@@ -66,7 +66,6 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   // resumeData, // No longer a direct prop
   // setResumeData = () => {}, // No longer a direct prop
   onApplyResumeChanges,
-  // Destructure the new resumeDataSource prop
   resumeDataSource,
   editorMode,
   setEditorMode,
@@ -75,6 +74,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   jsonValue,
   setJsonValue
 }) => {
+
   // Extract data from resumeDataSource, providing fallbacks for robustness
   const currentPersonalInfo = resumeDataSource.personalInfo || { fullName: "", email: "", phone: "", jobTitle: "", location: "" } as PersonalInfoData;
   const currentWorkExperience = resumeDataSource.workExperience || [];
@@ -115,8 +115,10 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       }
     } else if (editorMode === 'json' && jsonValue.trim() === '') {
       // Construct jsonToEdit from individual props passed from Index.tsx
+
       const currentResumeStructure = {
         basics: currentPersonalInfo,
+
         work: currentWorkExperience,
         education: currentEducation,
         skills: currentSkills,
@@ -156,12 +158,14 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         // For backward compatibility
         personalInfo: resumeDataSource.personalInfo,
         workExperience: resumeDataSource.workExperience,
+
       };
       const func = new Function('React', ...Object.keys(scope), `return ${editorValue}`);
       renderedLayout = func(React, ...Object.values(scope));
     } else {
       // Default rendering if not custom code
       const LayoutComponent = layouts[selectedLayout] || layouts['Simple'];
+
       // Standard layouts expect a single resumeData prop with basics, work, etc.
       const resumeDataForLayout = {
         basics: resumeDataSource.personalInfo,
@@ -169,6 +173,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         education: resumeDataSource.education,
         skills: resumeDataSource.skills,
         extraData: resumeDataSource.extraData,
+
       };
       renderedLayout = <LayoutComponent resumeData={resumeDataForLayout} />;
     }
