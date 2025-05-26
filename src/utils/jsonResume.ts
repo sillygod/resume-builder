@@ -53,7 +53,7 @@ export const exportToJsonResume = (
   theme: ThemeName
 ): JsonResume => {
   // Create basics object with all personal info fields
-  const basics: any = {
+  const basics: JsonResume['basics'] = {
     name: resumeData.personalInfo.fullName,
     email: resumeData.personalInfo.email,
     phone: resumeData.personalInfo.phone,
@@ -76,18 +76,18 @@ export const exportToJsonResume = (
     basics,
     work: resumeData.workExperience.map((exp) => ({
       name: exp.company,
-      position: exp.jobTitle, // ResumeDataState uses jobTitle for work experience
+      position: exp.jobTitle, 
       startDate: exp.startDate,
       endDate: exp.endDate,
-      summary: exp.description, // JSON Resume uses summary for work description
+      summary: exp.description, 
     })),
     education: resumeData.education.map((edu) => ({
       institution: edu.institution,
-      area: edu.field, // ResumeDataState uses field
-      studyType: edu.degree, // ResumeDataState uses degree
-      startDate: edu.startDate, // Added startDate
-      endDate: edu.graduationDate, // ResumeDataState uses graduationDate
-      summary: edu.description, // Added summary/description
+      area: edu.field, 
+      studyType: edu.degree, 
+      // startDate: edu.startDate, // Removed as per review, EducationEntry likely doesn't have startDate
+      endDate: edu.graduationDate, 
+      // summary: edu.description, // Removed as per review, EducationEntry likely doesn't have description/summary
     })),
     skills: resumeData.skills.map((skill) => ({
       name: skill,
@@ -144,11 +144,11 @@ export const importFromJsonResume = (
   const education = (jsonResume.education || []).map((edu) => ({
     id: Date.now().toString() + Math.random(),
     institution: edu.institution || '',
-    field: edu.area || '', // 'area' from JSON Resume maps to 'field'
-    degree: edu.studyType || '', // 'studyType' from JSON Resume maps to 'degree'
-    startDate: edu.startDate || '', // Added startDate
-    graduationDate: edu.endDate || '', // 'endDate' from JSON Resume maps to 'graduationDate'
-    description: edu.summary || '', // Added summary/description
+    field: edu.area || '', 
+    degree: edu.studyType || '', 
+    // startDate: edu.startDate || '', // Removed, EducationEntry likely doesn't have startDate
+    graduationDate: edu.endDate || '', 
+    // description: edu.summary || '', // Removed, EducationEntry likely doesn't have description
   }));
 
   // Extract skills
