@@ -4,6 +4,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, Trash2 } from "lucide-react";
 
+// Import the new hook
+import { useEditableListManager } from '../hooks/useEditableListManager'; // Adjust path if necessary
+
 export interface WorkExperienceEntry {
   id: string;
   company: string;
@@ -18,35 +21,34 @@ interface WorkExperienceProps {
   onChange: (entries: WorkExperienceEntry[]) => void;
 }
 
+// Define the factory function for new work experience entries
+const workExperienceFactory = (): Omit<WorkExperienceEntry, 'id'> => ({
+  company: "",
+  position: "", 
+  startDate: "",
+  endDate: "",
+  description: "",
+});
+
 export function WorkExperience({ entries, onChange }: WorkExperienceProps) {
-  const addExperience = () => {
-    const newExperience: WorkExperienceEntry = {
-      id: Date.now().toString(),
-      company: "",
-      position: "",
-      startDate: "",
-      endDate: "",
-      description: "",
-    };
-    onChange([...entries, newExperience]);
-  };
+  // Call the hook
+  const {
+    addItem: addExperience, // Renaming for consistency with existing button handler
+    updateItem: updateExperience, // Renaming for consistency
+    removeItem: removeExperience // Renaming for consistency
+  } = useEditableListManager<WorkExperienceEntry>({
+    items: entries,
+    onChange,
+    newItemFactory: workExperienceFactory
+  });
 
-  const updateExperience = (id: string, field: keyof WorkExperienceEntry, value: string) => {
-    onChange(
-      entries.map((exp) =>
-        exp.id === id ? { ...exp, [field]: value } : exp
-      )
-    );
-  };
-
-  const removeExperience = (id: string) => {
-    onChange(entries.filter((exp) => exp.id !== id));
-  };
+  // Removed local addExperience, updateExperience, and removeExperience functions
 
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-semibold text-primary">Work Experience</h2>
       <div className="flex justify-between items-center">
+        {/* onClick now calls the addExperience function from the hook */}
         <Button onClick={addExperience} variant="outline" size="sm">
           <Plus className="w-4 h-4 mr-2" />
           Add Experience
@@ -59,15 +61,17 @@ export function WorkExperience({ entries, onChange }: WorkExperienceProps) {
               variant="ghost"
               size="icon"
               className="absolute right-2 top-2"
+              // onClick now calls the removeExperience function from the hook
               onClick={() => removeExperience(experience.id)}
             >
               <Trash2 className="w-4 h-4 text-accent" />
             </Button>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Company</Label>
+                <Label>Company</Label> {/* Assuming Label doesn't need htmlFor if input isn't id'd from it */}
                 <Input
                   value={experience.company}
+                  // onChange now calls the updateExperience function from the hook
                   onChange={(e) =>
                     updateExperience(experience.id, "company", e.target.value)
                   }

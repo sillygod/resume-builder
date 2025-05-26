@@ -5,15 +5,17 @@ import { EducationEntry } from "./Education";
 import React, { useState, useRef, useEffect } from "react";
 import { ThemeName } from "@/themes/ThemeContext";
 import { Button } from "./ui/button";
-import { toast } from "sonner";
-import html2pdf from "html2pdf.js";
-import { useReactToPrint } from "react-to-print";
+// Removed: toast (now handled in hooks), html2pdf, useReactToPrint, * as Babel
+// Removed: lucide-react icons (now handled in useCustomLayoutRenderer)
+
 import { SimpleLayout } from "./resume-layouts/SimpleLayout";
 import { ModernLayout } from "./resume-layouts/ModernLayout";
 import { CenteredLayout } from "./resume-layouts/CenteredLayout";
 import { SidebarLayout } from "./resume-layouts/SidebarLayout";
-import * as Babel from "@babel/standalone";
-import { Mail, Phone, MapPin, Link } from "lucide-react";
+
+// Import new hooks
+import { useCustomLayoutRenderer, ResumeLayoutData } from '../hooks/useCustomLayoutRenderer';
+import { useResumePDFGenerator } from '../hooks/useResumePDFGenerator';
 
 interface ResumePreviewProps {
   personalInfo: PersonalInfoData;
@@ -21,7 +23,7 @@ interface ResumePreviewProps {
   education: EducationEntry[];
   skills: string[];
   theme?: ThemeName;
-  onPreviewPdf?: () => void;
+  // Removed: onPreviewPdf?: () => void;
   extraData?: Record<string, any>;
   customLayoutCode?: string;
 }
@@ -31,151 +33,85 @@ export function ResumePreview({
   workExperience,
   education,
   skills,
-  theme = "modern",
-  onPreviewPdf,
+  theme = "modern", // Default theme
   extraData = {},
   customLayoutCode,
 }: ResumePreviewProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const contentRef = useRef<HTMLDivElement>(null);
   const [totalPages, setTotalPages] = useState(1);
-  const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  // Removed: pdfPreviewUrl, isPreviewOpen state
+
   const pageHeight = 297; // height in mm
+
+  // Initialize new hooks
+  const { downloadPDF } = useResumePDFGenerator({ // Removed: generatePdfPreviewUri (not used in this simplified version)
+    contentRef,
+    fileNamePrefix: personalInfo.fullName || "resume",
+  });
+
+  const resumeLayoutData: ResumeLayoutData = {
+    basics: personalInfo,
+    work: workExperience,
+    education,
+    skills,
+    extraData,
+  };
+
+  const { 
+    renderedElement: customRenderedElement, 
+    error: customLayoutError,
+    // transformedCodeForDebug // Can be used if displaying detailed error messages
+  } = useCustomLayoutRenderer({ customLayoutCode, resumeData: resumeLayoutData });
+
 
   useEffect(() => {
     if (contentRef.current) {
+      // Debounce or use ResizeObserver for better performance if this causes issues
       const contentHeight = contentRef.current.scrollHeight;
-      const pages = Math.ceil(contentHeight / (pageHeight * 3.779527559)); // Convert mm to px
+      const pages = Math.ceil(contentHeight / (pageHeight * 3.779527559)); 
       setTotalPages(Math.max(1, pages));
     }
-  }, [personalInfo, workExperience, education, skills]);
+    // Update totalPages when content changes, or when custom layout is rendered/errored
+  }, [resumeLayoutData, customRenderedElement, customLayoutError, theme]); // Added theme dependency
 
-  const generatePdfPreviewWithReactToPrint = useReactToPrint({
-    contentRef: contentRef,
-  });
-
-  const generatePdfPreview = async () => {
-    if (!contentRef.current) return;
-
-    const element = contentRef.current;
-    const opt = {
-      margin: [0, 0],
-      filename: `${personalInfo.fullName || "resume"}.pdf`,
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: {
-        scale: 2,
-        useCORS: true,
-        letterRendering: true,
-      },
-      jsPDF: {
-        unit: "mm",
-        format: "a4",
-        orientation: "portrait",
-      },
-    };
-
-    try {
-      const pdf = await html2pdf()
-        .set(opt)
-        .from(element)
-        .output("datauristring");
-      setPdfPreviewUrl(pdf);
-      setIsPreviewOpen(true);
-    } catch (error) {
-      console.error("Error generating PDF preview:", error);
-      toast.error("Failed to generate PDF preview");
-    }
-  };
-
-  const handleDownloadPDFWithReactToPrint = useReactToPrint({
-    contentRef: contentRef,
-  });
+  // Removed: generatePdfPreview function
+  // Removed: generatePdfPreviewWithReactToPrint (now part of downloadPDF)
 
   const renderLayout = () => {
-    const resumeData = {
-      basics: personalInfo,
-      work: workExperience,
-      education,
-      skills,
-      extraData,
-    };
-
-
-    // If in code mode and custom code is provided, render it dynamically
     if (customLayoutCode) {
-      let codeToTransform = customLayoutCode.trim();
-      // Remove any import statements and comments for safety (do this BEFORE handling parentheses)
-      codeToTransform = codeToTransform
-        .replace(/import[^;]+;?/g, "") // remove import statements
-        .replace(/\/\*.*?\*\//gs, "") // remove block comments
-        .replace(/\/\/.*$/gm, ""); // remove line comments
-      // Now remove leading and trailing parentheses if present
-      codeToTransform = codeToTransform.trim();
-      if (codeToTransform.startsWith("(") && codeToTransform.endsWith(")")) {
-        codeToTransform = codeToTransform.slice(1, -1);
-      }
-      // If the code does not define CustomLayout, wrap it
-      if (
-        !/const\s+CustomLayout|function\s+CustomLayout/.test(codeToTransform)
-      ) {
-        codeToTransform = `const CustomLayout = (props) => (<React.Fragment>${codeToTransform}</React.Fragment>);`;
-      }
-      let transformedCode = "";
-      try {
-        transformedCode = Babel.transform(codeToTransform, {
-          presets: [["react", { runtime: "classic" }]],
-        }).code;
-        const scope = {
-          education,
-          skills,
-          extraData,
-          personalInfo,
-          workExperience,
-          Mail,
-          Phone,
-          MapPin,
-          Link,
-        };
-
-        const func = new Function(
-          "React",
-          "props",
-          ...Object.keys(scope),
-          `${transformedCode}; return React.createElement(CustomLayout, props);`
-        );
-        return func(React, resumeData, ...Object.values(scope));
-      } catch (err) {
+      if (customLayoutError) {
         return (
           <div className="p-4 text-red-600">
-            Error rendering custom layout: {(err as Error).message} and{" "}
-            {transformedCode}
+            Error rendering custom layout: {customLayoutError}
+            {/* Optionally display transformedCodeForDebug here if needed */}
           </div>
         );
       }
+      return customRenderedElement; // This is already React.ReactNode or null
     }
 
+    // Standard layout rendering
     switch (theme) {
       case "simple":
-        return <SimpleLayout resumeData={resumeData} />;
+        return <SimpleLayout resumeData={resumeLayoutData} />;
       case "modern":
-        return <ModernLayout resumeData={resumeData} />;
+        return <ModernLayout resumeData={resumeLayoutData} />;
       case "centered":
-        return <CenteredLayout resumeData={resumeData} />;
+        return <CenteredLayout resumeData={resumeLayoutData} />;
       case "sidebar":
-        return <SidebarLayout resumeData={resumeData} />;
+        return <SidebarLayout resumeData={resumeLayoutData} />;
       default:
-        return <ModernLayout resumeData={resumeData} />;
+        return <ModernLayout resumeData={resumeLayoutData} />;
     }
   };
 
   return (
     <div className="flex flex-col items-center gap-4">
-      {/* Hidden button for external trigger */}
       <Button
         id="preview-pdf-button"
         className="hidden"
-        onClick={() => handleDownloadPDFWithReactToPrint()}
+        onClick={downloadPDF} // Use downloadPDF from the hook
       />
 
       <div className="w-[210mm] h-[297mm] max-w-full overflow-hidden">
@@ -191,7 +127,7 @@ export function ResumePreview({
         >
           <div
             ref={contentRef}
-            className={`${theme === "sidebar" ? "flex" : ""}`}
+            className={`${theme === "sidebar" ? "flex" : ""}`} // Sidebar layout might need flex container
           >
             {renderLayout()}
           </div>
