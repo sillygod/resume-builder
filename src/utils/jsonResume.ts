@@ -5,7 +5,7 @@ import { EducationEntry } from "@/components/Education";
 import { ThemeName } from "@/themes/ThemeContext";
 
 // Define ResumeDataState interface
-interface ResumeDataState {
+export interface ResumeDataState {
   personalInfo: PersonalInfoData;
   workExperience: WorkExperienceEntry[];
   education: EducationEntry[];

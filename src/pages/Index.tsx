@@ -8,7 +8,6 @@ import { ResumeAssistant } from "@/components/ResumeAssistant";
 import { Download, Upload } from "lucide-react";
 import { exportToJsonResume, importFromJsonResume } from "@/utils/jsonResume";
 import { FoldablePanel } from "@/components/FoldablePanel";
-import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { useTheme, ThemeName } from "@/themes/ThemeContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShowPreviewButton } from "@/components/ShowPreviewButton";
@@ -137,7 +136,6 @@ const Index = () => {
           <h1 className="text-4xl font-bold text-primary">Resume Builder</h1>
           
           <div className="flex flex-wrap gap-2 items-center">
-            <ThemeSwitcher />
             
             <input
               type="file"
