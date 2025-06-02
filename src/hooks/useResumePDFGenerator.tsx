@@ -21,8 +21,9 @@ export const useResumePDFGenerator = ({
   fileNamePrefix = 'resume', // Default filename prefix
 }: UseResumePDFGeneratorProps): UseResumePDFGeneratorReturn => {
   // `useReactToPrint` Integration
+  console.log(contentRef, "contentRef in useResumePDFGenerator");
   const handlePrintPDF = useReactToPrint({
-    content: () => contentRef.current,
+    contentRef: contentRef, // Use the ref directly
     documentTitle: `${fileNamePrefix}.pdf`, // Set document title for print dialog/save
     // onBeforeGetContent: () => { /* ... */ },
     // onBeforePrint: () => { /* ... */ },

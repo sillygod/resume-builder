@@ -2,9 +2,6 @@
 import React from "react";
 import { themes } from "@/themes/ThemeContext";
 import { Mail, Phone, MapPin, Link } from "lucide-react";
-import { PersonalInfoData } from "../PersonalInfo";
-import { WorkExperienceEntry } from "../WorkExperience";
-import { EducationEntry } from "../Education";
 
 export interface ResumeLayoutProps {
   resumeData: any;

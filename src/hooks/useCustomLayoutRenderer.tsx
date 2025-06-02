@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import * as Babel from '@babel/standalone';
-import { Mail, Phone, MapPin, Link as LinkIcon } from 'lucide-react'; // Renamed Link to LinkIcon to avoid conflict with HTML <link>
+import { Mail, Phone, MapPin, Link } from 'lucide-react'; // Renamed Link to LinkIcon to avoid conflict with HTML <link>
 
 // Assuming these types are exported from their respective files
 // Adjust paths if they are different or if a central types file is used.
@@ -38,6 +38,11 @@ export const useCustomLayoutRenderer = ({
     }
 
     let codeToTransform = customLayoutCode.trim();
+    // Remove any comments from the code
+    codeToTransform = codeToTransform
+      .replace(/\/\/.*$/gm, '')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/^\s*[\r\n]/gm, ''); // Remove empty lines
     // Remove import statements
     codeToTransform = codeToTransform.replace(/import[^;]+;?/g, "");
     // Remove block comments
@@ -84,7 +89,7 @@ export const useCustomLayoutRenderer = ({
         Mail,
         Phone,
         MapPin,
-        LinkIcon, // Use the renamed import
+        Link, // Use the renamed import
       };
       
       // The 'props' argument to CustomLayout will be the resumeData object.
@@ -109,11 +114,11 @@ export const useCustomLayoutRenderer = ({
 
       return { renderedElement, error: null, transformedCodeForDebug: transformedCode };
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error in useCustomLayoutRenderer:", err);
       return { 
         renderedElement: null, 
-        error: err.message || "An unknown error occurred during custom layout rendering.",
+        error: (err instanceof Error ? err.message : "An unknown error occurred during custom layout rendering."),
         transformedCodeForDebug: transformedCode // Include for debugging
       };
     }

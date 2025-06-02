@@ -76,11 +76,16 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
 }) => {
 
   // Extract data from resumeDataSource, providing fallbacks for robustness
-  const currentPersonalInfo = resumeDataSource.personalInfo || { fullName: "", email: "", phone: "", jobTitle: "", location: "" } as PersonalInfoData;
-  const currentWorkExperience = resumeDataSource.workExperience || [];
-  const currentEducation = resumeDataSource.education || [];
-  const currentSkills = resumeDataSource.skills || [];
-  const currentExtraData = resumeDataSource.extraData || {};
+  const currentPersonalInfo = React.useMemo(
+    () =>
+      resumeDataSource.personalInfo ||
+      ({ fullName: "", email: "", phone: "", jobTitle: "", location: "" } as PersonalInfoData),
+    [resumeDataSource.personalInfo]
+  );
+  const currentWorkExperience = React.useMemo(() => resumeDataSource.workExperience || [], [resumeDataSource.workExperience]);
+  const currentEducation = React.useMemo(() => resumeDataSource.education || [], [resumeDataSource.education]);
+  const currentSkills = React.useMemo(() => resumeDataSource.skills || [], [resumeDataSource.skills]);
+  const currentExtraData = React.useMemo(() => resumeDataSource.extraData || {}, [resumeDataSource.extraData]);
 
   const [codeError, setCodeError] = useState<string | null>(null);
   const [prevSelectedLayout, setPrevSelectedLayout] = useState<string>('');
@@ -127,7 +132,23 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       };
       setJsonValue(JSON.stringify(currentResumeStructure, null, 2));
     }
-  }, [editorMode, customCode, selectedLayout, editorValue, resumeDataSource, currentTheme, jsonValue, setEditorValue, setCustomCode, setJsonValue]);
+  }, [
+    editorMode,
+    customCode,
+    selectedLayout,
+    editorValue,
+    resumeDataSource,
+    currentTheme,
+    jsonValue,
+    setEditorValue,
+    setCustomCode,
+    setJsonValue,
+    currentPersonalInfo,
+    currentWorkExperience,
+    currentEducation,
+    currentSkills,
+    currentExtraData
+  ]);
   // Note: resumeDataSource is added to dependency array of above useEffect
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -236,8 +257,8 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                 value={editorValue}
                 onChange={(value) => {
                   // Remove single-line and multi-line comments before validation
-                  let code = value ?? '';
-                  code = code.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '');
+                  const code = value ?? '';
+                  // code = code.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '');
                   setEditorValue(code);
                   setCustomCode(code);
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, Phone, MapPin, Link as LinkIcon } from 'lucide-react';
+import { Mail, Phone, MapPin, Link} from 'lucide-react';
 
 interface SimpleLayoutProps {
   resumeData: any;
@@ -44,7 +44,7 @@ export const SimpleLayout: React.FC<SimpleLayoutProps> = ({
           )}
           {personalInfo.linkedin && (
             <div className="flex items-center">
-              <LinkIcon className="h-4 w-4 mr-1" />
+              <Link className="h-4 w-4 mr-1" />
               <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer">
                 LinkedIn
               </a>

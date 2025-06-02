@@ -1,4 +1,3 @@
-
 import { PersonalInfoData } from "@/components/PersonalInfo";
 import { WorkExperienceEntry } from "@/components/WorkExperience";
 import { EducationEntry } from "@/components/Education";
@@ -76,7 +75,7 @@ export const exportToJsonResume = (
     basics,
     work: resumeData.workExperience.map((exp) => ({
       name: exp.company,
-      position: exp.jobTitle, 
+      position: exp.position,
       startDate: exp.startDate,
       endDate: exp.endDate,
       summary: exp.description, 
@@ -134,10 +133,10 @@ export const importFromJsonResume = (
   const workExperience = (jsonResume.work || []).map((work) => ({
     id: Date.now().toString() + Math.random(),
     company: work.name || '',
-    jobTitle: work.position || '', // Map 'position' from JSON Resume to 'jobTitle' in WorkExperienceEntry
+    position: work.position || '',
     startDate: work.startDate || '',
     endDate: work.endDate || '',
-    description: work.summary || '', // Map 'summary' from JSON Resume to 'description'
+    description: work.summary || '',
   }));
 
   // Extract education

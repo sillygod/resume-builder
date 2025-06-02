@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Mail, Phone, MapPin, Link as LinkIcon } from 'lucide-react';
+import { Mail, Phone, MapPin, Link } from 'lucide-react';
 import { themes } from '@/themes/ThemeContext';
 
 interface SidebarLayoutProps {
@@ -71,7 +71,7 @@ export const SidebarLayout: React.FC<SidebarLayoutProps> = ({
             )}
             {personalInfo.website && (
               <div className={theme.personalInfo.contactItemClass}>
-                <LinkIcon size={12} />
+                <Link size={12} />
                 <span>{personalInfo.website}</span>
               </div>
             )}

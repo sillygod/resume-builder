@@ -6,20 +6,12 @@ import { Education, EducationEntry } from "@/components/Education";
 import { ResumePreview } from "@/components/ResumePreview";
 import { ResumeAssistant } from "@/components/ResumeAssistant";
 import { Download, Upload } from "lucide-react";
-import { exportToJsonResume, importFromJsonResume } from "@/utils/jsonResume";
+import { exportToJsonResume, importFromJsonResume, ResumeDataState } from "@/utils/jsonResume";
 import { FoldablePanel } from "@/components/FoldablePanel";
 import { useTheme, ThemeName } from "@/themes/ThemeContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShowPreviewButton } from "@/components/ShowPreviewButton";
 import LayoutEditor from '@/components/LayoutEditor';
-
-interface ResumeDataState {
-  personalInfo: PersonalInfoData;
-  workExperience: WorkExperienceEntry[];
-  education: EducationEntry[];
-  skills: string[];
-  extraData: Record<string, any>;
-}
 
 const initialResumeData: ResumeDataState = {
   personalInfo: {
@@ -202,7 +194,6 @@ const Index = () => {
                     education={resumeData.education}
                     skills={resumeData.skills}
                     theme={currentTheme}
-                    onPreviewPdf={handlePreviewPdf}
                     extraData={resumeData.extraData}
                     customLayoutCode={editorValue}
                   />
@@ -229,7 +220,6 @@ const Index = () => {
                   education={resumeData.education}
                   skills={resumeData.skills}
                   theme={currentTheme}
-                  onPreviewPdf={handlePreviewPdf}
                   extraData={resumeData.extraData}
                 />
               </div>

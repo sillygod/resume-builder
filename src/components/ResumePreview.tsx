@@ -50,13 +50,13 @@ export function ResumePreview({
     fileNamePrefix: personalInfo.fullName || "resume",
   });
 
-  const resumeLayoutData: ResumeLayoutData = {
+  const resumeLayoutData: ResumeLayoutData = React.useMemo(() => ({
     basics: personalInfo,
     work: workExperience,
     education,
     skills,
     extraData,
-  };
+  }), [personalInfo, workExperience, education, skills, extraData]);
 
   const { 
     renderedElement: customRenderedElement, 
