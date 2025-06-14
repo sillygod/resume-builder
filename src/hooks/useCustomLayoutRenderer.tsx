@@ -13,7 +13,7 @@ export interface ResumeLayoutData {
   work: WorkExperienceEntry[];
   education: EducationEntry[];
   skills: string[];
-  extraData?: Record<string, any>;
+  extraData?: Record<string, unknown>;
   // Potentially add theme or other meta data if layouts need it
 }
 

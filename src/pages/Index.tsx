@@ -33,7 +33,7 @@ const Index = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [isFolded, setIsFolded] = useState(false);
   const [selectedLayout, setSelectedLayout] = useState<string>("Modern");
-  const [layoutProps, setLayoutProps] = useState<any>({});
+  const [layoutProps, setLayoutProps] = useState<Record<string, unknown>>({});
   const [customCode, setCustomCode] = useState<string | null>(null);
   // LIFTED STATE FOR LAYOUT CODE EDITOR
   const [editorMode, setEditorMode] = useState<'preview' | 'code' | 'json'>('preview');
@@ -109,7 +109,7 @@ const Index = () => {
     newWorkExperience: WorkExperienceEntry[],
     newEducation: EducationEntry[],
     newSkills: string[],
-    newExtraData?: Record<string, any>
+    newExtraData?: Record<string, unknown>
   ) => {
     setResumeData(prev => ({
       ...prev,
