@@ -16,6 +16,7 @@ import MonacoEditor from '@monaco-editor/react';
 import { useTheme } from '@/themes/ThemeContext';
 import { getLayoutJSXString } from './resume-layouts/layoutTemplates';
 import { ResumeDataState } from '../utils/jsonResume'; // Import ResumeDataState
+import { ErrorBoundary } from './ErrorBoundary';
 
 // @ts-ignore
 declare global {
@@ -165,46 +166,52 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   };
 
 
-  let renderedLayout: React.ReactNode = null;
-  try {
-    // Always use custom JSX code if present and valid, regardless of editorMode
-    if (editorValue && editorValue.trim().startsWith('(')) {
-      // Scope for custom code execution using resumeDataSource
-      const scope = {
-        basics: resumeDataSource.personalInfo,
-        work: resumeDataSource.workExperience,
-        education: resumeDataSource.education,
-        skills: resumeDataSource.skills,
-        extraData: resumeDataSource.extraData,
-        // For backward compatibility
-        personalInfo: resumeDataSource.personalInfo,
-        workExperience: resumeDataSource.workExperience,
+  const renderLayout = () => {
+    try {
+      // Always use custom JSX code if present and valid, regardless of editorMode
+      if (editorValue && editorValue.trim().startsWith('(')) {
+        // Scope for custom code execution using resumeDataSource
+        const scope = {
+          basics: resumeDataSource.personalInfo,
+          work: resumeDataSource.workExperience,
+          education: resumeDataSource.education,
+          skills: resumeDataSource.skills,
+          extraData: resumeDataSource.extraData,
+          // For backward compatibility
+          personalInfo: resumeDataSource.personalInfo,
+          workExperience: resumeDataSource.workExperience,
+        };
+        const func = new Function('React', ...Object.keys(scope), `return ${editorValue}`);
+        return func(React, ...Object.values(scope));
+      } else {
+        // Default rendering if not custom code
+        const LayoutComponent = layouts[selectedLayout] || layouts['Simple'];
 
-      };
-      const func = new Function('React', ...Object.keys(scope), `return ${editorValue}`);
-      renderedLayout = func(React, ...Object.values(scope));
-    } else {
-      // Default rendering if not custom code
-      const LayoutComponent = layouts[selectedLayout] || layouts['Simple'];
-
-      // Standard layouts expect a single resumeData prop with basics, work, etc.
-      const resumeDataForLayout = {
-        basics: resumeDataSource.personalInfo,
-        work: resumeDataSource.workExperience,
-        education: resumeDataSource.education,
-        skills: resumeDataSource.skills,
-        extraData: resumeDataSource.extraData,
-
-      };
-      renderedLayout = <LayoutComponent resumeData={resumeDataForLayout} />;
+        // Standard layouts expect a single resumeData prop with basics, work, etc.
+        const resumeDataForLayout = {
+          basics: resumeDataSource.personalInfo,
+          work: resumeDataSource.workExperience,
+          education: resumeDataSource.education,
+          skills: resumeDataSource.skills,
+          extraData: resumeDataSource.extraData,
+        };
+        return <LayoutComponent resumeData={resumeDataForLayout} />;
+      }
+    } catch (err) {
+      return (
+        <div className="p-4 border border-red-200 bg-red-50 rounded-md">
+          <h3 className="text-red-800 font-semibold mb-2">Code Execution Error</h3>
+          <p className="text-red-700 text-sm mb-2">
+            There was an error executing your custom layout code.
+          </p>
+          <details className="text-xs text-red-600">
+            <summary className="cursor-pointer font-medium">Error Details</summary>
+            <pre className="mt-2 whitespace-pre-wrap">{(err as Error).message}</pre>
+          </details>
+        </div>
+      );
     }
-  } catch (err) {
-    renderedLayout = (
-      <div className="p-4 text-red-600">
-        Error rendering layout: {(err as Error).message}
-      </div>
-    );
-  }
+  };
 
   return (
     <Card className="p-4 bg-white rounded shadow-md max-w-full overflow-x-auto">

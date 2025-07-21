@@ -16,6 +16,7 @@ import { SidebarLayout } from "./resume-layouts/SidebarLayout";
 // Import new hooks
 import { useCustomLayoutRenderer, ResumeLayoutData } from '../hooks/useCustomLayoutRenderer';
 import { useResumePDFGenerator } from '../hooks/useResumePDFGenerator';
+import { ErrorBoundary } from './ErrorBoundary';
 
 interface ResumePreviewProps {
   personalInfo: PersonalInfoData;
@@ -129,7 +130,9 @@ export function ResumePreview({
             ref={contentRef}
             className={`${theme === "sidebar" ? "flex" : ""}`} // Sidebar layout might need flex container
           >
-            {renderLayout()}
+            <ErrorBoundary resetKey={customLayoutCode}>
+              {renderLayout()}
+            </ErrorBoundary>
           </div>
         </Card>
       </div>

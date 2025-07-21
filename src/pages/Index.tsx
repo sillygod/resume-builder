@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { PersonalInfo, PersonalInfoData } from "@/components/PersonalInfo";
-import { WorkExperience, WorkExperienceEntry } from "@/components/WorkExperience";
-import { Education, EducationEntry } from "@/components/Education";
+import { PersonalInfoData } from "@/components/PersonalInfo";
+import { WorkExperienceEntry } from "@/components/WorkExperience";
+import { EducationEntry } from "@/components/Education";
 import { ResumePreview } from "@/components/ResumePreview";
 import { ResumeAssistant } from "@/components/ResumeAssistant";
 import { Download, Upload } from "lucide-react";
 import { exportToJsonResume, importFromJsonResume, ResumeDataState } from "@/utils/jsonResume";
-import { FoldablePanel } from "@/components/FoldablePanel";
 import { useTheme, ThemeName } from "@/themes/ThemeContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShowPreviewButton } from "@/components/ShowPreviewButton";
@@ -31,7 +30,6 @@ const Index = () => {
   const { currentTheme, setTheme } = useTheme();
   const [resumeData, setResumeData] = useState<ResumeDataState>(initialResumeData);
   const [showPreview, setShowPreview] = useState(false);
-  const [isFolded, setIsFolded] = useState(false);
   const [selectedLayout, setSelectedLayout] = useState<string>("Modern");
   const [layoutProps, setLayoutProps] = useState<Record<string, unknown>>({});
   const [customCode, setCustomCode] = useState<string | null>(null);
@@ -74,7 +72,7 @@ const Index = () => {
             skills: importedData.skills,
             extraData: importedData.extraData || {},
           });
-          
+
           if (importedData.theme) {
             setTheme(importedData.theme as ThemeName);
           }
@@ -126,9 +124,9 @@ const Index = () => {
       <div className="container py-8">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 space-y-4 md:space-y-0">
           <h1 className="text-4xl font-bold text-primary">Resume Builder</h1>
-          
+
           <div className="flex flex-wrap gap-2 items-center">
-            
+
             <input
               type="file"
               accept=".json"
@@ -150,7 +148,7 @@ const Index = () => {
             >
               <Download className="w-4 h-4" /> Export JSON
             </Button>
-            <ShowPreviewButton 
+            <ShowPreviewButton
               showPreview={showPreview}
               togglePreview={() => setShowPreview(!showPreview)}
               handlePreviewPdf={handlePreviewPdf}
@@ -163,10 +161,10 @@ const Index = () => {
             <TabsTrigger value="editor">Editor</TabsTrigger>
             <TabsTrigger value="assistant">AI Assistant</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="editor">
             <div className="grid gap-8 lg:grid-cols-2">
-              <FoldablePanel setIsFolded={setIsFolded} isFolded={isFolded}>
+              <div className="lg:col-span-1">
                 <LayoutEditor
                   selectedLayout={selectedLayout}
                   setSelectedLayout={setSelectedLayout}
@@ -184,10 +182,10 @@ const Index = () => {
                   jsonValue={jsonValue}
                   setJsonValue={setJsonValue}
                 />
-              </FoldablePanel>
+              </div>
 
               {showPreview && (
-                <div className={`${isFolded ? "col-span-2" : "lg:col-span-1"}`}>
+                <div className="lg:col-span-1">
                   <ResumePreview
                     personalInfo={resumeData.personalInfo}
                     workExperience={resumeData.workExperience}
@@ -201,18 +199,18 @@ const Index = () => {
               )}
             </div>
           </TabsContent>
-          
+
           <TabsContent value="assistant">
             <div className="grid gap-8 lg:grid-cols-2">
               <div className="lg:col-span-1">
-                <ResumeAssistant 
+                <ResumeAssistant
                   personalInfo={resumeData.personalInfo}
                   workExperience={resumeData.workExperience}
                   education={resumeData.education}
                   skills={resumeData.skills}
                 />
               </div>
-              
+
               <div className="lg:col-span-1">
                 <ResumePreview
                   personalInfo={resumeData.personalInfo}

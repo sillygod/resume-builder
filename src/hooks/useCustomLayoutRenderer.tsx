@@ -85,11 +85,18 @@ export const useCustomLayoutRenderer = ({
         education: resumeData.education,
         skills: resumeData.skills,
         extraData: resumeData.extraData,
+        // Common variables that might be used in custom code
+        basics: resumeData.basics,
+        work: resumeData.work,
         // Icons
         Mail,
         Phone,
         MapPin,
         Link, // Use the renamed import
+        // Common event handler placeholder to prevent 'e is not defined' errors
+        e: null,
+        event: null,
+        console: console, // Allow console logging in custom code
       };
       
       // The 'props' argument to CustomLayout will be the resumeData object.
@@ -99,11 +106,18 @@ export const useCustomLayoutRenderer = ({
         "React",          // React is explicitly passed
         "props",          // This will be `resumeData`
         ...Object.keys(scope), // Other variables available in the scope
-        `${transformedCode} 
-        if (typeof CustomLayout !== 'function') {
-          throw new Error('CustomLayout is not defined or not a function. Make sure your code exports or defines a component named CustomLayout.');
+        `
+        try {
+          ${transformedCode} 
+          if (typeof CustomLayout !== 'function') {
+            throw new Error('CustomLayout is not defined or not a function. Make sure your code exports or defines a component named CustomLayout.');
+          }
+          return React.createElement(CustomLayout, props);
+        } catch (error) {
+          console.error('Error in custom layout execution:', error);
+          throw new Error('Custom layout execution failed: ' + (error.message || error));
         }
-        return React.createElement(CustomLayout, props);`
+        `
       );
 
       const renderedElement = func(
