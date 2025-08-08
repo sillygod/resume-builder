@@ -45,3 +45,8 @@ This project is a React application built with:
 - **Shadcn UI:** For pre-built, accessible, and customizable UI components.
 - **Tailwind CSS:** For utility-first CSS styling.
 - **JSON Resume:** As the standard format for resume data.
+
+
+## experiment ai analyze repo
+
+https://github.com/yamadashy/repomix

@@ -1,0 +1,2820 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+The content has been processed where content has been compressed (code blocks are separated by ⋮---- delimiter).
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Content has been compressed - code blocks are separated by ⋮---- delimiter
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+public/
+  placeholder.svg
+src/
+  components/
+    resume-layouts/
+      CenteredLayout.tsx
+      layoutTemplates.tsx
+      ModernLayout.tsx
+      SidebarLayout.tsx
+      SimpleLayout.tsx
+    resumeAssistant/
+      AISettingsDialog.tsx
+      ChatInput.tsx
+      ChatMessages.tsx
+      PromptTemplates.tsx
+    ui/
+      accordion.tsx
+      alert-dialog.tsx
+      alert.tsx
+      aspect-ratio.tsx
+      avatar.tsx
+      badge.tsx
+      breadcrumb.tsx
+      button.tsx
+      calendar.tsx
+      card.tsx
+      carousel.tsx
+      chart.tsx
+      checkbox.tsx
+      collapsible.tsx
+      command.tsx
+      context-menu.tsx
+      dialog.tsx
+      drawer.tsx
+      dropdown-menu.tsx
+      form.tsx
+      hover-card.tsx
+      input-otp.tsx
+      input.tsx
+      label.tsx
+      menubar.tsx
+      navigation-menu.tsx
+      pagination.tsx
+      popover.tsx
+      progress.tsx
+      radio-group.tsx
+      resizable.tsx
+      scroll-area.tsx
+      select.tsx
+      separator.tsx
+      sheet.tsx
+      sidebar.tsx
+      skeleton.tsx
+      slider.tsx
+      sonner.tsx
+      switch.tsx
+      table.tsx
+      tabs.tsx
+      textarea.tsx
+      toast.tsx
+      toaster.tsx
+      toggle-group.tsx
+      toggle.tsx
+      tooltip.tsx
+      use-toast.ts
+    DynamicFields.tsx
+    Education.test.tsx
+    Education.tsx
+    ErrorBoundary.tsx
+    FoldablePanel.tsx
+    LayoutEditor.tsx
+    LayoutPreview.tsx
+    PersonalInfo.test.tsx
+    PersonalInfo.tsx
+    ResumeAssistant.tsx
+    ResumePreview.test.tsx
+    ResumePreview.tsx
+    ShowPreviewButton.tsx
+    Skills.tsx
+    WorkExperience.test.tsx
+    WorkExperience.tsx
+  hooks/
+    use-mobile.tsx
+    use-toast.ts
+    useCustomLayoutRenderer.tsx
+    useDynamicFormFields.tsx
+    useEditableListManager.tsx
+    useResumePDFGenerator.tsx
+  lib/
+    utils.ts
+  pages/
+    Index.tsx
+    NotFound.tsx
+  themes/
+    ThemeContext.tsx
+  types/
+    resumeAssistantTypes.ts
+  utils/
+    aiUtils.test.ts
+    aiUtils.ts
+    jsonResume.test.ts
+    jsonResume.ts
+    resumeAssistantUtils.test.ts
+    resumeAssistantUtils.ts
+  App.css
+  App.tsx
+  index.css
+  main.tsx
+  setupTests.ts
+  vite-env.d.ts
+.gitignore
+components.json
+eslint.config.js
+index.html
+package.json
+postcss.config.js
+README.md
+tailwind.config.ts
+tsconfig.app.json
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="public/placeholder.svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" fill="none"><rect width="1200" height="1200" fill="#EAEAEA" rx="3"/><g opacity=".5"><g opacity=".5"><path fill="#FAFAFA" d="M600.709 736.5c-75.454 0-136.621-61.167-136.621-136.62 0-75.454 61.167-136.621 136.621-136.621 75.453 0 136.62 61.167 136.62 136.621 0 75.453-61.167 136.62-136.62 136.62Z"/><path stroke="#C9C9C9" stroke-width="2.418" d="M600.709 736.5c-75.454 0-136.621-61.167-136.621-136.62 0-75.454 61.167-136.621 136.621-136.621 75.453 0 136.62 61.167 136.62 136.621 0 75.453-61.167 136.62-136.62 136.62Z"/></g><path stroke="url(#a)" stroke-width="2.418" d="M0-1.209h553.581" transform="scale(1 -1) rotate(45 1163.11 91.165)"/><path stroke="url(#b)" stroke-width="2.418" d="M404.846 598.671h391.726"/><path stroke="url(#c)" stroke-width="2.418" d="M599.5 795.742V404.017"/><path stroke="url(#d)" stroke-width="2.418" d="m795.717 796.597-391.441-391.44"/><path fill="#fff" d="M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z"/><g clip-path="url(#e)"><path fill="#666" fill-rule="evenodd" d="M616.426 586.58h-31.434v16.176l3.553-3.554.531-.531h9.068l.074-.074 8.463-8.463h2.565l7.18 7.181V586.58Zm-15.715 14.654 3.698 3.699 1.283 1.282-2.565 2.565-1.282-1.283-5.2-5.199h-6.066l-5.514 5.514-.073.073v2.876a2.418 2.418 0 0 0 2.418 2.418h26.598a2.418 2.418 0 0 0 2.418-2.418v-8.317l-8.463-8.463-7.181 7.181-.071.072Zm-19.347 5.442v4.085a6.045 6.045 0 0 0 6.046 6.045h26.598a6.044 6.044 0 0 0 6.045-6.045v-7.108l1.356-1.355-1.282-1.283-.074-.073v-17.989h-38.689v23.43l-.146.146.146.147Z" clip-rule="evenodd"/></g><path stroke="#C9C9C9" stroke-width="2.418" d="M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z"/></g><defs><linearGradient id="a" x1="554.061" x2="-.48" y1=".083" y2=".087" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="b" x1="796.912" x2="404.507" y1="599.963" y2="599.965" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="c" x1="600.792" x2="600.794" y1="403.677" y2="796.082" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="d" x1="404.85" x2="796.972" y1="403.903" y2="796.02" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><clipPath id="e"><path fill="#fff" d="M581.364 580.535h38.689v38.689h-38.689z"/></clipPath></defs></svg>
+</file>
+
+<file path="src/components/resumeAssistant/AISettingsDialog.tsx">
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Check, Thermometer, Sliders } from "lucide-react";
+import { AIModel, aiModels, AIConfigOptions } from "@/utils/aiUtils";
+⋮----
+interface AISettingsDialogProps {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+  apiKey: string;
+  setApiKey: (key: string) => void;
+  apiUrl: string;
+  setApiUrl: (url: string) => void;
+  modelOptions: AIConfigOptions;
+  setModelOptions: (options: AIConfigOptions) => void;
+  customModel: string;
+  setCustomModel: (model: string) => void;
+  saveSettings: () => void;
+}
+⋮----
+const handleModelChange = (value: string) =>
+⋮----
+onValueChange=
+</file>
+
+<file path="src/components/ui/accordion.tsx">
+import { ChevronDown } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/alert-dialog.tsx">
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
+</file>
+
+<file path="src/components/ui/alert.tsx">
+import { cva, type VariantProps } from "class-variance-authority"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/aspect-ratio.tsx">
+
+</file>
+
+<file path="src/components/ui/avatar.tsx">
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/badge.tsx">
+import { cva, type VariantProps } from "class-variance-authority"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+export interface BadgeProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof badgeVariants> {}
+⋮----
+<div className=
+</file>
+
+<file path="src/components/ui/breadcrumb.tsx">
+import { Slot } from "@radix-ui/react-slot"
+import { ChevronRight, MoreHorizontal } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/button.tsx">
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
+}
+</file>
+
+<file path="src/components/ui/calendar.tsx">
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { DayPicker } from "react-day-picker";
+⋮----
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+⋮----
+export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+</file>
+
+<file path="src/components/ui/card.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+className=
+⋮----
+<div ref=
+</file>
+
+<file path="src/components/ui/carousel.tsx">
+import useEmblaCarousel, {
+  type UseEmblaCarouselType,
+} from "embla-carousel-react"
+import { ArrowLeft, ArrowRight } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+⋮----
+type CarouselApi = UseEmblaCarouselType[1]
+type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
+type CarouselOptions = UseCarouselParameters[0]
+type CarouselPlugin = UseCarouselParameters[1]
+⋮----
+type CarouselProps = {
+  opts?: CarouselOptions
+  plugins?: CarouselPlugin
+  orientation?: "horizontal" | "vertical"
+  setApi?: (api: CarouselApi) => void
+}
+⋮----
+type CarouselContextProps = {
+  carouselRef: ReturnType<typeof useEmblaCarousel>[0]
+  api: ReturnType<typeof useEmblaCarousel>[1]
+  scrollPrev: () => void
+  scrollNext: () => void
+  canScrollPrev: boolean
+  canScrollNext: boolean
+} & CarouselProps
+⋮----
+function useCarousel()
+</file>
+
+<file path="src/components/ui/chart.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+// Format: { THEME_NAME: CSS_SELECTOR }
+⋮----
+export type ChartConfig = {
+  [k in string]: {
+    label?: React.ReactNode
+    icon?: React.ComponentType
+  } & (
+    | { color?: string; theme?: never }
+    | { color?: never; theme: Record<keyof typeof THEMES, string> }
+  )
+}
+⋮----
+type ChartContextProps = {
+  config: ChartConfig
+}
+⋮----
+function useChart()
+⋮----
+className=
+⋮----
+<div className=
+⋮----
+// Helper to extract item config from a payload.
+</file>
+
+<file path="src/components/ui/checkbox.tsx">
+import { Check } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/collapsible.tsx">
+
+</file>
+
+<file path="src/components/ui/command.tsx">
+import { type DialogProps } from "@radix-ui/react-dialog"
+import { Command as CommandPrimitive } from "cmdk"
+import { Search } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/context-menu.tsx">
+import { Check, ChevronRight, Circle } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/dialog.tsx">
+import { X } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/drawer.tsx">
+import { Drawer as DrawerPrimitive } from "vaul"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+const Drawer = (
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/dropdown-menu.tsx">
+import { Check, ChevronRight, Circle } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/form.tsx">
+import { Slot } from "@radix-ui/react-slot"
+import {
+  Controller,
+  ControllerProps,
+  FieldPath,
+  FieldValues,
+  FormProvider,
+  useFormContext,
+} from "react-hook-form"
+⋮----
+import { cn } from "@/lib/utils"
+import { Label } from "@/components/ui/label"
+⋮----
+type FormFieldContextValue<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> = {
+  name: TName
+}
+⋮----
+const FormField = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
+  ...props
+}: ControllerProps<TFieldValues, TName>) =>
+⋮----
+const useFormField = () =>
+⋮----
+type FormItemContextValue = {
+  id: string
+}
+⋮----
+<div ref=
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/hover-card.tsx">
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/input-otp.tsx">
+import { OTPInput, OTPInputContext } from "input-otp"
+import { Dot } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+containerClassName=
+className=
+⋮----
+<div ref=
+</file>
+
+<file path="src/components/ui/input.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/label.tsx">
+import { cva, type VariantProps } from "class-variance-authority"
+⋮----
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/menubar.tsx">
+import { Check, ChevronRight, Circle } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/navigation-menu.tsx">
+import { cva } from "class-variance-authority"
+import { ChevronDown } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/pagination.tsx">
+import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+import { ButtonProps, buttonVariants } from "@/components/ui/button"
+⋮----
+const Pagination = (
+⋮----
+className=
+⋮----
+<li ref=
+⋮----
+const PaginationPrevious = (
+</file>
+
+<file path="src/components/ui/popover.tsx">
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/progress.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/radio-group.tsx">
+import { Circle } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/resizable.tsx">
+import { GripVertical } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/scroll-area.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/select.tsx">
+import { Check, ChevronDown, ChevronUp } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/separator.tsx">
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/sheet.tsx">
+import { cva, type VariantProps } from "class-variance-authority"
+import { X } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+interface SheetContentProps
+  extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
+  VariantProps<typeof sheetVariants> { }
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/sidebar.tsx">
+import { Slot } from "@radix-ui/react-slot"
+import { VariantProps, cva } from "class-variance-authority"
+import { PanelLeft } from "lucide-react"
+⋮----
+import { useIsMobile } from "@/hooks/use-mobile"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Separator } from "@/components/ui/separator"
+import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { Skeleton } from "@/components/ui/skeleton"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+⋮----
+type SidebarContext = {
+  state: "expanded" | "collapsed"
+  open: boolean
+  setOpen: (open: boolean) => void
+  openMobile: boolean
+  setOpenMobile: (open: boolean) => void
+  isMobile: boolean
+  toggleSidebar: () => void
+}
+⋮----
+function useSidebar()
+⋮----
+// This is the internal state of the sidebar.
+// We use openProp and setOpenProp for control from outside the component.
+⋮----
+// This sets the cookie to keep the sidebar state.
+⋮----
+// Helper to toggle the sidebar.
+⋮----
+// Adds a keyboard shortcut to toggle the sidebar.
+⋮----
+const handleKeyDown = (event: KeyboardEvent) =>
+⋮----
+// We add a state so that we can do data-state="expanded" or "collapsed".
+// This makes it easier to style the sidebar with Tailwind classes.
+⋮----
+className=
+⋮----
+{/* This is what handles the sidebar gap on desktop */}
+⋮----
+// Adjust the padding for floating and inset variants.
+⋮----
+onClick?.(event)
+toggleSidebar()
+⋮----
+// Increases the hit area of the button on mobile.
+⋮----
+// Increases the hit area of the button on mobile.
+⋮----
+// Random width between 50 to 90%.
+</file>
+
+<file path="src/components/ui/skeleton.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/slider.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/sonner.tsx">
+import { useTheme } from "next-themes"
+import { Toaster as Sonner } from "sonner"
+⋮----
+type ToasterProps = React.ComponentProps<typeof Sonner>
+⋮----
+const Toaster = (
+</file>
+
+<file path="src/components/ui/switch.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/table.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+className=
+⋮----
+<thead ref=
+</file>
+
+<file path="src/components/ui/tabs.tsx">
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/toast.tsx">
+import { cva, type VariantProps } from "class-variance-authority"
+import { X } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+⋮----
+type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
+⋮----
+type ToastActionElement = React.ReactElement<typeof ToastAction>
+</file>
+
+<file path="src/components/ui/toaster.tsx">
+import { useToast } from "@/hooks/use-toast"
+import {
+  Toast,
+  ToastClose,
+  ToastDescription,
+  ToastProvider,
+  ToastTitle,
+  ToastViewport,
+} from "@/components/ui/toast"
+</file>
+
+<file path="src/components/ui/toggle-group.tsx">
+import { type VariantProps } from "class-variance-authority"
+⋮----
+import { cn } from "@/lib/utils"
+import { toggleVariants } from "@/components/ui/toggle"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/toggle.tsx">
+import { cva, type VariantProps } from "class-variance-authority"
+⋮----
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/tooltip.tsx">
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/use-toast.ts">
+import { useToast, toast } from "@/hooks/use-toast";
+</file>
+
+<file path="src/components/DynamicFields.tsx">
+import React from 'react';
+⋮----
+interface DynamicFieldsProps {
+  data: Record<string, any>;
+}
+⋮----
+<div className="text-sm">
+⋮----
+</file>
+
+<file path="src/components/Education.test.tsx">
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent, within, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { Education, EducationEntry } from './Education'; // Adjust path if necessary
+⋮----
+// 'description' is not in the component's EducationEntry interface
+⋮----
+const getEntryContainer = (index: number) =>
+⋮----
+// console.log('mainListOfEntriesContainer.innerHTML:', mainListOfEntriesContainer.innerHTML);
+⋮----
+// No description field in the component's new entry structure
+⋮----
+const entryContainer = getEntryContainer(0);
+⋮----
+const removeButton = within(firstEntryContainer).getAllByRole('button')[0]; // Assumes trash icon button is the first/only direct button
+</file>
+
+<file path="src/components/ErrorBoundary.tsx">
+import React, { Component, ReactNode } from 'react';
+⋮----
+interface Props {
+  children: ReactNode;
+  fallback?: ReactNode;
+  resetKey?: string | number; // Add a reset key to force boundary reset
+}
+⋮----
+resetKey?: string | number; // Add a reset key to force boundary reset
+⋮----
+interface State {
+  hasError: boolean;
+  error?: Error;
+  resetKey?: string | number;
+}
+⋮----
+constructor(props: Props)
+⋮----
+static getDerivedStateFromError(error: Error): State
+⋮----
+static getDerivedStateFromProps(props: Props, state: State): State | null
+⋮----
+// Reset error boundary when resetKey changes
+⋮----
+componentDidCatch(error: Error, errorInfo: React.ErrorInfo)
+</file>
+
+<file path="src/components/PersonalInfo.test.tsx">
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event'; // Still use for clicks
+import { PersonalInfo, PersonalInfoData } from './PersonalInfo'; // Adjust path as needed
+⋮----
+// ... other initial rendering assertions ...
+⋮----
+expect(screen.getByLabelText('Summary').tagName).toBe('TEXTAREA');
+expect(screen.getByLabelText('Description').tagName).toBe('TEXTAREA');
+expect(screen.getByLabelText('Bio').tagName).toBe('TEXTAREA');
+⋮----
+expect(screen.getByLabelText('About').tagName).toBe('INPUT');
+⋮----
+onChange=
+⋮----
+// Use fireEvent.change for direct value setting
+⋮----
+expect(fullNameInput.value).toBe(newFullName); // Check input value after re-render
+⋮----
+data={currentData} // currentData now includes previous fullName change
+⋮----
+const user = userEvent.setup(); // userEvent for clicks
+</file>
+
+<file path="src/components/ResumePreview.test.tsx">
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { ResumePreview, ResumePreviewProps } from './ResumePreview';
+import { PersonalInfoData } from '@/components/PersonalInfo';
+import { WorkExperienceEntry } from '@/components/WorkExperience';
+import { EducationEntry } from '@/components/Education';
+import { ThemeName } from '@/themes/ThemeContext';
+import React from 'react';
+⋮----
+// --- Mocks ---
+// Revert to @/ alias paths for mocks, assuming Vitest alias config is correct
+⋮----
+// Return valid JS code (React.createElement) for the new Function constructor
+⋮----
+const html2pdfInstanceMock = { /* ... (same as before) ... */ };
+vi.mock('html2pdf.js', () => ({ /* ... (same as before) ... */ }));
+⋮----
+cloneNode: vi.fn(function(this: any, deep: boolean) { /* ... more detailed cloneNode ... */
+⋮----
+// Check for the component's custom error message part
+⋮----
+// And check for the specific React error message part that the component includes
+</file>
+
+<file path="src/components/ShowPreviewButton.tsx">
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Eye, EyeOff, Download } from "lucide-react";
+⋮----
+interface ShowPreviewButtonProps {
+  showPreview: boolean;
+  togglePreview: () => void;
+  handlePreviewPdf: () => void;
+}
+</file>
+
+<file path="src/components/WorkExperience.test.tsx">
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent, within, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { WorkExperience, WorkExperienceEntry } from './WorkExperience'; // Adjust path
+⋮----
+const getEntryContainer = (index: number) =>
+⋮----
+// .space-y-4 is the main card for WorkExperience section
+// .space-y-6 is the direct container of the list of experience entries
+⋮----
+// Fallback or error if structure is not as expected
+// This might happen if there are no entries, in which case .space-y-6 might not be rendered or found this way.
+// For tests that expect entries, this should ideally be found.
+⋮----
+// console.log(workExperienceHeading.parentElement?.innerHTML); // Log parent HTML for context
+⋮----
+// Get direct children DIV elements that have the expected class for an entry
+⋮----
+// console.log('mainListOfEntriesContainer.innerHTML:', mainListOfEntriesContainer.innerHTML);
+⋮----
+// Determine which input is the end date input. Assumes Start Date is always first.
+⋮----
+// If only one date input, and we are checking endDate, this might be an issue
+// or it could mean start date is not rendered or this is the only date field.
+// For this component, we expect two date fields per entry.
+// This path indicates a problem if reached for endDate check unless startDate is not a date type.
+endDateInput = allDateInputsInEntry[0]; // This might be start date if only one present
+⋮----
+// If start date and end date inputs are the same due to only one being found,
+// and endDate is "Present", then its value should be empty.
+⋮----
+// This situation implies that the "Present" value for endDate means the input field is the same as startDate,
+// which is not typical. More likely, the second date input is targeted and its value is empty.
+// The logic above for allDateInputsInEntry.length > 1 should handle the typical case.
+// This specific check is if only one date input was found in the entire entry.
+⋮----
+expect(endDateInput.value).toBe(""); // For "Present", the date input value is empty
+⋮----
+// After re-render, the new entry's form should be there.
+const entryContainer = getEntryContainer(0); // Get the first (and only) entry container
+⋮----
+// Need to re-render to ensure the button is interactive after initial render
+⋮----
+// Verify initial state (2 entries)
+⋮----
+// Re-render with one entry removed
+⋮----
+// Verify updated state (1 entry)
+</file>
+
+<file path="src/hooks/use-mobile.tsx">
+export function useIsMobile()
+⋮----
+const onChange = () =>
+</file>
+
+<file path="src/hooks/use-toast.ts">
+import type {
+  ToastActionElement,
+  ToastProps,
+} from "@/components/ui/toast"
+⋮----
+type ToasterToast = ToastProps & {
+  id: string
+  title?: React.ReactNode
+  description?: React.ReactNode
+  action?: ToastActionElement
+}
+⋮----
+function genId()
+⋮----
+type ActionType = typeof actionTypes
+⋮----
+type Action =
+  | {
+      type: ActionType["ADD_TOAST"]
+      toast: ToasterToast
+    }
+  | {
+      type: ActionType["UPDATE_TOAST"]
+      toast: Partial<ToasterToast>
+    }
+  | {
+      type: ActionType["DISMISS_TOAST"]
+      toastId?: ToasterToast["id"]
+    }
+  | {
+      type: ActionType["REMOVE_TOAST"]
+      toastId?: ToasterToast["id"]
+    }
+⋮----
+interface State {
+  toasts: ToasterToast[]
+}
+⋮----
+const addToRemoveQueue = (toastId: string) =>
+⋮----
+export const reducer = (state: State, action: Action): State =>
+⋮----
+// ! Side effects ! - This could be extracted into a dismissToast() action,
+// but I'll keep it here for simplicity
+⋮----
+function dispatch(action: Action)
+⋮----
+type Toast = Omit<ToasterToast, "id">
+⋮----
+function toast(
+⋮----
+const update = (props: ToasterToast)
+const dismiss = () => dispatch(
+⋮----
+function useToast()
+</file>
+
+<file path="src/hooks/useDynamicFormFields.tsx">
+import { useState, useEffect, useCallback } from 'react';
+⋮----
+// 1. Define Input Prop Types
+export interface UseDynamicFormFieldsProps {
+  initialData: Record<string, string>;
+  defaultFields: string[];
+  onAddField: (fieldName: string, initialValue: string) => void;
+}
+⋮----
+// Internal constants for special field names and keywords
+⋮----
+const DATE_KEYWORDS = ['date']; // Keywords that suggest input type="date"
+const TEXTAREA_KEYWORDS = ['summary', 'description', 'bio', 'about']; // Keywords for textarea
+⋮----
+// Helper function to format field labels (exported for use)
+export const formatFieldLabel = (fieldName: string): string =>
+⋮----
+.replace(/([A-Z])/g, ' $1') // Insert space before capital letters
+.replace(/_/g, ' ') // Replace underscores with spaces
+.replace(/^./, (str) => str.toUpperCase()) // Capitalize first letter
+⋮----
+// Helper function to determine input type (exported for use)
+export const getInputType = (fieldName: string): string =>
+⋮----
+// Helper function to determine if field should use textarea (exported for use)
+export const shouldUseTextarea = (fieldName: string): boolean =>
+⋮----
+export const useDynamicFormFields = ({
+  initialData,
+  defaultFields,
+  onAddField,
+}: UseDynamicFormFieldsProps) =>
+⋮----
+// 2. Hook State
+⋮----
+// 3. Core Logic & Returned Functions
+⋮----
+// Effect to update fields if initialData keys change externally (less common for this component)
+// This ensures that if fields are added to initialData from outside, they are reflected.
+⋮----
+setNewFieldNameState(''); // Reset field name on dialog close
+⋮----
+// Basic validation: not empty and not a duplicate
+⋮----
+const newFieldKey = trimmedNewFieldName.replace(/\s+/g, '_').toLowerCase(); // Simple key generation
+⋮----
+// Optionally, handle cases where the generated key might already exist,
+// though formatFieldLabel would make them distinct if user types "My Field" vs "my_field"
+// For simplicity, assuming generated key from a user-friendly name is unique enough for now.
+// Or, use the raw trimmedNewFieldName if keys can have spaces/caps (depends on data structure)
+// Let's use a camelCase or similar approach for the key if the label is "My New Field" -> "myNewField"
+⋮----
+.replace(/\s(.)/g, (match) => match[1].toUpperCase()) // camelCase spaces
+.replace(/^(.)/, (match) => match.toLowerCase());     // first letter lower
+⋮----
+// Handle duplicate key after sanitization if necessary, e.g., show error
+⋮----
+// For now, we'll proceed, but a production app might prevent this or add a suffix
+⋮----
+onAddField(keyFromName, ''); // Notify parent to add the new field with an empty value
+⋮----
+// If the exact typed name (after trim) is already a field
+⋮----
+// 4. Return Value
+⋮----
+setNewFieldName, // Expose the setter for the input field
+formatFieldLabel, // Exposing helper directly
+getInputType,     // Exposing helper directly
+shouldUseTextarea,// Exposing helper directly
+</file>
+
+<file path="src/hooks/useEditableListManager.tsx">
+import { useCallback } from 'react';
+⋮----
+// 1. Define Generic Type and Input Prop Types
+export interface Identifiable {
+  id: string;
+}
+⋮----
+export interface UseEditableListManagerProps<T extends Identifiable> {
+  items: T[];
+  onChange: (newItems: T[]) => void;
+  newItemFactory: () => Omit<T, 'id'>;
+}
+⋮----
+// Define Return Value Types
+export interface UseEditableListManagerReturn<T extends Identifiable> {
+  addItem: () => void;
+  updateItem: (id: string, field: keyof Omit<T, 'id'>, value: string) => void; // Value is string as per plan
+  removeItem: (id: string) => void;
+}
+⋮----
+updateItem: (id: string, field: keyof Omit<T, 'id'>, value: string) => void; // Value is string as per plan
+⋮----
+// 2. Hook Logic
+export const useEditableListManager = <T extends Identifiable>({
+  items,
+  onChange,
+  newItemFactory,
+}: UseEditableListManagerProps<T>): UseEditableListManagerReturn<T> =>
+⋮----
+const newItemId = Date.now().toString() + Math.random().toString(36).substring(2, 11); // Enhanced uniqueness
+⋮----
+// Create the new item ensuring 'id' is correctly typed and all other properties from newItemData are spread.
+// We need to cast newItemData to Partial<T> or T depending on whether newItemFactory provides all required fields.
+// Given newItemFactory returns Omit<T, 'id'>, it implies it provides all other required fields.
+⋮----
+} as T; // Cast to T, assuming newItemData + id fulfills T
+⋮----
+// The 'field' is a keyof Omit<T, 'id'>, so it cannot be 'id'.
+// The 'value' is a string. The actual type of T[field] might not be a string.
+// The consuming component/code is responsible for ensuring the string value is appropriate
+// or for converting it before calling updateItem if T[field] is, e.g., a number or boolean.
+// This matches the behavior of typical HTML input onChange events.
+⋮----
+// 3. Return Value
+</file>
+
+<file path="src/lib/utils.ts">
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+⋮----
+export function cn(...inputs: ClassValue[])
+</file>
+
+<file path="src/pages/NotFound.tsx">
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+⋮----
+const NotFound = () =>
+</file>
+
+<file path="src/themes/ThemeContext.tsx">
+// src/themes/ThemeContext.tsx
+import React, { createContext, useContext, useState } from 'react';
+⋮----
+// Define theme types
+export type ThemeName = 'simple' | 'centered' | 'sidebar' | 'modern';
+⋮----
+// Theme context type
+interface ThemeContextType {
+  currentTheme: ThemeName;
+  setTheme: (theme: ThemeName) => void;
+}
+⋮----
+// Create context with default values
+⋮----
+// Theme provider component
+export const ThemeProvider: React.FC<
+⋮----
+const setTheme = (theme: ThemeName) =>
+⋮----
+// Custom hook to use the theme
+export const useTheme = ()
+⋮----
+// Theme configuration
+export interface ThemeConfig {
+  layout: {
+    containerClass: string;
+    contentClass: string;
+  };
+  personalInfo: {
+    containerClass: string;
+    titleClass: string;
+    subtitleClass: string;
+    gridClass: string;
+    infoContainerClass: string;
+    avatarContainerClass: string;
+    contactContainerClass: string;
+    contactItemClass: string;
+    labelClass: string;
+    valueClass: string;
+  };
+  section: {
+    containerClass: string;
+    titleClass: string;
+    contentClass: string;
+  };
+  workExperience: {
+    containerClass: string;
+    titleClass: string;
+    entryClass: string;
+    jobTitleClass: string;
+    companyClass: string;
+    periodClass: string;
+    descriptionClass: string;
+  };
+  education: {
+    containerClass: string;
+    titleClass: string;
+    entryClass: string;
+    institutionClass: string;
+    degreeClass: string;
+    periodClass: string;
+  };
+  skills: {
+    containerClass: string;
+    titleClass: string;
+    skillsListClass: string;
+    skillItemClass: string;
+  };
+}
+⋮----
+// Define themes
+⋮----
+// Simple layout (left example in image)
+⋮----
+// Centered layout (middle example in image)
+⋮----
+// Sidebar layout (right example in image)
+⋮----
+// Modern layout (combination of the best elements)
+</file>
+
+<file path="src/types/resumeAssistantTypes.ts">
+export interface Message {
+  role: "system" | "user" | "assistant";
+  content: string;
+  timestamp?: Date;
+}
+⋮----
+export interface ResumeAssistantProps {
+  personalInfo: {
+    fullName: string;
+    jobTitle: string;
+    email: string;
+    phone: string;
+    location: string;
+    [key: string]: string;
+  };
+  workExperience: {
+    id: string;
+    company: string;
+    position: string;
+    startDate: string;
+    endDate: string;
+    description: string;
+  }[];
+  education: {
+    id: string;
+    institution: string;
+    degree: string;
+    field: string;
+    graduationDate: string;
+  }[];
+  skills: string[];
+}
+</file>
+
+<file path="src/utils/aiUtils.test.ts">
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { callAIAPI, AIConfigOptions } from './aiUtils'; // AIRequest is not used by callAIAPI directly
+import { toast } from 'sonner';
+⋮----
+// Define Message interface locally for test clarity if not exported from aiUtils
+interface Message {
+  role: "system" | "user" | "assistant";
+  content: string;
+}
+⋮----
+// Mock 'sonner' library
+⋮----
+// Mock global fetch
+⋮----
+// Default successful fetch mock
+⋮----
+text: async () => "AI response as text" // for non-json ok:false cases
+⋮----
+json: async () => errorPayload, // This won't be called by current impl. as it uses .text() for !ok
+text: async () => JSON.stringify(errorPayload), // Current impl. uses .text()
+⋮----
+// The actual implementation throws a generic error, which is then caught by the outer catch block.
+// The error message from new Error(`API request failed: ${response.status} ${errorText}`) is logged.
+// The toast message is the generic one from the catch block.
+⋮----
+// Removed tests for undefined API_URL/API_KEY as they are direct function args.
+// Caller is responsible for providing them. If they are empty/invalid, API call would fail.
+⋮----
+// The actual code will throw "TypeError: Cannot read properties of undefined (reading 'message')"
+// when data.choices[0] is undefined, which then gets caught by the generic error handler.
+⋮----
+json: async () => ({ choices: [{ message: {} }] }), // Message content missing
+⋮----
+// The actual code will return undefined for data.choices[0].message.content, which is not an error state by itself,
+// but the function expects a string. Depending on strictness, this could be an issue.
+// However, the current implementation would try to return undefined which might not be desired.
+// Let's assume the generic catch-all if something goes wrong here.
+// If data.choices[0].message.content is undefined, it will be caught by the generic error handler due to how it's structured.
+// More precisely, if content is truly missing, it might return 'undefined' as a string or fail before.
+// Given the structure, if `content` is `undefined`, `return data.choices[0].message.content;` would return `undefined`.
+// This test needs to be more specific if we expect an error to be thrown or a specific toast.
+// The current code doesn't explicitly check if `content` is undefined and toast.
+// It relies on the overall try-catch. If `content` is not a string, it might not be what's expected downstream.
+// For now, assuming it would be caught by the main try-catch if it leads to an issue.
+// Test will likely show generic error message.
+</file>
+
+<file path="src/utils/jsonResume.test.ts">
+import { describe, it, expect } from 'vitest';
+import { exportToJsonResume, importFromJsonResume } from './jsonResume';
+import { ResumeDataState, JsonResume as ActualJsonResume } from './jsonResume';
+import { ThemeName } from '@/themes/ThemeContext';
+⋮----
+// Sample Data for testing export
+⋮----
+location: 'New York, NY', // maps to basics.location.city
+jobTitle: 'Software Engineer', // maps to basics.jobTitle
+website: 'johndoe.dev', // maps to basics.website
+linkedin: 'linkedin.com/in/johndoe', // maps to basics.linkedin
+github: 'github.com/johndoe', // maps to basics.github
+⋮----
+jobTitle: 'Senior Developer', // maps to work.position
+⋮----
+location: 'San Francisco, CA', // Not explicitly mapped in current export to work item
+description: 'Led development of key features.', // maps to work.summary
+⋮----
+degree: 'M.Sc.', // maps to education.studyType
+field: 'Computer Science', // maps to education.area
+startDate: '2016-09-01', // maps to education.startDate
+graduationDate: '2018-05-31', // maps to education.endDate
+location: 'Cambridge, MA', // Not explicitly mapped in current export to education item
+description: 'Thesis on ML.', // maps to education.summary
+⋮----
+// Sample Data for testing import
+⋮----
+label: 'Product Manager (from Label)', // Fallback for jobTitle
+jobTitle: 'Product Manager (from JobTitle)', // Preferred for jobTitle
+⋮----
+website: 'janeroe.co', // maps to personalInfo.website
+location: { city: 'Beverly Hills', countryCode: 'US' }, // location.city maps to personalInfo.location
+// profiles are not directly mapped by current import to dedicated personalInfo fields
+⋮----
+// other string fields in basics are copied
+summary: "A brief summary of Jane." // e.g. this would be copied to personalInfo.summary
+⋮----
+name: 'Innovate Corp', // maps to company
+position: 'Lead Product Manager', // maps to jobTitle
+⋮----
+summary: 'Defined product strategy.', // maps to description
+location: 'Los Angeles, CA', // Not mapped to workExperience item
+⋮----
+area: 'Business Administration', // maps to field
+studyType: 'Bachelor', // maps to degree
+⋮----
+endDate: '2017-05-31', // maps to graduationDate
+summary: 'Graduated with honors.', // maps to description
+location: 'State College, PA', // Not mapped to education item
+⋮----
+theme: 'Classic', // Preferred theme source
+⋮----
+// theme: 'Obsolete', // Fallback theme source
+// Top-level extra data
+⋮----
+// 'custom' is just another top-level field if present
+⋮----
+expect(basics.location?.countryCode).toBe("US"); // Default
+// Check other string fields from personalInfo are copied
+⋮----
+expect(workJson?.position).toBe(workData.jobTitle); // jobTitle -> position
+⋮----
+expect(workJson?.summary).toBe(workData.description); // description -> summary
+⋮----
+expect(eduJson?.area).toBe(eduData.field); // field -> area
+expect(eduJson?.studyType).toBe(eduData.degree); // degree -> studyType
+⋮----
+expect(eduJson?.endDate).toBe(eduData.graduationDate); // graduationDate -> endDate
+expect(eduJson?.summary).toBe(eduData.description); // description -> summary
+⋮----
+// Implementation puts theme at root, not in meta for export
+⋮----
+// Prefers jobTitle, then label
+⋮----
+// Check if other string fields are copied
+⋮----
+expect(workImported.jobTitle).toBe(workJson?.position); // position -> jobTitle
+⋮----
+expect(workImported.description).toBe(workJson?.summary); // summary -> description
+⋮----
+expect(eduImported.field).toBe(eduJson?.area); // area -> field
+expect(eduImported.degree).toBe(eduJson?.studyType); // studyType -> degree
+⋮----
+expect(eduImported.graduationDate).toBe(eduJson?.endDate); // endDate -> graduationDate
+expect(eduImported.description).toBe(eduJson?.summary); // summary -> description
+⋮----
+expect(importedData.extraData?.custom).toEqual(sampleJsonResumeToImport.custom); // 'custom' is just another field
+expect(importedData.extraData?.meta).toBeUndefined(); // meta should be excluded
+expect(importedData.extraData?.basics).toBeUndefined(); // standard fields should be excluded
+⋮----
+const minimalJson: Partial<ActualJsonResume> = { // Use Partial for easier minimal construction
+basics: { name: "Minimal Person" } // email, phone, location, jobTitle etc. are missing
+// work, education, skills, meta are missing
+⋮----
+expect(importedMinimal.personalInfo.jobTitle).toBe(""); // Fallback to ""
+⋮----
+expect(importedMinimal.personalInfo.location).toBe(''); // basics.location is undefined, so location?.city is undefined, then || ''
+⋮----
+expect(importedMinimal.theme).toBe('modern'); // Default theme
+</file>
+
+<file path="src/utils/resumeAssistantUtils.test.ts">
+import { describe, it, expect } from 'vitest';
+import {
+  getSystemPrompt,
+  getQuickPrompts,
+  getTemplatePrompts,
+} from './resumeAssistantUtils';
+import { PersonalInfoData } from '@/components/PersonalInfo';
+import { WorkExperienceEntry } from '@/components/WorkExperience';
+import { EducationEntry } from '@/components/Education';
+⋮----
+// Actual ResumeAssistantProps structure used by getSystemPrompt
+interface ResumeAssistantPropsForSystemPrompt {
+  personalInfo: PersonalInfoData;
+  workExperience: WorkExperienceEntry[]; // These have jobTitle, company, description etc.
+  education: EducationEntry[]; // These have degree, field, institution etc.
+  skills: string[];
+}
+⋮----
+workExperience: WorkExperienceEntry[]; // These have jobTitle, company, description etc.
+education: EducationEntry[]; // These have degree, field, institution etc.
+⋮----
+email: 'john.doe@example.com', // Not used in current system prompt impl
+phone: '123-456-7890',   // Not used
+location: 'New York, NY', // Not used
+website: 'johndoe.dev', // Not used
+linkedin: 'linkedin.com/johndoe', // Not used
+github: 'github.com/johndoe',   // Not used
+⋮----
+jobTitle: 'Senior Developer', // In ResumeAssistantProps, this is likely the source for 'position'
+position: 'Senior Developer', // Actual implementation uses w.position
+⋮----
+description: 'Developed cool stuff.', // Not directly used in summary string by current impl.
+⋮----
+graduationDate: '2020-05-31', // Not directly used in summary string by current impl.
+description: 'Studied hard.', // Not directly used
+⋮----
+// Work Experience: position at company
+⋮----
+// Education: degree in field from institution
+⋮----
+// jobTitle is missing
+⋮----
+// Actual implementation uses w.position. If jobTitle from ResumeAssistantProps is the source,
+// then it should be mapped to 'position' before getSystemPrompt if that's the design.
+// Assuming getSystemPrompt receives entries that might have undefined position.
+⋮----
+// Expects "undefined at Incomplete Corp" based on current impl: `${w.position} at ${w.company}`
+⋮----
+// Expects "undefined in undefined from Incomplete Uni" based on: `${e.degree} in ${e.field} from ${e.institution}`
+⋮----
+// For getQuickPrompts, the function expects { jobTitle: string }
+interface QuickPromptInfo {
+  jobTitle?: string; // Make it optional for testing missing case
+}
+⋮----
+jobTitle?: string; // Make it optional for testing missing case
+⋮----
+const prompts = getQuickPrompts(personalInfo as { jobTitle: string }); // Cast for strictness
+⋮----
+// Using exact titles from implementation
+⋮----
+// For getTemplatePrompts, the function expects { position: string }[]
+interface TemplateWorkExperience {
+  position?: string; // Make it optional for testing
+  // Add other fields if they become relevant to template prompts
+}
+⋮----
+position?: string; // Make it optional for testing
+// Add other fields if they become relevant to template prompts
+⋮----
+// Using exact titles from implementation
+⋮----
+{ position: undefined }, // First entry, position is undefined
+⋮----
+{ position: '' }, // First entry, position is empty string
+</file>
+
+<file path="src/utils/resumeAssistantUtils.ts">
+import { ResumeAssistantProps } from "@/types/resumeAssistantTypes";
+⋮----
+export const getSystemPrompt = (resumeData: ResumeAssistantProps): string =>
+⋮----
+export const getQuickPrompts = (personalInfo:
+⋮----
+export const getTemplatePrompts = (workExperience:
+</file>
+
+<file path="src/App.css">
+#root {
+⋮----
+.logo {
+.logo:hover {
+.logo.react:hover {
+⋮----
+a:nth-of-type(2) .logo {
+⋮----
+.card {
+⋮----
+.read-the-docs {
+</file>
+
+<file path="src/index.css">
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+⋮----
+@layer base {
+⋮----
+:root {
+⋮----
+.dark {
+⋮----
+* {
+⋮----
+@apply border-border;
+⋮----
+body {
+</file>
+
+<file path="src/main.tsx">
+import { createRoot } from 'react-dom/client'
+import App from './App.tsx'
+</file>
+
+<file path="src/setupTests.ts">
+
+</file>
+
+<file path="src/vite-env.d.ts">
+/// <reference types="vite/client" />
+</file>
+
+<file path="components.json">
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "default",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "tailwind.config.ts",
+    "css": "src/index.css",
+    "baseColor": "slate",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  }
+}
+</file>
+
+<file path="eslint.config.js">
+export default tseslint.config(
+</file>
+
+<file path="postcss.config.js">
+
+</file>
+
+<file path="tsconfig.app.json">
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
+    "noFallthroughCasesInSwitch": false,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src"]
+}
+</file>
+
+<file path="tsconfig.json">
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "noImplicitAny": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "noUnusedLocals": false,
+    "strictNullChecks": false
+  }
+}
+</file>
+
+<file path="tsconfig.node.json">
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["vite.config.ts"]
+}
+</file>
+
+<file path="src/components/resumeAssistant/ChatMessages.tsx">
+import React, { useRef, useEffect } from "react";
+import { Loader2 } from "lucide-react";
+import { Message } from "@/types/resumeAssistantTypes";
+⋮----
+interface ChatMessagesProps {
+  messages: Message[];
+  isLoading: boolean;
+}
+⋮----
+const scrollToBottom = () =>
+</file>
+
+<file path="src/components/resumeAssistant/PromptTemplates.tsx">
+import React from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+⋮----
+interface PromptTemplate {
+  title: string;
+  prompt: string;
+}
+⋮----
+interface PromptTemplatesProps {
+  templates: PromptTemplate[];
+  onSelect: (prompt: string) => void;
+}
+⋮----
+export function PromptTemplates(
+</file>
+
+<file path="src/components/ui/textarea.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+export interface TextareaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+⋮----
+className=
+</file>
+
+<file path="src/hooks/useResumePDFGenerator.tsx">
+import React from 'react';
+import { useReactToPrint } from 'react-to-print';
+import html2pdf from 'html2pdf.js';
+import { toast } from 'sonner'; // For error handling
+⋮----
+// 1. Define Input Prop Types
+export interface UseResumePDFGeneratorProps {
+  contentRef: React.RefObject<HTMLDivElement>;
+  fileNamePrefix?: string;
+}
+⋮----
+// Define Return Value Types
+export interface UseResumePDFGeneratorReturn {
+  downloadPDF: () => void; // From useReactToPrint
+  generatePdfPreviewUri: () => Promise<string | null>; // Using html2pdf.js
+}
+⋮----
+downloadPDF: () => void; // From useReactToPrint
+generatePdfPreviewUri: () => Promise<string | null>; // Using html2pdf.js
+⋮----
+// 2. Hook Logic
+export const useResumePDFGenerator = ({
+  contentRef,
+  fileNamePrefix = 'resume', // Default filename prefix
+}: UseResumePDFGeneratorProps): UseResumePDFGeneratorReturn =>
+⋮----
+fileNamePrefix = 'resume', // Default filename prefix
+⋮----
+// `useReactToPrint` Integration
+⋮----
+contentRef: contentRef, // Use the ref directly
+documentTitle: `${fileNamePrefix}.pdf`, // Set document title for print dialog/save
+// onBeforeGetContent: () => { /* ... */ },
+// onBeforePrint: () => { /* ... */ },
+// onAfterPrint: () => { /* ... */ },
+⋮----
+// `html2pdf.js` Integration for Preview
+const generatePdfPreviewUri = async (): Promise<string | null> =>
+⋮----
+margin: [0, 0, 0, 0], // Top, Left, Bottom, Right margins in mm
+⋮----
+// It's good to set width and height explicitly if possible,
+// especially if contentRef.current might not have intrinsic dimensions html2pdf likes.
+// Example:
+// width: contentRef.current.scrollWidth,
+// height: contentRef.current.scrollHeight,
+// windowWidth: contentRef.current.scrollWidth,
+// windowHeight: contentRef.current.scrollHeight,
+⋮----
+// pagebreak: { mode: ['avoid-all', 'css', 'legacy'] } // Optional: control page breaks
+⋮----
+// html2pdf returns a Promise-like object (its own implementation)
+⋮----
+.output('datauristring'); // Get PDF as data URI
+⋮----
+return pdfDataUri as string; // Cast because output('datauristring') should return string
+⋮----
+// 3. Return Value
+⋮----
+downloadPDF: handlePrintPDF as () => void, // Cast if necessary, useReactToPrint can return undefined if not ready
+</file>
+
+<file path="index.html">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>skill-story-scribe</title>
+    <meta name="description" content="resume" />
+    <meta name="author" content="jing" />
+    <meta property="og:image" content="/og-image.png" />
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="tailwind.config.ts">
+import type { Config } from "tailwindcss";
+</file>
+
+<file path="src/components/Skills.tsx">
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { X } from "lucide-react";
+⋮----
+interface SkillsProps {
+  skills: string[];
+  onChange: (skills: string[]) => void;
+}
+⋮----
+const addSkill = (e: React.FormEvent) =>
+⋮----
+const removeSkill = (skillToRemove: string) =>
+</file>
+
+<file path="src/utils/aiUtils.ts">
+import { toast } from "sonner";
+⋮----
+interface Message {
+  role: "system" | "user" | "assistant";
+  content: string;
+}
+⋮----
+interface ChatResponse {
+  choices: {
+    message: {
+      content: string;
+    };
+  }[];
+}
+⋮----
+export type AIModel = "gpt-3.5-turbo" | "gpt-4" | "claude-instant" | "claude-2" | "llama-2" | "mistral" | "custom";
+⋮----
+export interface AIModelOption {
+  id: AIModel;
+  name: string;
+  description: string;
+  defaultTemperature: number;
+  maxTokens: number;
+}
+⋮----
+export interface AIConfigOptions {
+  model: AIModel | string;
+  temperature: number;
+  maxTokens: number;
+}
+⋮----
+export async function callAIAPI(
+  messages: Message[], 
+  apiKey: string, 
+  apiUrl: string, 
+  options: AIConfigOptions
+): Promise<string>
+</file>
+
+<file path="src/App.tsx">
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Index from "./pages/Index";
+import NotFound from "./pages/NotFound";
+import { ThemeProvider } from "./themes/ThemeContext";
+⋮----
+{/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+</file>
+
+<file path=".gitignore">
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.aider*
+.qodo
+</file>
+
+<file path="README.md">
+# Resume Builder
+
+A web application that helps users create and manage their resumes. It allows for data input for personal information, work experience, education, and skills.
+
+## Key Features
+
+- Import and export resume data in JSON Resume format.
+- Live preview of the resume as it's being built.
+- AI-powered assistant to help write or improve resume content.
+- Customizable layouts and themes for the resume.
+- Ability to edit resume layout code directly.
+
+## Running Locally
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   The application will typically be available at `http://localhost:5173`.
+
+## Building for Production
+
+1. **Run the build script:**
+   ```bash
+   npm run build
+   ```
+2. **Output:**
+   The production-ready files will be generated in the `dist` folder.
+
+## Tech Stack
+
+This project is a React application built with:
+
+- **Vite:** For fast development and optimized builds.
+- **TypeScript:** For static typing and improved code quality.
+- **Shadcn UI:** For pre-built, accessible, and customizable UI components.
+- **Tailwind CSS:** For utility-first CSS styling.
+- **JSON Resume:** As the standard format for resume data.
+
+
+## experiment ai analyze repo
+
+https://github.com/yamadashy/repomix
+</file>
+
+<file path="src/components/resume-layouts/layoutTemplates.tsx">
+import React from "react";
+import { themes } from "@/themes/ThemeContext";
+import { Mail, Phone, MapPin, Link } from "lucide-react";
+⋮----
+export interface ResumeLayoutProps {
+  resumeData: any;
+}
+⋮----
+{/* Personal Info Section */}
+⋮----
+{/* Summary Section */}
+⋮----
+{/* Work Experience Section */}
+⋮----
+{/* Education Section */}
+⋮----
+{/* Skills Section */}
+⋮----
+{/* Personal Info Section */}
+⋮----
+{/* Summary Section */}
+⋮----
+{/* Work Experience Section */}
+⋮----
+{/* Education Section */}
+⋮----
+{/* Skills Section */}
+⋮----
+{/* Left Sidebar */}
+⋮----
+{/* Skills in sidebar */}
+⋮----
+{/* Main Content */}
+⋮----
+{/* Personal Info Section */}
+⋮----
+{/* Summary Section */}
+⋮----
+{/* Work Experience Section */}
+⋮----
+{/* Education Section */}
+⋮----
+{/* Skills Section */}
+⋮----
+// Generate JSX strings for use in the code editor
+⋮----
+// Helper function to convert a JSX component to its string representation for display
+export const getLayoutJSXString = (layoutName: string) =>
+</file>
+
+<file path="src/components/resumeAssistant/ChatInput.tsx">
+import React, { forwardRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Send, Loader2 } from "lucide-react";
+⋮----
+interface ChatInputProps {
+  input: string;
+  setInput: (input: string) => void;
+  sendMessage: () => void;
+  isLoading: boolean;
+  handleKeyDown: (e: React.KeyboardEvent) => void;
+}
+</file>
+
+<file path="src/components/ResumeAssistant.tsx">
+import { useState, useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Bot, Settings, MessageCircle, Sparkles, BookOpen } from "lucide-react";
+import { toast } from "sonner";
+import { callAIAPI, AIConfigOptions } from "@/utils/aiUtils";
+import { Message, ResumeAssistantProps } from "@/types/resumeAssistantTypes";
+import { getSystemPrompt, getQuickPrompts, getTemplatePrompts } from "@/utils/resumeAssistantUtils";
+import { ChatMessages } from "./resumeAssistant/ChatMessages";
+import { ChatInput } from "./resumeAssistant/ChatInput";
+import { PromptTemplates } from "./resumeAssistant/PromptTemplates";
+import { AISettingsDialog } from "./resumeAssistant/AISettingsDialog";
+⋮----
+export function ResumeAssistant({
+  personalInfo,
+  workExperience,
+  education,
+  skills,
+}: ResumeAssistantProps)
+⋮----
+const saveSettings = () =>
+⋮----
+const sendMessage = async () =>
+⋮----
+// Create messages array for the API
+⋮----
+// Prepend system message with context about the resume
+⋮----
+// Determine actual model to use (custom or predefined)
+⋮----
+const handleKeyDown = (e: React.KeyboardEvent) =>
+⋮----
+const handlePromptSelect = (prompt: string) =>
+</file>
+
+<file path="src/hooks/useCustomLayoutRenderer.tsx">
+import React, { useMemo } from 'react';
+⋮----
+import { Mail, Phone, MapPin, Link } from 'lucide-react'; // Renamed Link to LinkIcon to avoid conflict with HTML <link>
+⋮----
+// Assuming these types are exported from their respective files
+// Adjust paths if they are different or if a central types file is used.
+import { PersonalInfoData } from '../components/PersonalInfo';
+import { WorkExperienceEntry } from '../components/WorkExperience';
+import { EducationEntry } from '../components/Education';
+⋮----
+export interface ResumeLayoutData {
+  basics: PersonalInfoData;
+  work: WorkExperienceEntry[];
+  education: EducationEntry[];
+  skills: string[];
+  extraData?: Record<string, unknown>;
+  // Potentially add theme or other meta data if layouts need it
+}
+⋮----
+// Potentially add theme or other meta data if layouts need it
+⋮----
+interface UseCustomLayoutRendererProps {
+  customLayoutCode?: string | null;
+  resumeData: ResumeLayoutData; // This is the structured data for the layout
+}
+⋮----
+resumeData: ResumeLayoutData; // This is the structured data for the layout
+⋮----
+interface UseCustomLayoutRendererReturn {
+  renderedElement: React.ReactNode | null;
+  error: string | null;
+  transformedCodeForDebug?: string | null; // For debugging purposes, like in ResumePreview
+}
+⋮----
+transformedCodeForDebug?: string | null; // For debugging purposes, like in ResumePreview
+⋮----
+export const useCustomLayoutRenderer = ({
+  customLayoutCode,
+  resumeData,
+}: UseCustomLayoutRendererProps): UseCustomLayoutRendererReturn =>
+⋮----
+// Remove any comments from the code
+⋮----
+.replace(/^\s*[\r\n]/gm, ''); // Remove empty lines
+// Remove import statements
+⋮----
+// Remove block comments
+codeToTransform = codeToTransform.replace(/\/\*[\s\S]*?\*\/|(?<=[^:])\/\/.*|^\/\/.*/g, ""); // Improved comment removal
+// Remove line comments (already covered by above, but good to be explicit if separated)
+// codeToTransform = codeToTransform.replace(/\/\/.*$/gm, "");
+⋮----
+// Remove leading/trailing parentheses if present (often added by users copying snippets)
+⋮----
+// If the code does not define CustomLayout, wrap it
+// This allows users to provide just a JSX snippet
+⋮----
+// Wrap in a React.Fragment by default if it's pure JSX
+// The props passed to this CustomLayout will be the resumeData object
+⋮----
+presets: [['react', { runtime: 'classic' }]], // Use classic runtime for new Function approach
+}).code || ""; // Ensure code is not null
+⋮----
+// Scope for the dynamically created function
+// These are the variables accessible directly within the custom code if not using props.
+// And also for React.createElement if CustomLayout is defined globally by the code.
+⋮----
+// React is passed as the first argument to new Function
+// resumeData (as props) is passed as the second argument
+// Individual parts of resumeData for convenience if custom code expects them directly (less ideal)
+⋮----
+// Common variables that might be used in custom code
+⋮----
+// Icons
+⋮----
+Link, // Use the renamed import
+// Common event handler placeholder to prevent 'e is not defined' errors
+⋮----
+console: console, // Allow console logging in custom code
+⋮----
+// The 'props' argument to CustomLayout will be the resumeData object.
+// The custom code string (transformedCode) should define a component named CustomLayout.
+// That CustomLayout component will receive `resumeData` as its `props`.
+⋮----
+"React",          // React is explicitly passed
+"props",          // This will be `resumeData`
+...Object.keys(scope), // Other variables available in the scope
+⋮----
+resumeData, // This is the 'props' argument for CustomLayout
+⋮----
+transformedCodeForDebug: transformedCode // Include for debugging
+⋮----
+}, [customLayoutCode, resumeData]); // Dependencies for useMemo
+</file>
+
+<file path="src/components/Education.tsx">
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Plus, Trash2 } from "lucide-react";
+⋮----
+export interface EducationEntry {
+  id: string;
+  institution: string;
+  degree: string;
+  field: string;
+  graduationDate: string;
+}
+⋮----
+interface EducationProps {
+  entries: EducationEntry[];
+  onChange: (entries: EducationEntry[]) => void;
+}
+⋮----
+const addEducation = () =>
+⋮----
+const updateEducation = (id: string, field: keyof EducationEntry, value: string) =>
+⋮----
+const removeEducation = (id:string) =>
+⋮----
+updateEducation(edu.id, "institution", e.target.value)
+⋮----
+updateEducation(edu.id, "degree", e.target.value)
+⋮----
+updateEducation(edu.id, "field", e.target.value)
+⋮----
+updateEducation(edu.id, "graduationDate", e.target.value)
+</file>
+
+<file path="vite.config.ts">
+/// <reference types="vitest" />
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+⋮----
+// https://vitejs.dev/config/
+</file>
+
+<file path="src/components/WorkExperience.tsx">
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Plus, Trash2 } from "lucide-react";
+⋮----
+// Import the new hook
+import { useEditableListManager } from '../hooks/useEditableListManager'; // Adjust path if necessary
+⋮----
+export interface WorkExperienceEntry {
+  id: string;
+  company: string;
+  position: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+}
+⋮----
+interface WorkExperienceProps {
+  entries: WorkExperienceEntry[];
+  onChange: (entries: WorkExperienceEntry[]) => void;
+}
+⋮----
+// Define the factory function for new work experience entries
+const workExperienceFactory = (): Omit<WorkExperienceEntry, 'id'> => (
+⋮----
+// Call the hook
+⋮----
+addItem: addExperience, // Renaming for consistency with existing button handler
+updateItem: updateExperience, // Renaming for consistency
+removeItem: removeExperience // Renaming for consistency
+⋮----
+// Removed local addExperience, updateExperience, and removeExperience functions
+⋮----
+{/* onClick now calls the addExperience function from the hook */}
+⋮----
+// onClick now calls the removeExperience function from the hook
+⋮----
+<Label>Company</Label> {/* Assuming Label doesn't need htmlFor if input isn't id'd from it */}
+⋮----
+// onChange now calls the updateExperience function from the hook
+⋮----
+updateExperience(experience.id, "company", e.target.value)
+⋮----
+updateExperience(experience.id, "position", e.target.value)
+⋮----
+updateExperience(experience.id, "startDate", e.target.value)
+⋮----
+updateExperience(experience.id, "endDate", e.target.value)
+⋮----
+updateExperience(experience.id, "description", e.target.value)
+</file>
+
+<file path="src/components/PersonalInfo.tsx">
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+// Removed: useState from 'react' as it's now managed by the hook mostly
+⋮----
+// Removed: AlertDialog from '@/components/ui/alert-dialog' as Primitive is used directly.
+⋮----
+// Import the new hook and its helper functions if they are exported and needed separately (they are returned by the hook)
+import { 
+  useDynamicFormFields,
+  // formatFieldLabel, // No longer need to import if used from hook's return
+  // getInputType, 
+  // shouldUseTextarea 
+} from '../hooks/useDynamicFormFields'; // Adjust path as necessary
+⋮----
+// formatFieldLabel, // No longer need to import if used from hook's return
+// getInputType,
+// shouldUseTextarea
+} from '../hooks/useDynamicFormFields'; // Adjust path as necessary
+⋮----
+export interface PersonalInfoData {
+  [key: string]: string;
+  fullName: string;
+  jobTitle: string;
+  email: string;
+  phone: string;
+  location: string;
+  // Other fields can be added dynamically
+}
+⋮----
+// Other fields can be added dynamically
+⋮----
+interface PersonalInfoProps {
+  data: PersonalInfoData;
+  onChange: (data: PersonalInfoData) => void;
+}
+⋮----
+// This remains, as it's specific to what PersonalInfo considers its defaults
+⋮----
+// 2. Hook Initialization
+⋮----
+handleAddField, // This is the hook's version
+⋮----
+// Helper functions are now part of the hook's return, use them from there
+⋮----
+// This callback updates the parent's state via the component's onChange prop
+⋮----
+// Local handleChange remains as it calls the props.onChange for existing fields
+const handleChange = (key: string, value: string) =>
+⋮----
+// Removed: local state for fields, isDialogOpen, newFieldName
+// Removed: local handleAddField function
+// Removed: local helper functions (formatFieldLabel, getInputType, shouldUseTextarea)
+⋮----
+{/* Use openDialog from the hook */}
+⋮----
+{/* Use isDialogOpen and setters from the hook for the dialog */}
+⋮----
+<Label htmlFor="newFieldNameInput" className="sr-only">New Field Name</Label> {/* Added label for accessibility */}
+⋮----
+id="newFieldNameInput" // Added id for label association
+⋮----
+value={newFieldName} // From hook
+onChange={(e) => setNewFieldName(e.target.value)} // From hook
+⋮----
+className="input" // Assuming 'input' is a defined style
+⋮----
+{/* Use closeDialog from the hook */}
+⋮----
+{/* Use handleAddField from the hook */}
+⋮----
+{/* Use fields and helper functions from the hook */}
+⋮----
+onChange={(e) => handleChange(field, e.target.value)} // Uses local handleChange
+</file>
+
+<file path="src/components/resume-layouts/CenteredLayout.tsx">
+import React from 'react';
+import { Mail, Phone, MapPin, Link } from 'lucide-react';
+⋮----
+interface CenteredLayoutProps {
+  resumeData: any;
+}
+</file>
+
+<file path="src/components/resume-layouts/SimpleLayout.tsx">
+import React from 'react';
+import { Mail, Phone, MapPin, Link} from 'lucide-react';
+⋮----
+interface SimpleLayoutProps {
+  resumeData: any;
+}
+</file>
+
+<file path="src/components/resume-layouts/ModernLayout.tsx">
+import React from 'react';
+import { Mail, Phone, MapPin, Link } from 'lucide-react';
+import { themes } from '@/themes/ThemeContext';
+⋮----
+interface ModernLayoutProps {
+  resumeData: any;
+}
+⋮----
+{/* Personal Info Section */}
+⋮----
+{/* Summary Section */}
+⋮----
+{/* Work Experience Section */}
+⋮----
+{/* Education Section */}
+⋮----
+{/* Skills Section */}
+⋮----
+{/* Display extraData if available */}
+</file>
+
+<file path="src/components/resume-layouts/SidebarLayout.tsx">
+import React from 'react';
+import { Mail, Phone, MapPin, Link } from 'lucide-react';
+import { themes } from '@/themes/ThemeContext';
+⋮----
+interface SidebarLayoutProps {
+  resumeData: any;
+}
+⋮----
+{/* Left Sidebar */}
+⋮----
+{/* Skills in sidebar */}
+⋮----
+{/* Display extraData if available */}
+⋮----
+{/* Main Content */}
+</file>
+
+<file path="src/utils/jsonResume.ts">
+import { PersonalInfoData } from "@/components/PersonalInfo";
+import { WorkExperienceEntry } from "@/components/WorkExperience";
+import { EducationEntry } from "@/components/Education";
+import { ThemeName } from "@/themes/ThemeContext";
+⋮----
+// Define ResumeDataState interface
+export interface ResumeDataState {
+  personalInfo: PersonalInfoData;
+  workExperience: WorkExperienceEntry[];
+  education: EducationEntry[];
+  skills: string[];
+  extraData: Record<string, any>;
+}
+⋮----
+export interface JsonResume {
+  theme: ThemeName;
+  basics: {
+    [key: string]: any;
+    name: string;
+    email: string;
+    phone: string;
+    jobTitle?: string;
+    location: {
+      city?: string;
+      countryCode: string;
+    };
+  };
+  work: Array<{
+    [key: string]: any;
+    name?: string;
+    position?: string;
+    startDate?: string;
+    endDate?: string;
+    description?: string;
+  }>;
+  education: Array<{
+    [key: string]: any;
+    institution?: string;
+    area?: string;
+    studyType?: string;
+    endDate?: string;
+  }>;
+  skills: Array<{
+    [key: string]: any;
+    name: string;
+  }>;
+  [key: string]: any; // Allow for additional top-level properties
+}
+⋮----
+[key: string]: any; // Allow for additional top-level properties
+⋮----
+export const exportToJsonResume = (
+  resumeData: ResumeDataState,
+  theme: ThemeName
+): JsonResume =>
+⋮----
+// Create basics object with all personal info fields
+⋮----
+countryCode: "US", // Default countryCode, can be made dynamic if needed
+⋮----
+jobTitle: resumeData.personalInfo.jobTitle, // Ensure jobTitle is included
+⋮----
+// Add any additional fields from personalInfo (excluding already mapped ones and objects)
+⋮----
+// startDate: edu.startDate, // Removed as per review, EducationEntry likely doesn't have startDate
+⋮----
+// summary: edu.description, // Removed as per review, EducationEntry likely doesn't have description/summary
+⋮----
+// Add any extra data fields at the top level
+⋮----
+export const importFromJsonResume = (
+  jsonResume: JsonResume
+):
+⋮----
+// Create personalInfo object with required fields
+⋮----
+location: jsonResume.basics.location?.city || '', // Added safe navigation
+jobTitle: jsonResume.basics.jobTitle || jsonResume.basics.label || "", // Prefer jobTitle, fallback to label
+⋮----
+// Add any additional fields from the JSON
+⋮----
+// Extract work experience
+⋮----
+// Extract education
+⋮----
+// startDate: edu.startDate || '', // Removed, EducationEntry likely doesn't have startDate
+⋮----
+// description: edu.summary || '', // Removed, EducationEntry likely doesn't have description
+⋮----
+// Extract skills
+⋮----
+// Extract extra data (any top-level properties that are not standard)
+⋮----
+if (!['theme', 'basics', 'work', 'education', 'skills', 'meta'].includes(key)) { // Exclude 'meta' as well
+⋮----
+theme: jsonResume.meta?.theme || jsonResume.theme || 'modern', // Prefer meta.theme
+</file>
+
+<file path="package.json">
+{
+  "name": "vite_react_shadcn_ts",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:dev": "vite build --mode development",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@babel/standalone": "^7.27.0",
+    "@hookform/resolvers": "^3.9.0",
+    "@monaco-editor/react": "^4.7.0",
+    "@radix-ui/react-accordion": "^1.2.0",
+    "@radix-ui/react-alert-dialog": "^1.1.1",
+    "@radix-ui/react-aspect-ratio": "^1.1.0",
+    "@radix-ui/react-avatar": "^1.1.0",
+    "@radix-ui/react-checkbox": "^1.1.1",
+    "@radix-ui/react-collapsible": "^1.1.0",
+    "@radix-ui/react-context-menu": "^2.2.1",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-dropdown-menu": "^2.1.1",
+    "@radix-ui/react-hover-card": "^1.1.1",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-menubar": "^1.1.1",
+    "@radix-ui/react-navigation-menu": "^1.2.0",
+    "@radix-ui/react-popover": "^1.1.1",
+    "@radix-ui/react-progress": "^1.1.0",
+    "@radix-ui/react-radio-group": "^1.2.0",
+    "@radix-ui/react-scroll-area": "^1.1.0",
+    "@radix-ui/react-select": "^2.1.1",
+    "@radix-ui/react-separator": "^1.1.0",
+    "@radix-ui/react-slider": "^1.2.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-switch": "^1.1.0",
+    "@radix-ui/react-tabs": "^1.1.0",
+    "@radix-ui/react-toast": "^1.2.1",
+    "@radix-ui/react-toggle": "^1.1.0",
+    "@radix-ui/react-toggle-group": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.1.4",
+    "@tanstack/react-query": "^5.56.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "^1.0.0",
+    "codemirror": "^5.65.18",
+    "date-fns": "^3.6.0",
+    "embla-carousel-react": "^8.3.0",
+    "html2pdf.js": "^0.10.1",
+    "input-otp": "^1.2.4",
+    "lucide-react": "^0.462.0",
+    "next-themes": "^0.3.0",
+    "react": "^18.3.1",
+    "react-codemirror2": "^8.0.1",
+    "react-day-picker": "^8.10.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.0",
+    "react-resizable-panels": "^2.1.3",
+    "react-router-dom": "^6.26.2",
+    "react-to-print": "^3.0.5",
+    "recharts": "^2.12.7",
+    "sonner": "^1.5.0",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss-animate": "^1.0.7",
+    "vaul": "^0.9.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@tailwindcss/typography": "^0.5.15",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^22.5.5",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.9.0",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "globals": "^15.9.0",
+    "jsdom": "^26.1.0",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.11",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^8.0.1",
+    "vite": "^5.4.1",
+    "vitest": "^3.1.4"
+  }
+}
+</file>
+
+<file path="src/components/FoldablePanel.tsx">
+import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+⋮----
+interface FoldablePanelProps {
+  children: React.ReactNode;
+  setIsFolded: (isFolded: boolean) => void;
+  isFolded: boolean;
+}
+⋮----
+const handleToggle = () =>
+</file>
+
+<file path="src/components/LayoutPreview.tsx">
+import React, { useEffect, useState } from 'react';
+import { SimpleLayout } from './resume-layouts/SimpleLayout';
+import { ModernLayout } from './resume-layouts/ModernLayout';
+import { SidebarLayout } from './resume-layouts/SidebarLayout';
+import { CenteredLayout } from './resume-layouts/CenteredLayout';
+import { PersonalInfoData } from './PersonalInfo';
+import { WorkExperienceEntry } from './WorkExperience';
+import { EducationEntry } from './Education';
+import { toast } from 'sonner';
+⋮----
+import { Card } from './ui/card';
+import { useTheme, ThemeName } from '@/themes/ThemeContext';
+import { Mail, Phone, MapPin, Link } from 'lucide-react';
+⋮----
+// Map selected layout names to theme names to ensure consistency
+⋮----
+interface LayoutPreviewProps {
+  selectedLayout: string;
+  layoutProps: Record<string, any>;
+  customCode: string | null;
+  personalInfo: PersonalInfoData;
+  workExperience: WorkExperienceEntry[];
+  education: EducationEntry[];
+  skills: string[];
+  extraData?: Record<string, any>; // Added extraData prop
+}
+⋮----
+extraData?: Record<string, any>; // Added extraData prop
+⋮----
+const LayoutPreview: React.FC<LayoutPreviewProps> = ({ 
+  selectedLayout, 
+  layoutProps, 
+  customCode,
+  personalInfo,
+  workExperience,
+  education,
+  skills,
+  extraData = {} // Add default value
+}) =>
+⋮----
+extraData = {} // Add default value
+⋮----
+// Update theme when the layout changes
+⋮----
+// Map layout selection to the matching theme
+⋮----
+// Get the layout component based on selection
+⋮----
+// Determine the effective theme for styling
+⋮----
+// First, sanitize the code - convert HTML entities and trim
+⋮----
+// We'll use Babel to transform the JSX
+⋮----
+// Transform the code using Babel
+⋮----
+// Create a function that will return the React elements
+⋮----
+'extraData', // Add extraData to function parameters
+⋮----
+// Execute the function with our dependencies including currentTheme and icons
+⋮----
+effectiveTheme, // Use the correct mapped theme here
+⋮----
+extraData // Pass extraData to the custom code
+⋮----
+// Show a helpful error message with guidance
+⋮----
+// Provide helpful feedback about the error
+⋮----
+extraData={extraData} // Pass extraData to layout component
+</file>
+
+<file path="src/components/ResumePreview.tsx">
+import { Card } from "@/components/ui/card";
+import { PersonalInfoData } from "./PersonalInfo";
+import { WorkExperienceEntry } from "./WorkExperience";
+import { EducationEntry } from "./Education";
+import React, { useState, useRef, useEffect } from "react";
+import { ThemeName } from "@/themes/ThemeContext";
+import { Button } from "./ui/button";
+// Removed: toast (now handled in hooks), html2pdf, useReactToPrint, * as Babel
+// Removed: lucide-react icons (now handled in useCustomLayoutRenderer)
+⋮----
+import { SimpleLayout } from "./resume-layouts/SimpleLayout";
+import { ModernLayout } from "./resume-layouts/ModernLayout";
+import { CenteredLayout } from "./resume-layouts/CenteredLayout";
+import { SidebarLayout } from "./resume-layouts/SidebarLayout";
+⋮----
+// Import new hooks
+import { useCustomLayoutRenderer, ResumeLayoutData } from '../hooks/useCustomLayoutRenderer';
+import { useResumePDFGenerator } from '../hooks/useResumePDFGenerator';
+import { ErrorBoundary } from './ErrorBoundary';
+⋮----
+interface ResumePreviewProps {
+  personalInfo: PersonalInfoData;
+  workExperience: WorkExperienceEntry[];
+  education: EducationEntry[];
+  skills: string[];
+  theme?: ThemeName;
+  // Removed: onPreviewPdf?: () => void;
+  extraData?: Record<string, any>;
+  customLayoutCode?: string;
+}
+⋮----
+// Removed: onPreviewPdf?: () => void;
+⋮----
+theme = "modern", // Default theme
+⋮----
+// Removed: pdfPreviewUrl, isPreviewOpen state
+⋮----
+const pageHeight = 297; // height in mm
+⋮----
+// Initialize new hooks
+const { downloadPDF } = useResumePDFGenerator({ // Removed: generatePdfPreviewUri (not used in this simplified version)
+⋮----
+// transformedCodeForDebug // Can be used if displaying detailed error messages
+⋮----
+// Debounce or use ResizeObserver for better performance if this causes issues
+⋮----
+// Update totalPages when content changes, or when custom layout is rendered/errored
+}, [resumeLayoutData, customRenderedElement, customLayoutError, theme]); // Added theme dependency
+⋮----
+// Removed: generatePdfPreview function
+// Removed: generatePdfPreviewWithReactToPrint (now part of downloadPDF)
+⋮----
+const renderLayout = () =>
+⋮----
+{/* Optionally display transformedCodeForDebug here if needed */}
+⋮----
+return customRenderedElement; // This is already React.ReactNode or null
+⋮----
+// Standard layout rendering
+⋮----
+onClick={downloadPDF} // Use downloadPDF from the hook
+⋮----
+className={`${theme === "sidebar" ? "flex" : ""}`} // Sidebar layout might need flex container
+</file>
+
+<file path="src/pages/Index.tsx">
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { PersonalInfoData } from "@/components/PersonalInfo";
+import { WorkExperienceEntry } from "@/components/WorkExperience";
+import { EducationEntry } from "@/components/Education";
+import { ResumePreview } from "@/components/ResumePreview";
+import { ResumeAssistant } from "@/components/ResumeAssistant";
+import { Download, Upload } from "lucide-react";
+import { exportToJsonResume, importFromJsonResume, ResumeDataState } from "@/utils/jsonResume";
+import { useTheme, ThemeName } from "@/themes/ThemeContext";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ShowPreviewButton } from "@/components/ShowPreviewButton";
+import LayoutEditor from '@/components/LayoutEditor';
+⋮----
+// LIFTED STATE FOR LAYOUT CODE EDITOR
+⋮----
+const handleExport = () =>
+⋮----
+resumeData, // Pass the entire resumeData object
+⋮----
+const handleImport = (event: React.ChangeEvent<HTMLInputElement>) =>
+⋮----
+// Update the JSON editor as well
+// Ensure this reflects the new resumeData structure and includes extraData
+⋮----
+theme: importedData.theme, // theme is still separate
+⋮----
+const handlePreviewPdf = () =>
+⋮----
+const handleApplyResumeChanges = (
+    newPersonalInfo: PersonalInfoData,
+    newWorkExperience: WorkExperienceEntry[],
+    newEducation: EducationEntry[],
+    newSkills: string[],
+    newExtraData?: Record<string, unknown>
+) =>
+⋮----
+resumeDataSource={resumeData} // Pass the entire resumeData object
+⋮----
+// LIFTED STATE FOR LAYOUT CODE EDITOR
+</file>
+
+<file path="src/components/LayoutEditor.tsx">
+import React, { useState, useEffect } from 'react';
+import { SimpleLayout } from './resume-layouts/SimpleLayout';
+import { PersonalInfoData } from './PersonalInfo';
+import { WorkExperienceEntry } from './WorkExperience';
+import { EducationEntry } from './Education';
+import { ModernLayout } from './resume-layouts/ModernLayout';
+import { SidebarLayout } from './resume-layouts/SidebarLayout';
+import { CenteredLayout } from './resume-layouts/CenteredLayout';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { toast } from 'sonner';
+import MonacoEditor from '@monaco-editor/react';
+import { useTheme } from '@/themes/ThemeContext';
+import { getLayoutJSXString } from './resume-layouts/layoutTemplates';
+import { ResumeDataState } from '../utils/jsonResume'; // Import ResumeDataState
+import { ErrorBoundary } from './ErrorBoundary';
+⋮----
+// @ts-ignore
+⋮----
+interface Window {
+    __jsonApplyTimeout?: any;
+  }
+⋮----
+interface LayoutEditorProps {
+  selectedLayout: string;
+  setSelectedLayout: (layout: string) => void;
+  layoutProps: Record<string, any>;
+  setLayoutProps: (props: Record<string, any>) => void;
+  customCode: string | null;
+  setCustomCode: (code: string | null) => void;
+  // resumeData and setResumeData are no longer passed from Index.tsx
+  onApplyResumeChanges?: (
+    newPersonalInfo: PersonalInfoData,
+    newWorkExperience: WorkExperienceEntry[],
+    newEducation: EducationEntry[],
+    newSkills: string[],
+    newExtraData?: Record<string, any>
+  ) => void;
+  // New prop for consolidated resume data
+  resumeDataSource: ResumeDataState;
+  editorMode: 'preview' | 'code' | 'json';
+  setEditorMode: (mode: 'preview' | 'code' | 'json') => void;
+  editorValue: string;
+  setEditorValue: (value: string) => void;
+  jsonValue: string;
+  setJsonValue: (value: string) => void;
+}
+⋮----
+// resumeData and setResumeData are no longer passed from Index.tsx
+⋮----
+// New prop for consolidated resume data
+⋮----
+// resumeData, // No longer a direct prop
+// setResumeData = () => {}, // No longer a direct prop
+⋮----
+// Extract data from resumeDataSource, providing fallbacks for robustness
+⋮----
+// Construct jsonToEdit from individual props passed from Index.tsx
+⋮----
+// Note: resumeDataSource is added to dependency array of above useEffect
+⋮----
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+⋮----
+const resetCustomCode = () =>
+⋮----
+const renderLayout = () =>
+⋮----
+// Always use custom JSX code if present and valid, regardless of editorMode
+⋮----
+// Scope for custom code execution using resumeDataSource
+⋮----
+// For backward compatibility
+⋮----
+// Default rendering if not custom code
+⋮----
+// Standard layouts expect a single resumeData prop with basics, work, etc.
+⋮----
+{/* Removed the small preview above the code editor */}
+⋮----
+onChange=
+⋮----
+// Remove single-line and multi-line comments before validation
+⋮----
+// code = code.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '');
+⋮----
+// Debounce auto-apply
+⋮----
+// Reconstruct PersonalInfoData, passing through all fields from basics
+⋮----
+location, // This is an object { city, countryCode } in JSON resume spec
+⋮----
+...otherBasics // Capture any other fields in basics
+⋮----
+// Assuming PersonalInfoData expects location as a string (city)
+// and jsonResume spec has location as { city, countryCode }
+⋮----
+...otherBasics, // Spread remaining fields from basics
+⋮----
+// Ignore parse errors, don't apply
+⋮----
+{/* Button removed: now auto-applies */}
+</file>
+
+</files>
