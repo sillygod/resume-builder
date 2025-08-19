@@ -214,50 +214,42 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   };
 
   return (
-    <Card className="p-4 bg-white rounded shadow-md max-w-full overflow-x-auto">
-      <h2 className="text-xl font-bold mb-4">Layout Editor</h2>
-
-      <div className="mb-4">
-        <Label htmlFor="layout-select">Select Layout Template</Label>
-        <Select value={selectedLayout} onValueChange={setSelectedLayout}>
-          <SelectTrigger id="layout-select" className="w-full">
-            <SelectValue placeholder="Select a layout" />
-          </SelectTrigger>
-          <SelectContent>
-            {Object.keys(layouts).map((layout) => (
-              <SelectItem key={layout} value={layout}>{layout}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+    <Card className="p-3 bg-white rounded shadow-md max-w-full overflow-x-auto">
+      {/* Compact header with inline layout selection */}
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-lg font-bold">Layout Editor</h2>
+        <div className="flex items-center gap-2">
+          <Label htmlFor="layout-select" className="text-sm">Template:</Label>
+          <Select value={selectedLayout} onValueChange={setSelectedLayout}>
+            <SelectTrigger id="layout-select" className="w-32">
+              <SelectValue placeholder="Select" />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.keys(layouts).map((layout) => (
+                <SelectItem key={layout} value={layout}>{layout}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      {/* Removed the small preview above the code editor */}
-
-      <Tabs defaultValue="code" className="mt-6" onValueChange={(value) => setEditorMode(value as any)}>
-        <TabsList className="mb-4">
-          <TabsTrigger value="code">Edit Layout Code</TabsTrigger>
-          <TabsTrigger value="json">Edit JSON</TabsTrigger>
+      <Tabs defaultValue="code" className="mt-2" onValueChange={(value) => setEditorMode(value as any)}>
+        <TabsList className="mb-2 h-8">
+          <TabsTrigger value="code" className="text-xs px-3 py-1">Code</TabsTrigger>
+          <TabsTrigger value="json" className="text-xs px-3 py-1">JSON</TabsTrigger>
         </TabsList>
 
         <TabsContent value="code">
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold mb-2">Edit Resume Layout JSX</h3>
-            <p className="text-sm text-gray-600 mb-2">
-              Edit the JSX code for your resume layout. Your code has access to these variables:
-              <code className="mx-1 px-1 bg-gray-100 rounded text-xs">personalInfo</code>
-              <code className="mx-1 px-1 bg-gray-100 rounded text-xs">workExperience</code>
-              <code className="mx-1 px-1 bg-gray-100 rounded text-xs">education</code>
-              <code className="mx-1 px-1 bg-gray-100 rounded text-xs">skills</code>
-            </p>
-
-            <div className="p-2 mb-3 bg-blue-50 border border-blue-200 rounded text-blue-700 text-sm">
-              <strong>Note:</strong> Your JSX code must be wrapped in parentheses like the example below:
-              <pre className="mt-1 text-xs overflow-x-auto">{`(\n  <div>\n    <h1>{personalInfo.fullName}</h1>\n  </div>\n)`}</pre>
+          <div className="mb-2">
+            {/* Compact info section */}
+            <div className="p-2 mb-2 bg-blue-50 border border-blue-200 rounded text-blue-700 text-xs">
+              <strong>Variables:</strong> <code>personalInfo</code>, <code>workExperience</code>, <code>education</code>, <code>skills</code>
+              <br /><strong>Note:</strong> Wrap JSX in parentheses: <code>(&lt;div&gt;...&lt;/div&gt;)</code>
             </div>
 
-            <div className="border rounded overflow-hidden mb-4">
+            <div className="border rounded overflow-hidden mb-2">
               <MonacoEditor
-                height="500px"
+                height="600px"
                 defaultLanguage="javascript"
                 language="javascript"
                 theme="vs-dark"
@@ -287,27 +279,26 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
             </div>
 
             {codeError && (
-              <div className="p-2 mb-4 bg-yellow-50 border border-yellow-200 rounded text-yellow-700 text-sm">
+              <div className="p-2 mb-2 bg-yellow-50 border border-yellow-200 rounded text-yellow-700 text-xs">
                 {codeError}
               </div>
             )}
 
             <div className="flex gap-2">
-              <Button onClick={resetCustomCode} variant="outline">Reset to Template</Button>
+              <Button onClick={resetCustomCode} variant="outline" size="sm">Reset to Template</Button>
             </div>
           </div>
         </TabsContent>
 
         <TabsContent value="json">
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold mb-2">Edit Resume JSON</h3>
-            <p className="text-sm text-gray-600 mb-2">
-              Edit the JSON representation of your resume data, including custom fields. Changes will be applied to your resume when you click "Apply JSON Changes".
-            </p>
+          <div className="mb-2">
+            <div className="p-2 mb-2 bg-gray-50 border border-gray-200 rounded text-gray-600 text-xs">
+              Edit resume data JSON. Changes auto-apply after 500ms.
+            </div>
 
-            <div className="border rounded overflow-hidden mb-4">
+            <div className="border rounded overflow-hidden mb-2">
               <MonacoEditor
-                height="300px"
+                height="600px"
                 defaultLanguage="json"
                 language="json"
                 theme="vs-dark"
