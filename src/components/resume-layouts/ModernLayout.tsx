@@ -21,7 +21,11 @@ export const ModernLayout: React.FC<ModernLayoutProps> = ({
   return (
     <div className={theme.layout.contentClass}>
       {/* Personal Info Section */}
-      <div className={theme.personalInfo.containerClass}>
+      <div 
+        className={`${theme.personalInfo.containerClass} preview-section-hoverable`}
+        data-section="personal-info"
+        data-section-label="Personal Info"
+      >
         <div className={theme.personalInfo.gridClass}>
           <div className={theme.personalInfo.avatarContainerClass}>
             {personalInfo.photoUrl ? (
@@ -83,7 +87,11 @@ export const ModernLayout: React.FC<ModernLayoutProps> = ({
 
       {/* Summary Section */}
       {personalInfo.summary && (
-        <section className={theme.section.containerClass}>
+        <section 
+          className={`${theme.section.containerClass} preview-section-hoverable`}
+          data-section="summary"
+          data-section-label="Summary"
+        >
           <h2 className={theme.section.titleClass}>Summary</h2>
           <div className={theme.section.contentClass}>
             <p className="text-sm text-gray-600">{personalInfo.summary}</p>
@@ -93,7 +101,11 @@ export const ModernLayout: React.FC<ModernLayoutProps> = ({
 
       {/* Work Experience Section */}
       {workExperience.length > 0 && (
-        <section className={theme.workExperience.containerClass}>
+        <section 
+          className={`${theme.workExperience.containerClass} preview-section-hoverable`}
+          data-section="work-experience"
+          data-section-label="Work Experience"
+        >
           <h2 className={theme.workExperience.titleClass}>Work Experience</h2>
           <div className="space-y-4">
             {workExperience.map((exp) => (
@@ -118,7 +130,11 @@ export const ModernLayout: React.FC<ModernLayoutProps> = ({
 
       {/* Education Section */}
       {education.length > 0 && (
-        <section className={theme.education.containerClass}>
+        <section 
+          className={`${theme.education.containerClass} preview-section-hoverable`}
+          data-section="education"
+          data-section-label="Education"
+        >
           <h2 className={theme.education.titleClass}>Education</h2>
           <div className="space-y-4">
             {education.map((edu) => (
@@ -140,7 +156,11 @@ export const ModernLayout: React.FC<ModernLayoutProps> = ({
 
       {/* Skills Section */}
       {skills.length > 0 && (
-        <section className={theme.skills.containerClass}>
+        <section 
+          className={`${theme.skills.containerClass} preview-section-hoverable`}
+          data-section="skills"
+          data-section-label="Skills"
+        >
           <h2 className={theme.skills.titleClass}>Skills</h2>
           <div className={theme.skills.skillsListClass}>
             {skills.map((skill) => (

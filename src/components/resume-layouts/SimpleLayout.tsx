@@ -16,7 +16,11 @@ export const SimpleLayout: React.FC<SimpleLayoutProps> = ({
   const extraData = resumeData.extraData || {};
   return (
     <div className="simple-layout">
-      <header className="mb-4">
+      <header 
+        className="mb-4 preview-section-hoverable"
+        data-section="personal-info"
+        data-section-label="Personal Info"
+      >
         <h1 className="text-3xl font-bold">{personalInfo.fullName}</h1>
         <h2 className="text-xl">{personalInfo.jobTitle}</h2>
         <div className="flex items-center space-x-2 text-gray-600">
@@ -53,7 +57,11 @@ export const SimpleLayout: React.FC<SimpleLayoutProps> = ({
         </div>
       </header>
 
-      <section className="mb-4">
+      <section 
+        className="mb-4 preview-section-hoverable"
+        data-section="work-experience"
+        data-section-label="Work Experience"
+      >
         <h2 className="text-2xl font-semibold mb-2">Work Experience</h2>
         {workExperience.map((exp) => (
           <div key={exp.id} className="mb-2">
@@ -67,7 +75,11 @@ export const SimpleLayout: React.FC<SimpleLayoutProps> = ({
         ))}
       </section>
 
-      <section className="mb-4">
+      <section 
+        className="mb-4 preview-section-hoverable"
+        data-section="education"
+        data-section-label="Education"
+      >
         <h2 className="text-2xl font-semibold mb-2">Education</h2>
         {education.map((edu) => (
           <div key={edu.id} className="mb-2">
@@ -80,7 +92,11 @@ export const SimpleLayout: React.FC<SimpleLayoutProps> = ({
         ))}
       </section>
 
-      <section>
+      <section 
+        className="preview-section-hoverable"
+        data-section="skills"
+        data-section-label="Skills"
+      >
         <h2 className="text-2xl font-semibold mb-2">Skills</h2>
         <ul className="list-disc list-inside">
           {skills.map((skill, index) => (

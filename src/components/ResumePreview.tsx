@@ -27,6 +27,10 @@ interface ResumePreviewProps {
   // Removed: onPreviewPdf?: () => void;
   extraData?: Record<string, any>;
   customLayoutCode?: string;
+  isCodeChanging?: boolean;
+  onPreviewUpdate?: () => void;
+  onSectionHighlight?: (sectionId: string) => void;
+  onSectionClearHighlight?: () => void;
 }
 
 export function ResumePreview({
@@ -37,10 +41,16 @@ export function ResumePreview({
   theme = "modern", // Default theme
   extraData = {},
   customLayoutCode,
+  isCodeChanging = false,
+  onPreviewUpdate,
+  onSectionHighlight,
+  onSectionClearHighlight,
 }: ResumePreviewProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const contentRef = useRef<HTMLDivElement>(null);
   const [totalPages, setTotalPages] = useState(1);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [hasRecentUpdate, setHasRecentUpdate] = useState(false);
   // Removed: pdfPreviewUrl, isPreviewOpen state
 
   const pageHeight = 297; // height in mm
@@ -68,13 +78,76 @@ export function ResumePreview({
 
   useEffect(() => {
     if (contentRef.current) {
-      // Debounce or use ResizeObserver for better performance if this causes issues
-      const contentHeight = contentRef.current.scrollHeight;
-      const pages = Math.ceil(contentHeight / (pageHeight * 3.779527559)); 
-      setTotalPages(Math.max(1, pages));
+      setIsUpdating(true);
+      
+      const timer = setTimeout(() => {
+        if (contentRef.current) {
+          const contentHeight = contentRef.current.scrollHeight;
+          const pages = Math.ceil(contentHeight / (pageHeight * 3.779527559)); 
+          setTotalPages(Math.max(1, pages));
+          setIsUpdating(false);
+          setHasRecentUpdate(true);
+          
+          onPreviewUpdate?.();
+          
+          setTimeout(() => setHasRecentUpdate(false), 2000);
+        }
+      }, 300); // Debounce for better performance
+      
+      return () => {
+        clearTimeout(timer);
+        setIsUpdating(false);
+      };
     }
-    // Update totalPages when content changes, or when custom layout is rendered/errored
-  }, [resumeLayoutData, customRenderedElement, customLayoutError, theme]); // Added theme dependency
+  }, [resumeLayoutData, customRenderedElement, customLayoutError, theme, onPreviewUpdate]);
+
+  // Add hover effects to preview sections after render
+  useEffect(() => {
+    const setupSectionHovers = () => {
+      const sections = contentRef.current?.querySelectorAll('[data-section]');
+      if (!sections) return;
+
+      sections.forEach((section) => {
+        const element = section as HTMLElement;
+        const sectionId = element.getAttribute('data-section');
+        if (!sectionId) return;
+
+        const handleMouseEnter = () => {
+          element.classList.add('preview-section-highlight');
+          onSectionHighlight?.(sectionId);
+        };
+
+        const handleMouseLeave = () => {
+          element.classList.remove('preview-section-highlight');
+          onSectionClearHighlight?.();
+        };
+
+        element.addEventListener('mouseenter', handleMouseEnter);
+        element.addEventListener('mouseleave', handleMouseLeave);
+
+        // Store handlers for cleanup
+        (element as any).__previewHandlers = { handleMouseEnter, handleMouseLeave };
+      });
+    };
+
+    // Setup hover effects after a small delay to ensure DOM is ready
+    const timer = setTimeout(setupSectionHovers, 100);
+
+    return () => {
+      clearTimeout(timer);
+      // Clean up event listeners
+      const sections = contentRef.current?.querySelectorAll('[data-section]');
+      sections?.forEach((section) => {
+        const element = section as HTMLElement;
+        const handlers = (element as any).__previewHandlers;
+        if (handlers) {
+          element.removeEventListener('mouseenter', handlers.handleMouseEnter);
+          element.removeEventListener('mouseleave', handlers.handleMouseLeave);
+          delete (element as any).__previewHandlers;
+        }
+      });
+    };
+  }, [customRenderedElement, onSectionHighlight, onSectionClearHighlight]);
 
   // Removed: generatePdfPreview function
   // Removed: generatePdfPreviewWithReactToPrint (now part of downloadPDF)
@@ -108,14 +181,33 @@ export function ResumePreview({
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-4 relative">
+      {/* Preview status indicators */}
+      {(isCodeChanging || isUpdating) && (
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2 z-10">
+          <div className="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-medium animate-pulse shadow-lg">
+            {isCodeChanging ? 'Code Changing...' : 'Preview Updating...'}
+          </div>
+        </div>
+      )}
+      
+      {hasRecentUpdate && (
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2 z-10">
+          <div className="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium animate-bounce shadow-lg">
+            Preview Updated ✓
+          </div>
+        </div>
+      )}
+      
       <Button
         id="preview-pdf-button"
         className="hidden"
         onClick={downloadPDF} // Use downloadPDF from the hook
       />
 
-      <div className="w-[210mm] h-[297mm] max-w-full overflow-hidden">
+      <div className={`w-[210mm] h-[297mm] max-w-full overflow-hidden transition-all duration-300 ${
+        isUpdating ? 'opacity-75 scale-[0.99]' : 'opacity-100 scale-100'
+      }`}>
         <Card
           className="w-full h-full p-8 bg-white shadow-lg animate-fade-in relative"
           style={{

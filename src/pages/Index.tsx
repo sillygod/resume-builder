@@ -37,6 +37,8 @@ const Index = () => {
   const [editorMode, setEditorMode] = useState<'preview' | 'code' | 'json'>('preview');
   const [editorValue, setEditorValue] = useState<string>("");
   const [jsonValue, setJsonValue] = useState<string>("");
+  const [isCodeChanging, setIsCodeChanging] = useState(false);
+  const [highlightedSection, setHighlightedSection] = useState<string | null>(null);
 
   const handleExport = () => {
     const jsonResume = exportToJsonResume(
@@ -181,6 +183,7 @@ const Index = () => {
                   setEditorValue={setEditorValue}
                   jsonValue={jsonValue}
                   setJsonValue={setJsonValue}
+                  onCodeChanging={setIsCodeChanging}
                 />
               </div>
 
@@ -194,6 +197,10 @@ const Index = () => {
                     theme={currentTheme}
                     extraData={resumeData.extraData}
                     customLayoutCode={editorValue}
+                    isCodeChanging={isCodeChanging}
+                    onPreviewUpdate={() => setIsCodeChanging(false)}
+                    onSectionHighlight={setHighlightedSection}
+                    onSectionClearHighlight={() => setHighlightedSection(null)}
                   />
                 </div>
               )}
