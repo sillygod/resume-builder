@@ -1,0 +1,217 @@
+{
+  "theme": "modern",
+  "basics": {
+    "name": "Alexandra Chen",
+    "email": "alexandra.chen@email.com",
+    "phone": "+1 (555) 123-4567",
+    "jobTitle": "Senior Software Engineer",
+    "location": {
+      "city": "San Francisco",
+      "countryCode": "US"
+    },
+    "website": "https://alexandrachen.dev",
+    "summary": "Passionate Senior Software Engineer with 8+ years of experience building scalable web applications and leading cross-functional teams. Expertise in React, Node.js, and cloud architecture. Committed to writing clean code, mentoring junior developers, and driving technical innovation.",
+    "photoUrl": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
+    "linkedin": "https://linkedin.com/in/alexandra-chen",
+    "github": "https://github.com/alexandra-chen",
+    "portfolio": "https://alexandrachen.dev/portfolio"
+  },
+  "work": [
+    {
+      "name": "TechFlow Inc.",
+      "position": "Senior Software Engineer",
+      "startDate": "2021-03-01",
+      "endDate": "2024-12-01",
+      "description": "Led development of microservices architecture serving 2M+ users daily. Built React-based dashboard increasing user engagement by 40%. Mentored 4 junior developers and established code review best practices. Technologies: React, Node.js, PostgreSQL, AWS, Docker, Kubernetes.",
+      "location": "San Francisco, CA",
+      "website": "https://techflow.com"
+    },
+    {
+      "name": "StartupCore",
+      "position": "Full Stack Developer",
+      "startDate": "2019-01-15",
+      "endDate": "2021-02-28",
+      "description": "Developed MVP for B2B SaaS platform from ground up, resulting in $2M Series A funding. Implemented real-time chat system and payment processing. Reduced API response times by 60% through optimization. Technologies: Vue.js, Python, MongoDB, Redis, Stripe API.",
+      "location": "Austin, TX",
+      "website": "https://startupcore.com"
+    },
+    {
+      "name": "Digital Solutions Ltd",
+      "position": "Software Developer",
+      "startDate": "2017-06-01",
+      "endDate": "2018-12-31",
+      "description": "Built responsive e-commerce platforms for 15+ clients generating $5M+ in revenue. Integrated third-party APIs including payment gateways and shipping providers. Collaborated with UX/UI designers to deliver pixel-perfect implementations. Technologies: Angular, .NET Core, SQL Server, Azure.",
+      "location": "Remote",
+      "website": "https://digitalsolutions.com"
+    },
+    {
+      "name": "CodeCraft Agency",
+      "position": "Junior Developer",
+      "startDate": "2016-01-10",
+      "endDate": "2017-05-30",
+      "description": "Developed custom WordPress themes and plugins for small businesses. Fixed bugs and implemented new features for existing web applications. Participated in daily standups and sprint planning meetings. Technologies: PHP, JavaScript, MySQL, WordPress, jQuery.",
+      "location": "Seattle, WA",
+      "website": "https://codecraft.agency"
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of California, Berkeley",
+      "area": "Computer Science",
+      "studyType": "Master of Science",
+      "endDate": "2015-12-15",
+      "gpa": "3.8/4.0",
+      "courses": ["Advanced Algorithms", "Machine Learning", "Distributed Systems", "Software Engineering"]
+    },
+    {
+      "institution": "Stanford University",
+      "area": "Computer Science",
+      "studyType": "Bachelor of Science",
+      "endDate": "2013-06-15",
+      "gpa": "3.7/4.0",
+      "honors": "Magna Cum Laude",
+      "activities": ["ACM Programming Team Captain", "Women in CS Vice President"]
+    }
+  ],
+  "skills": [
+    {
+      "name": "JavaScript"
+    },
+    {
+      "name": "TypeScript"
+    },
+    {
+      "name": "React"
+    },
+    {
+      "name": "Vue.js"
+    },
+    {
+      "name": "Angular"
+    },
+    {
+      "name": "Node.js"
+    },
+    {
+      "name": "Python"
+    },
+    {
+      "name": "Java"
+    },
+    {
+      "name": "C#"
+    },
+    {
+      "name": "PostgreSQL"
+    },
+    {
+      "name": "MongoDB"
+    },
+    {
+      "name": "Redis"
+    },
+    {
+      "name": "AWS"
+    },
+    {
+      "name": "Azure"
+    },
+    {
+      "name": "Docker"
+    },
+    {
+      "name": "Kubernetes"
+    },
+    {
+      "name": "GraphQL"
+    },
+    {
+      "name": "REST APIs"
+    },
+    {
+      "name": "Git"
+    },
+    {
+      "name": "Agile/Scrum"
+    },
+    {
+      "name": "Test-Driven Development"
+    },
+    {
+      "name": "CI/CD"
+    }
+  ],
+  "projects": [
+    {
+      "name": "CloudSync Dashboard",
+      "description": "Real-time analytics dashboard for cloud infrastructure monitoring",
+      "url": "https://github.com/alexandra-chen/cloudsync-dashboard",
+      "technologies": ["React", "D3.js", "WebSocket", "Node.js"]
+    },
+    {
+      "name": "AI Code Reviewer",
+      "description": "Machine learning tool for automated code quality analysis",
+      "url": "https://github.com/alexandra-chen/ai-code-reviewer",
+      "technologies": ["Python", "TensorFlow", "FastAPI", "Docker"]
+    }
+  ],
+  "certifications": [
+    {
+      "name": "AWS Solutions Architect - Professional",
+      "issuer": "Amazon Web Services",
+      "date": "2023-08-15",
+      "credentialId": "AWS-PSA-12345"
+    },
+    {
+      "name": "Certified Kubernetes Administrator (CKA)",
+      "issuer": "Cloud Native Computing Foundation",
+      "date": "2022-11-20",
+      "credentialId": "CKA-67890"
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "Native"
+    },
+    {
+      "language": "Mandarin Chinese",
+      "fluency": "Fluent"
+    },
+    {
+      "language": "Spanish",
+      "fluency": "Conversational"
+    }
+  ],
+  "awards": [
+    {
+      "title": "Employee of the Year 2023",
+      "awarder": "TechFlow Inc.",
+      "date": "2023-12-01",
+      "summary": "Recognized for outstanding technical leadership and mentorship"
+    },
+    {
+      "title": "Best Innovation Award",
+      "awarder": "StartupCore",
+      "date": "2020-06-15",
+      "summary": "Led development of breakthrough real-time collaboration feature"
+    }
+  ],
+  "volunteer": [
+    {
+      "organization": "Code for Good",
+      "position": "Volunteer Developer",
+      "url": "https://codeforgood.org",
+      "startDate": "2020-01-01",
+      "summary": "Develop web applications for non-profit organizations. Built donation platform for local animal shelter."
+    }
+  ],
+  "interests": [
+    "Open Source Contributing",
+    "Rock Climbing",
+    "Photography",
+    "Travel",
+    "Cooking",
+    "AI/Machine Learning Research"
+  ]
+}

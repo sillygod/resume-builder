@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState } from 'react';
 
 // Define theme types
-export type ThemeName = 'simple' | 'centered' | 'sidebar' | 'modern';
+export type ThemeName = 'simple' | 'centered' | 'sidebar' | 'modern' | 'executive';
 
 // Theme context type
 interface ThemeContextType {
@@ -273,6 +273,54 @@ export const themes: Record<ThemeName, ThemeConfig> = {
       titleClass: "text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 mb-4",
       skillsListClass: "flex flex-wrap gap-2",
       skillItemClass: "px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs",
+    },
+  },
+
+  // Executive layout - sophisticated C-suite professional design
+  executive: {
+    layout: {
+      containerClass: "flex flex-col w-full h-full bg-gradient-to-br from-slate-50 to-white",
+      contentClass: "space-y-8 p-8",
+    },
+    personalInfo: {
+      containerClass: "relative bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white px-12 py-10 rounded-lg shadow-2xl border border-slate-700/20",
+      titleClass: "text-4xl font-light tracking-wide text-white mb-2",
+      subtitleClass: "text-lg font-normal text-slate-300 tracking-wide uppercase letter-spacing-2",
+      gridClass: "flex flex-row items-center gap-8 mt-6",
+      infoContainerClass: "flex-1 space-y-4",
+      avatarContainerClass: "w-32 h-32 overflow-hidden rounded-full border-4 border-slate-600/30 shadow-xl ring-4 ring-slate-700/20",
+      contactContainerClass: "flex flex-wrap items-center gap-6 mt-6 pt-4 border-t border-slate-700/30",
+      contactItemClass: "text-sm text-slate-300 flex items-center space-x-2 font-light",
+      labelClass: "font-medium text-slate-400",
+      valueClass: "text-slate-200 font-light",
+    },
+    section: {
+      containerClass: "bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-slate-200/50 p-8 relative overflow-hidden",
+      titleClass: "text-2xl font-light text-slate-800 uppercase tracking-widest mb-6 pb-3 border-b-2 border-gradient-to-r from-slate-800 via-slate-600 to-slate-800 relative",
+      contentClass: "space-y-6",
+    },
+    workExperience: {
+      containerClass: "bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-slate-200/50 p-8 relative overflow-hidden",
+      titleClass: "text-2xl font-light text-slate-800 uppercase tracking-widest mb-6 pb-3 border-b-2 border-slate-800 relative",
+      entryClass: "relative border-l-4 border-gradient-to-b from-slate-700 to-slate-900 pl-6 mb-8 pb-6 border-b border-slate-200/60 last:border-b-0",
+      jobTitleClass: "text-xl font-medium text-slate-900 mb-1 tracking-wide",
+      companyClass: "text-base text-slate-700 font-light mb-2 tracking-wide",
+      periodClass: "text-sm bg-gradient-to-r from-slate-800 to-slate-700 text-white px-4 py-1.5 rounded-full inline-block mb-3 font-light tracking-wide",
+      descriptionClass: "text-base text-slate-600 leading-relaxed font-light",
+    },
+    education: {
+      containerClass: "bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-slate-200/50 p-8 relative overflow-hidden",
+      titleClass: "text-2xl font-light text-slate-800 uppercase tracking-widest mb-6 pb-3 border-b-2 border-slate-800 relative",
+      entryClass: "relative border-l-4 border-gradient-to-b from-slate-600 to-slate-800 pl-6 mb-6 pb-6 border-b border-slate-200/60 last:border-b-0",
+      institutionClass: "text-xl font-medium text-slate-900 mb-1 tracking-wide",
+      degreeClass: "text-base text-slate-700 font-light mb-2 tracking-wide",
+      periodClass: "text-sm bg-gradient-to-r from-slate-700 to-slate-600 text-white px-4 py-1.5 rounded-full inline-block font-light tracking-wide",
+    },
+    skills: {
+      containerClass: "bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-slate-200/50 p-8 relative overflow-hidden",
+      titleClass: "text-2xl font-light text-slate-800 uppercase tracking-widest mb-6 pb-3 border-b-2 border-slate-800 relative",
+      skillsListClass: "flex flex-wrap gap-3",
+      skillItemClass: "px-6 py-3 bg-gradient-to-r from-slate-800 to-slate-700 text-white rounded-full text-sm font-light tracking-wide shadow-md hover:shadow-lg transition-all duration-300 border border-slate-600/20",
     },
   },
 };

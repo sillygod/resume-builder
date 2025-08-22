@@ -11,26 +11,23 @@ import { useTheme, ThemeName } from "@/themes/ThemeContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShowPreviewButton } from "@/components/ShowPreviewButton";
 import LayoutEditor from '@/components/LayoutEditor';
+import exampleResumeJson from '@/data/exampleResume.json';
 
+// Convert the example JSON to ResumeDataState format
+const exampleData = importFromJsonResume(exampleResumeJson);
 const initialResumeData: ResumeDataState = {
-  personalInfo: {
-    fullName: "",
-    email: "",
-    phone: "",
-    location: "",
-    jobTitle: "",
-  },
-  workExperience: [],
-  education: [],
-  skills: [],
-  extraData: {},
+  personalInfo: exampleData.personalInfo,
+  workExperience: exampleData.workExperience,
+  education: exampleData.education,
+  skills: exampleData.skills,
+  extraData: exampleData.extraData,
 };
 
 const Index = () => {
   const { currentTheme, setTheme } = useTheme();
   const [resumeData, setResumeData] = useState<ResumeDataState>(initialResumeData);
   const [showPreview, setShowPreview] = useState(false);
-  const [selectedLayout, setSelectedLayout] = useState<string>("Modern");
+  const [selectedLayout, setSelectedLayout] = useState<string>("Executive");
   const [layoutProps, setLayoutProps] = useState<Record<string, unknown>>({});
   const [customCode, setCustomCode] = useState<string | null>(null);
   // LIFTED STATE FOR LAYOUT CODE EDITOR

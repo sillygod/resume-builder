@@ -6,6 +6,7 @@ import { EducationEntry } from './Education';
 import { ModernLayout } from './resume-layouts/ModernLayout';
 import { SidebarLayout } from './resume-layouts/SidebarLayout';
 import { CenteredLayout } from './resume-layouts/CenteredLayout';
+import { ExecutiveLayout } from './resume-layouts/ExecutiveLayout';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -32,6 +33,7 @@ const layouts = {
   Modern: ModernLayout,
   Sidebar: SidebarLayout,
   Centered: CenteredLayout,
+  Executive: ExecutiveLayout,
 };
 
 interface LayoutEditorProps {

@@ -209,7 +209,7 @@ export function ResumePreview({
         isUpdating ? 'opacity-75 scale-[0.99]' : 'opacity-100 scale-100'
       }`}>
         <Card
-          className="w-full h-full p-8 bg-white shadow-lg animate-fade-in relative"
+          className="w-full h-full bg-white shadow-lg animate-fade-in relative"
           style={{
             transform:
               currentPage > 1

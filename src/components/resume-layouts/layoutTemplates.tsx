@@ -560,39 +560,405 @@ export const getCenteredLayoutJSX = (props: ResumeLayoutProps) => {
   );
 };
 
-// Generate JSX strings for use in the code editor
-export const getLayoutSourceCode = (layoutName: string) => {
-  const theme = themes[layoutName.toLowerCase() as keyof typeof themes];
-  
-  switch(layoutName) {
-    case 'Simple':
-      return `// SimpleLayout Component
-(
-  ${React.createElement('div', {}, 'loading')}
-)`;
-    case 'Modern':
-      return `// ModernLayout Component
-(
-  ${React.createElement('div', {}, 'loading')}
-)`;
-    case 'Sidebar':
-      return `// SidebarLayout Component
-(
-  ${React.createElement('div', {}, 'loading')}
-)`;
-    case 'Centered':
-      return `// CenteredLayout Component
-(
-  ${React.createElement('div', {}, 'loading')}
-)`;
-    default:
-      return '';
-  }
+export const getExecutiveLayoutJSX = (props: ResumeLayoutProps) => {
+  const resumeData = props.resumeData;
+  const personalInfo = resumeData.basics || {};
+  const workExperience = resumeData.work || [];
+  const education = resumeData.education || [];
+  const skills = resumeData.skills || [];
+  const extraData = resumeData.extraData || {};
+  const theme = themes.executive;
+
+  // Extract additional sections from extraData
+  const projects = extraData.projects || [];
+  const certifications = extraData.certifications || [];
+  const languages = extraData.languages || [];
+  const awards = extraData.awards || [];
+  const volunteer = extraData.volunteer || [];
+  const interests = extraData.interests || [];
+
+  return (
+    <div className={theme.layout.contentClass}>
+      {/* Executive Header */}
+      <div className={theme.personalInfo.containerClass}>
+        <div className={theme.personalInfo.gridClass}>
+          <div className={theme.personalInfo.avatarContainerClass}>
+            {personalInfo.photoUrl ? (
+              <img
+                src={personalInfo.photoUrl}
+                alt={personalInfo.fullName || "Executive Profile"}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center text-white">
+                Executive
+              </div>
+            )}
+          </div>
+
+          <div className={theme.personalInfo.infoContainerClass}>
+            <h1 className={theme.personalInfo.titleClass}>
+              {personalInfo.fullName || "Executive Name"}
+            </h1>
+            <p className={theme.personalInfo.subtitleClass}>
+              {personalInfo.jobTitle || "Chief Executive Officer"}
+            </p>
+
+            {personalInfo.summary && (
+              <div className="text-slate-300 text-lg leading-relaxed mb-6 max-w-3xl font-light">
+                {personalInfo.summary}
+              </div>
+            )}
+
+            <div className={theme.personalInfo.contactContainerClass}>
+              {personalInfo.email && (
+                <div className={theme.personalInfo.contactItemClass}>
+                  <Mail size={18} />
+                  <span>{personalInfo.email}</span>
+                </div>
+              )}
+              {personalInfo.phone && (
+                <div className={theme.personalInfo.contactItemClass}>
+                  <Phone size={18} />
+                  <span>{personalInfo.phone}</span>
+                </div>
+              )}
+              {personalInfo.location && (
+                <div className={theme.personalInfo.contactItemClass}>
+                  <MapPin size={18} />
+                  <span>
+                    {typeof personalInfo.location === 'object' && personalInfo.location.city
+                      ? personalInfo.location.city
+                      : typeof personalInfo.location === 'string'
+                      ? personalInfo.location
+                      : ''}
+                  </span>
+                </div>
+              )}
+              {personalInfo.website && (
+                <div className={theme.personalInfo.contactItemClass}>
+                  <Link size={18} />
+                  <span>{personalInfo.website}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-8 py-12">
+        <div className="grid grid-cols-3 gap-12">
+          {/* Main Content */}
+          <div className="col-span-2 space-y-12">
+            {/* Executive Experience */}
+            {workExperience.length > 0 && (
+              <section className={theme.workExperience.containerClass}>
+                <h2 className={theme.workExperience.titleClass}>Executive Experience</h2>
+                <div className="space-y-8">
+                  {workExperience.map((exp) => (
+                    <div key={exp.id} className={theme.workExperience.entryClass}>
+                      <h3 className={theme.workExperience.jobTitleClass}>
+                        {exp.position}
+                      </h3>
+                      <p className={theme.workExperience.companyClass}>
+                        {exp.name || exp.company}
+                      </p>
+                      <p className={theme.workExperience.periodClass}>
+                        {exp.startDate} - {exp.endDate}
+                      </p>
+                      <p className={theme.workExperience.descriptionClass}>
+                        {exp.description || exp.summary}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Strategic Projects */}
+            {projects.length > 0 && (
+              <section className={theme.section.containerClass}>
+                <h2 className={theme.section.titleClass}>Strategic Projects</h2>
+                <div className={theme.section.contentClass}>
+                  {projects.map((project, index) => (
+                    <div key={index} className="bg-white rounded-lg shadow-sm border border-slate-200 p-6 mb-4">
+                      <h3 className="text-lg font-semibold text-slate-800 mb-2">
+                        {project.name}
+                      </h3>
+                      <p className="text-slate-700 mb-4">{project.description}</p>
+                      {project.technologies && (
+                        <div className="flex flex-wrap gap-2">
+                          {project.technologies.map((tech, techIndex) => (
+                            <span key={techIndex} className="bg-gradient-to-r from-slate-100 to-slate-200 text-slate-700 px-3 py-1 rounded-full text-sm">
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
+
+          {/* Executive Sidebar */}
+          <div className="space-y-10">
+            {/* Core Competencies */}
+            {skills.length > 0 && (
+              <section className={theme.skills.containerClass}>
+                <h2 className={theme.skills.titleClass}>Core Competencies</h2>
+                <div className={theme.skills.skillsListClass}>
+                  {skills.map((skill, index) => (
+                    <div key={index} className={theme.skills.skillItemClass}>
+                      {typeof skill === 'object' ? skill.name : skill}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Education */}
+            {education.length > 0 && (
+              <section className={theme.education.containerClass}>
+                <h2 className={theme.education.titleClass}>Executive Education</h2>
+                <div className="space-y-4">
+                  {education.map((edu) => (
+                    <div key={edu.id} className={theme.education.entryClass}>
+                      <h3 className={theme.education.institutionClass}>
+                        {edu.institution}
+                      </h3>
+                      <p className={theme.education.degreeClass}>
+                        {edu.studyType || edu.degree} {edu.area && `in ${edu.area}`}
+                        {edu.field && !edu.area && `in ${edu.field}`}
+                      </p>
+                      <p className={theme.education.periodClass}>
+                        {edu.endDate || edu.graduationDate}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Additional sections for certifications, languages, awards, etc. */}
+            {certifications.length > 0 && (
+              <section className={theme.section.containerClass}>
+                <h2 className={theme.section.titleClass}>Certifications</h2>
+                <div className={theme.section.contentClass}>
+                  {certifications.map((cert, index) => (
+                    <div key={index} className="mb-3">
+                      <h3 className="font-semibold text-slate-800">{cert.name}</h3>
+                      <p className="text-slate-600 text-sm">{cert.issuer}</p>
+                      <p className="text-slate-500 text-sm">{cert.date}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {languages.length > 0 && (
+              <section className={theme.section.containerClass}>
+                <h2 className={theme.section.titleClass}>Languages</h2>
+                <div className={theme.section.contentClass}>
+                  {languages.map((lang, index) => (
+                    <div key={index} className="flex justify-between mb-2">
+                      <span className="text-slate-700">{lang.language}</span>
+                      <span className="text-slate-500 text-sm">{lang.fluency}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {awards.length > 0 && (
+              <section className={theme.section.containerClass}>
+                <h2 className={theme.section.titleClass}>Recognition</h2>
+                <div className={theme.section.contentClass}>
+                  {awards.map((award, index) => (
+                    <div key={index} className="mb-3">
+                      <h3 className="font-semibold text-slate-800">{award.title}</h3>
+                      <p className="text-slate-600 text-sm">{award.awarder}</p>
+                      <p className="text-slate-500 text-sm">{award.date}</p>
+                      {award.summary && (
+                        <p className="text-slate-700 text-sm mt-1">{award.summary}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {interests.length > 0 && (
+              <section className={theme.section.containerClass}>
+                <h2 className={theme.section.titleClass}>Interests</h2>
+                <div className="flex flex-wrap gap-2">
+                  {interests.map((interest, index) => (
+                    <span key={index} className="bg-gradient-to-r from-slate-100 to-slate-200 text-slate-700 px-3 py-2 rounded-full text-sm">
+                      {interest}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
-// Helper function to convert a JSX component to its string representation for display
 export const getLayoutJSXString = (layoutName: string) => {
   switch(layoutName) {
+    case 'Executive':
+      return `// ExecutiveLayout Component
+(
+  <div className="executive-layout bg-gradient-to-br from-slate-50 via-white to-slate-50 min-h-full">
+    {/* Executive Header */}
+    <div className="relative bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 text-white p-12">
+      <div className="relative flex items-start gap-8 max-w-6xl mx-auto">
+        {/* Executive Photo */}
+        <div className="flex-shrink-0">
+          {personalInfo.photoUrl ? (
+            <img
+              src={personalInfo.photoUrl}
+              alt={personalInfo.fullName || "Executive Profile"}
+              className="w-32 h-32 rounded-full object-cover border-4 border-white/20 shadow-2xl"
+            />
+          ) : (
+            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 border-4 border-white/20 shadow-2xl flex items-center justify-center text-white">
+              Executive
+            </div>
+          )}
+        </div>
+
+        {/* Executive Info */}
+        <div className="flex-1">
+          <h1 className="text-4xl font-light tracking-wide text-white mb-2 leading-tight">
+            {personalInfo.fullName || "Executive Name"}
+          </h1>
+          <div className="text-xl font-light text-slate-200 mb-6 tracking-wide">
+            {personalInfo.jobTitle || "Chief Executive Officer"}
+          </div>
+
+          {/* Executive Summary */}
+          {personalInfo.summary && (
+            <div className="text-slate-300 text-lg leading-relaxed mb-6 max-w-3xl font-light">
+              {personalInfo.summary}
+            </div>
+          )}
+
+          {/* Executive Contact */}
+          <div className="grid grid-cols-2 gap-4 text-slate-300">
+            {personalInfo.email && (
+              <div className="flex items-center space-x-2">
+                <Mail size={18} />
+                <span className="font-light tracking-wide">{personalInfo.email}</span>
+              </div>
+            )}
+            {personalInfo.phone && (
+              <div className="flex items-center space-x-2">
+                <Phone size={18} />
+                <span className="font-light tracking-wide">{personalInfo.phone}</span>
+              </div>
+            )}
+            {personalInfo.location && (
+              <div className="flex items-center space-x-2">
+                <MapPin size={18} />
+                <span className="font-light tracking-wide">{personalInfo.location}</span>
+              </div>
+            )}
+            {personalInfo.website && (
+              <div className="flex items-center space-x-2">
+                <Link size={18} />
+                <span className="font-light tracking-wide">{personalInfo.website}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div className="max-w-6xl mx-auto px-8 py-12">
+      <div className="grid grid-cols-3 gap-12">
+        {/* Main Content */}
+        <div className="col-span-2 space-y-12">
+          {/* Executive Experience */}
+          {workExperience.length > 0 && (
+            <section>
+              <h2 className="text-2xl font-light tracking-wide text-slate-800 mb-8 pb-3 border-b-2 border-slate-200">
+                EXECUTIVE EXPERIENCE
+              </h2>
+              <div className="space-y-8">
+                {workExperience.map((exp) => (
+                  <div key={exp.id} className="relative pl-8">
+                    <div className="absolute left-0 top-2 w-3 h-3 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full shadow-md"></div>
+                    <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+                      <h3 className="text-xl font-semibold text-slate-800 tracking-wide">
+                        {exp.position}
+                      </h3>
+                      <div className="text-lg font-medium text-slate-600 mt-1">
+                        {exp.name || exp.company}
+                      </div>
+                      <div className="bg-gradient-to-r from-slate-100 to-slate-200 text-slate-700 px-4 py-2 rounded-full text-sm font-medium tracking-wide shadow-sm inline-block mt-2">
+                        {exp.startDate} - {exp.endDate}
+                      </div>
+                      <div className="text-slate-700 leading-relaxed font-light mt-4">
+                        {exp.description}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+
+        {/* Executive Sidebar */}
+        <div className="space-y-10">
+          {/* Core Competencies */}
+          {skills.length > 0 && (
+            <section>
+              <h2 className="text-xl font-light tracking-wide text-slate-800 mb-6 pb-2 border-b border-slate-200">
+                CORE COMPETENCIES
+              </h2>
+              <div className="space-y-3">
+                {skills.map((skill) => (
+                  <div key={skill} className="flex items-center justify-between bg-white rounded-lg shadow-sm border border-slate-200 p-3">
+                    <span className="text-slate-700 font-medium tracking-wide">{skill}</span>
+                    <div className="w-2 h-2 bg-gradient-to-br from-slate-500 to-slate-600 rounded-full"></div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Executive Education */}
+          {education.length > 0 && (
+            <section>
+              <h2 className="text-xl font-light tracking-wide text-slate-800 mb-6 pb-2 border-b border-slate-200">
+                EXECUTIVE EDUCATION
+              </h2>
+              <div className="space-y-4">
+                {education.map((edu) => (
+                  <div key={edu.id} className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
+                    <h3 className="font-semibold text-slate-800 tracking-wide">{edu.institution}</h3>
+                    <div className="text-slate-600 font-medium mt-1">
+                      {edu.degree} in {edu.field}
+                    </div>
+                    <div className="text-slate-500 text-sm mt-2 font-light">
+                      {edu.graduationDate}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+)`;
     case 'Simple':
       return `// SimpleLayout Component
 (
