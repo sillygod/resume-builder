@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 import MonacoEditor, { Monaco } from '@monaco-editor/react';
 import { editor } from 'monaco-editor';
 import { useTheme } from '@/themes/ThemeContext';
+import { Maximize2, Minimize2, Move, GripVertical } from 'lucide-react';
 import { getLayoutJSXString } from './resume-layouts/layoutTemplates';
 import { ResumeDataState } from '../utils/jsonResume'; // Import ResumeDataState
 import { ErrorBoundary } from './ErrorBoundary';
@@ -99,6 +100,15 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   const [isCodeChanged, setIsCodeChanged] = useState(false);
   const [monaco, setMonaco] = useState<Monaco | null>(null);
   const [editorInstance, setEditorInstance] = useState<editor.IStandaloneCodeEditor | null>(null);
+  const [currentEditorTheme, setCurrentEditorTheme] = useState<string>('resume-editor-dark');
+  
+  // Floating editor states
+  const [isFloatingExpanded, setIsFloatingExpanded] = useState(false);
+  const [floatingPosition, setFloatingPosition] = useState({ x: 20, y: 100 });
+  const [floatingSize, setFloatingSize] = useState({ width: 800, height: 600 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [validationResults, setValidationResults] = useState<{
     errors: string[];
     warnings: string[];
@@ -674,23 +684,81 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       },
     });
 
-    // Custom theme
-    monaco.editor.defineTheme('resume-editor', {
+    // Define custom dark theme with comprehensive syntax highlighting
+    monaco.editor.defineTheme('resume-editor-dark', {
       base: 'vs-dark',
       inherit: true,
       rules: [
-        { token: 'comment', foreground: '6A9955' },
-        { token: 'keyword', foreground: '569CD6' },
+        // Comments
+        { token: 'comment', foreground: '6A9955', fontStyle: 'italic' },
+        { token: 'comment.line', foreground: '6A9955', fontStyle: 'italic' },
+        { token: 'comment.block', foreground: '6A9955', fontStyle: 'italic' },
+        
+        // Keywords
+        { token: 'keyword', foreground: '569CD6', fontStyle: 'bold' },
+        { token: 'keyword.control', foreground: '569CD6', fontStyle: 'bold' },
+        { token: 'keyword.operator', foreground: 'D4D4D4' },
+        { token: 'keyword.other', foreground: '569CD6' },
+        
+        // Strings and literals
         { token: 'string', foreground: 'CE9178' },
+        { token: 'string.quoted', foreground: 'CE9178' },
+        { token: 'string.template', foreground: 'CE9178' },
         { token: 'number', foreground: 'B5CEA8' },
         { token: 'regexp', foreground: 'D16969' },
+        
+        // Types and classes
         { token: 'type', foreground: '4EC9B0' },
+        { token: 'type.identifier', foreground: '4EC9B0' },
         { token: 'class', foreground: '4EC9B0' },
+        { token: 'class.name', foreground: '4EC9B0' },
+        
+        // Functions and methods
         { token: 'function', foreground: 'DCDCAA' },
+        { token: 'function.call', foreground: 'DCDCAA' },
+        { token: 'method', foreground: 'DCDCAA' },
+        
+        // Variables and identifiers
         { token: 'variable', foreground: '9CDCFE' },
+        { token: 'variable.name', foreground: '9CDCFE' },
+        { token: 'variable.parameter', foreground: '9CDCFE' },
+        { token: 'identifier', foreground: '9CDCFE' },
+        
+        // JSX/HTML Tags
         { token: 'tag', foreground: '569CD6' },
+        { token: 'tag.name', foreground: '569CD6' },
+        { token: 'tag.bracket', foreground: '808080' },
+        { token: 'metatag', foreground: '569CD6' },
+        { token: 'metatag.content.html', foreground: '9CDCFE' },
+        { token: 'metatag.html', foreground: '569CD6' },
+        
+        // JSX/HTML Attributes
         { token: 'attribute.name', foreground: '92C5F7' },
         { token: 'attribute.value', foreground: 'CE9178' },
+        { token: 'attribute.value.number', foreground: 'B5CEA8' },
+        { token: 'attribute.value.unit', foreground: 'B5CEA8' },
+        { token: 'attribute.value.html', foreground: 'CE9178' },
+        
+        // Operators and punctuation
+        { token: 'operator', foreground: 'D4D4D4' },
+        { token: 'delimiter', foreground: 'D4D4D4' },
+        { token: 'delimiter.bracket', foreground: 'FFD700' },
+        { token: 'delimiter.parenthesis', foreground: 'FFD700' },
+        { token: 'delimiter.square', foreground: 'FFD700' },
+        { token: 'delimiter.angle', foreground: '808080' },
+        
+        // TypeScript/JavaScript specific
+        { token: 'support.type.primitive', foreground: '569CD6' },
+        { token: 'support.function', foreground: 'DCDCAA' },
+        { token: 'support.class', foreground: '4EC9B0' },
+        { token: 'storage.type', foreground: '569CD6' },
+        { token: 'storage.modifier', foreground: '569CD6' },
+        
+        // JSX specific
+        { token: 'punctuation.definition.tag.jsx', foreground: '569CD6' },
+        { token: 'entity.name.tag.jsx', foreground: '569CD6' },
+        { token: 'punctuation.definition.tag.begin.jsx', foreground: '808080' },
+        { token: 'punctuation.definition.tag.end.jsx', foreground: '808080' },
       ],
       colors: {
         'editor.background': '#1e1e1e',
@@ -698,6 +766,76 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         'editor.lineHighlightBackground': '#2d2d30',
         'editor.selectionBackground': '#264f78',
         'editor.inactiveSelectionBackground': '#3a3d41',
+        'editorIndentGuide.background': '#404040',
+        'editorIndentGuide.activeBackground': '#707070',
+        'editor.selectionHighlightBackground': '#ADD6FF26',
+        'editor.wordHighlightBackground': '#575757B8',
+        'editor.wordHighlightStrongBackground': '#004972B8',
+        'editorCursor.foreground': '#AEAFAD',
+        'editorWhitespace.foreground': '#404040',
+        'editorLineNumber.foreground': '#858585',
+        'editorLineNumber.activeForeground': '#c6c6c6',
+      },
+    });
+
+    // Define light theme as well for consistency
+    monaco.editor.defineTheme('resume-editor-light', {
+      base: 'vs',
+      inherit: true,
+      rules: [
+        // Comments
+        { token: 'comment', foreground: '008000', fontStyle: 'italic' },
+        { token: 'comment.line', foreground: '008000', fontStyle: 'italic' },
+        { token: 'comment.block', foreground: '008000', fontStyle: 'italic' },
+        
+        // Keywords
+        { token: 'keyword', foreground: '0000FF', fontStyle: 'bold' },
+        { token: 'keyword.control', foreground: '0000FF', fontStyle: 'bold' },
+        { token: 'keyword.operator', foreground: '000000' },
+        { token: 'keyword.other', foreground: '0000FF' },
+        
+        // Strings and literals
+        { token: 'string', foreground: 'A31515' },
+        { token: 'string.quoted', foreground: 'A31515' },
+        { token: 'string.template', foreground: 'A31515' },
+        { token: 'number', foreground: '098658' },
+        { token: 'regexp', foreground: 'D16969' },
+        
+        // Types and classes
+        { token: 'type', foreground: '267F99' },
+        { token: 'type.identifier', foreground: '267F99' },
+        { token: 'class', foreground: '267F99' },
+        { token: 'class.name', foreground: '267F99' },
+        
+        // Functions and methods
+        { token: 'function', foreground: '795E26' },
+        { token: 'function.call', foreground: '795E26' },
+        { token: 'method', foreground: '795E26' },
+        
+        // Variables and identifiers
+        { token: 'variable', foreground: '001080' },
+        { token: 'variable.name', foreground: '001080' },
+        { token: 'variable.parameter', foreground: '001080' },
+        { token: 'identifier', foreground: '001080' },
+        
+        // JSX/HTML Tags
+        { token: 'tag', foreground: '800000' },
+        { token: 'tag.name', foreground: '800000' },
+        { token: 'tag.bracket', foreground: '383838' },
+        { token: 'metatag', foreground: '800000' },
+        { token: 'metatag.content.html', foreground: '0000FF' },
+        { token: 'metatag.html', foreground: '800000' },
+        
+        // JSX/HTML Attributes
+        { token: 'attribute.name', foreground: 'FF0000' },
+        { token: 'attribute.value', foreground: '0000FF' },
+        { token: 'attribute.value.number', foreground: '098658' },
+        { token: 'attribute.value.unit', foreground: '098658' },
+        { token: 'attribute.value.html', foreground: '0000FF' },
+      ],
+      colors: {
+        'editor.background': '#ffffff',
+        'editor.foreground': '#000000',
       },
     });
   };
@@ -719,6 +857,114 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       toast.info(`Layout changed to ${selectedLayout}`);
     }
   }, [selectedLayout, setCustomCode, setLayoutProps, prevSelectedLayout, setTheme]);
+
+  // Effect to handle Monaco editor theme changes and ensure theme is applied correctly
+  useEffect(() => {
+    if (editorInstance && monaco) {
+      // For now, always use dark theme for better visibility
+      // In the future, this could be based on a global app theme
+      const themeToApply = 'resume-editor-dark';
+      setCurrentEditorTheme(themeToApply);
+      monaco.editor.setTheme(themeToApply);
+      
+      // Force refresh to ensure theme is applied properly
+      setTimeout(() => {
+        editorInstance.updateOptions({});
+      }, 100);
+    }
+  }, [editorInstance, monaco, editorMode]);
+
+  // Additional effect to ensure theme is applied when switching between tabs
+  useEffect(() => {
+    if (editorInstance && monaco && editorMode === 'code') {
+      // Small delay to ensure tab switch is complete
+      setTimeout(() => {
+        const themeToApply = 'resume-editor-dark';
+        monaco.editor.setTheme(themeToApply);
+        editorInstance.updateOptions({});
+        // Trigger layout to refresh the editor
+        editorInstance.layout();
+      }, 150);
+    }
+  }, [editorMode, editorInstance, monaco]);
+
+  // Floating editor drag handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setDragOffset({
+      x: e.clientX - floatingPosition.x,
+      y: e.clientY - floatingPosition.y,
+    });
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (isDragging) {
+      setFloatingPosition({
+        x: e.clientX - dragOffset.x,
+        y: e.clientY - dragOffset.y,
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleResizeMouseDown = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsResizing(true);
+  };
+
+  const handleResizeMouseMove = (e: MouseEvent) => {
+    if (isResizing) {
+      const rect = document.getElementById('floating-editor-container')?.getBoundingClientRect();
+      if (rect) {
+        const newWidth = Math.max(400, e.clientX - rect.left);
+        const newHeight = Math.max(300, e.clientY - rect.top);
+        setFloatingSize({ width: newWidth, height: newHeight });
+      }
+    }
+  };
+
+  const handleResizeMouseUp = () => {
+    setIsResizing(false);
+  };
+
+  // Add event listeners for drag and resize
+  useEffect(() => {
+    if (isDragging || isResizing) {
+      const moveHandler = isDragging ? handleMouseMove : handleResizeMouseMove;
+      const upHandler = isDragging ? handleMouseUp : handleResizeMouseUp;
+      
+      document.addEventListener('mousemove', moveHandler);
+      document.addEventListener('mouseup', upHandler);
+      
+      return () => {
+        document.removeEventListener('mousemove', moveHandler);
+        document.removeEventListener('mouseup', upHandler);
+      };
+    }
+  }, [isDragging, isResizing, dragOffset]);
+
+  // Handle scroll following
+  useEffect(() => {
+    if (isFloatingExpanded) {
+      const handleScroll = () => {
+        // Keep the floating editor in a visible position relative to viewport
+        const scrollY = window.scrollY;
+        const maxY = window.innerHeight - floatingSize.height - 20;
+        const targetY = Math.min(Math.max(20, 100 + scrollY * 0.1), maxY);
+        
+        setFloatingPosition(prev => ({
+          ...prev,
+          y: targetY
+        }));
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
+  }, [isFloatingExpanded, floatingSize.height]);
 
   useEffect(() => {
     if (editorMode === 'code' && (!editorValue || editorValue.trim() === '')) {
@@ -817,7 +1063,6 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
 
   const analyzeCodeSections = (code: string) => {
     const lines = code.split('\n');
-    let lineNumber = 0;
 
     // Clear existing sections
     getCodeSections().forEach(section => {
@@ -976,12 +1221,39 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
               <br /><strong>Note:</strong> Wrap JSX in parentheses: <code>(&lt;div&gt;...&lt;/div&gt;)</code>
             </div>
 
-            <div className="border rounded overflow-hidden mb-2 relative">
+            <div className={`border rounded overflow-hidden mb-2 relative transition-all duration-300 ${
+              isFloatingExpanded ? 'opacity-30 pointer-events-none' : 'opacity-100'
+            }`}>
+              {/* Floating Editor Toggle Button */}
+              <Button
+                onClick={() => setIsFloatingExpanded(true)}
+                className={`absolute top-2 right-2 z-10 p-2 h-8 w-8 text-white transition-all duration-200 ${
+                  isFloatingExpanded 
+                    ? 'bg-gray-500 cursor-not-allowed' 
+                    : 'bg-blue-600 hover:bg-blue-700'
+                }`}
+                size="sm"
+                title={isFloatingExpanded ? "Floating editor is active" : "Open floating editor"}
+                disabled={isFloatingExpanded}
+              >
+                <Maximize2 size={14} />
+              </Button>
+              
+              {/* Overlay message when floating editor is active */}
+              {isFloatingExpanded && (
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-60 z-5">
+                  <div className="text-center text-white p-4 rounded-lg bg-black bg-opacity-50">
+                    <div className="text-lg font-semibold mb-2">Floating Editor Active</div>
+                    <div className="text-sm opacity-90">Use the floating window to edit code</div>
+                  </div>
+                </div>
+              )}
+              
               <MonacoEditor
                 height="600px"
                 defaultLanguage="typescriptreact"
                 language="typescriptreact"
-                theme="resume-editor"
+                theme={currentEditorTheme}
                 value={editorValue}
                 onMount={(editor, monaco) => {
                   setEditorInstance(editor);
@@ -1099,15 +1371,22 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
               </div>
             )}
 
-            <div className="flex gap-2 items-center flex-wrap">
-              <Button onClick={resetCustomCode} variant="outline" size="sm">
+            <div className={`flex gap-2 items-center flex-wrap transition-opacity duration-300 ${
+              isFloatingExpanded ? 'opacity-50 pointer-events-none' : 'opacity-100'
+            }`}>
+              <Button 
+                onClick={resetCustomCode} 
+                variant="outline" 
+                size="sm"
+                disabled={isFloatingExpanded}
+              >
                 Reset to Template
               </Button>
               <Button 
                 onClick={() => editorInstance?.getAction('editor.action.formatDocument')?.run()}
                 variant="outline" 
                 size="sm"
-                disabled={!editorInstance}
+                disabled={!editorInstance || isFloatingExpanded}
               >
                 Format Code
               </Button>
@@ -1118,7 +1397,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                 }}
                 variant="outline" 
                 size="sm"
-                disabled={!editorInstance}
+                disabled={!editorInstance || isFloatingExpanded}
               >
                 Analyze Sections
               </Button>
@@ -1206,6 +1485,156 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
           </div>
         </TabsContent>
       </Tabs>
+      
+      {/* Floating Editor Overlay */}
+      {isFloatingExpanded && (
+        <div
+          id="floating-editor-container"
+          className="fixed bg-white border-2 border-gray-300 rounded-lg shadow-2xl z-50"
+          style={{
+            left: `${floatingPosition.x}px`,
+            top: `${floatingPosition.y}px`,
+            width: `${floatingSize.width}px`,
+            height: `${floatingSize.height}px`,
+          }}
+        >
+          {/* Floating Editor Header */}
+          <div 
+            className="flex items-center justify-between p-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white border-b cursor-move select-none shadow-sm"
+            onMouseDown={handleMouseDown}
+          >
+            <div className="flex items-center gap-2">
+              <Move size={16} className="text-blue-100" />
+              <span className="text-sm font-semibold">Code Editor (Active)</span>
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" title="Active editor"></div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs bg-blue-800 bg-opacity-50 px-2 py-1 rounded text-blue-100">
+                Floating Mode
+              </span>
+              <Button
+                onClick={() => setIsFloatingExpanded(false)}
+                className="p-1 h-6 w-6 bg-transparent hover:bg-blue-800 text-blue-100 hover:text-white"
+                size="sm"
+                variant="ghost"
+                title="Close floating editor and return to normal mode"
+              >
+                <Minimize2 size={12} />
+              </Button>
+            </div>
+          </div>
+          
+          {/* Floating Editor Content */}
+          <div className="relative" style={{ height: `${floatingSize.height - 48}px` }}>
+            <MonacoEditor
+              height="100%"
+              defaultLanguage="typescriptreact"
+              language="typescriptreact"
+              theme={currentEditorTheme}
+              value={editorValue}
+              onChange={(value) => {
+                const code = value ?? '';
+                setEditorValue(code);
+                setCustomCode(code);
+                setIsCodeChanged(true);
+                onCodeChanging?.(true);
+                
+                // Debounced validation
+                setTimeout(() => {
+                  validateJSXStructure(code);
+                  setIsCodeChanged(false);
+                  onCodeChanging?.(false);
+                }, 500);
+              }}
+              options={{
+                wordWrap: 'on',
+                minimap: { enabled: true },
+                fontSize: 14,
+                scrollBeyondLastLine: false,
+                automaticLayout: true,
+                suggestOnTriggerCharacters: true,
+                acceptSuggestionOnEnter: 'on',
+                tabCompletion: 'on',
+                parameterHints: {
+                  enabled: true,
+                },
+                hover: {
+                  enabled: true,
+                },
+                folding: true,
+                showFoldingControls: 'always',
+                foldingStrategy: 'indentation',
+                bracketPairColorization: {
+                  enabled: true,
+                },
+                guides: {
+                  indentation: true,
+                  bracketPairs: true,
+                },
+                quickSuggestions: {
+                  other: true,
+                  comments: false,
+                  strings: true,
+                },
+              }}
+            />
+            
+            {/* Resize Handle */}
+            <div
+              className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize bg-gray-300 hover:bg-gray-400"
+              onMouseDown={handleResizeMouseDown}
+              title="Resize editor"
+            >
+              <GripVertical size={12} className="text-gray-600 rotate-45 absolute bottom-0.5 right-0.5" />
+            </div>
+            
+            {/* Floating Editor Action Buttons */}
+            <div className="absolute top-2 left-2 flex gap-1 z-10">
+              <Button
+                onClick={resetCustomCode}
+                className="p-1 h-6 text-xs bg-gray-800 hover:bg-gray-700 text-white border-gray-600"
+                size="sm"
+                variant="outline"
+                title="Reset to template"
+              >
+                Reset
+              </Button>
+              <Button
+                onClick={() => editorInstance?.getAction('editor.action.formatDocument')?.run()}
+                className="p-1 h-6 text-xs bg-gray-800 hover:bg-gray-700 text-white border-gray-600"
+                size="sm"
+                variant="outline"
+                title="Format code (Ctrl+Shift+F)"
+              >
+                Format
+              </Button>
+            </div>
+            
+            {/* Code change indicator for floating editor */}
+            {isCodeChanged && (
+              <div className="absolute top-2 right-2 bg-yellow-500 text-white px-2 py-1 rounded text-xs font-medium animate-pulse">
+                Code Changed
+              </div>
+            )}
+          </div>
+          
+          {/* Floating Editor Error Display */}
+          {codeError && (
+            <div className="absolute bottom-0 left-0 right-0 p-2 bg-red-50 border-t border-red-200 text-xs text-red-700 max-h-20 overflow-y-auto">
+              <div className="font-medium mb-1">
+                {codeError.startsWith('Error:') ? '🚨 Syntax Error' : 
+                 codeError.startsWith('Warning:') ? '⚠️ Warning' : 'ℹ️ Info'}
+              </div>
+              <div>{codeError}</div>
+            </div>
+          )}
+        </div>
+      )}
+      
+      {/* Backdrop overlay when dragging */}
+      {(isDragging || isResizing) && (
+        <div className="fixed inset-0 z-40 pointer-events-none" />
+      )}
     </Card>
   );
 };

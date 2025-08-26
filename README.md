@@ -50,3 +50,5 @@ This project is a React application built with:
 ## experiment ai analyze repo
 
 https://github.com/yamadashy/repomix
+
+repomix --compress

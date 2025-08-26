@@ -48,6 +48,7 @@ src/
   components/
     resume-layouts/
       CenteredLayout.tsx
+      ExecutiveLayout.tsx
       layoutTemplates.tsx
       ModernLayout.tsx
       SidebarLayout.tsx
@@ -123,9 +124,12 @@ src/
     Skills.tsx
     WorkExperience.test.tsx
     WorkExperience.tsx
+  data/
+    exampleResume.json
   hooks/
     use-mobile.tsx
     use-toast.ts
+    useCodePreviewMapping.tsx
     useCustomLayoutRenderer.tsx
     useDynamicFormFields.tsx
     useEditableListManager.tsx
@@ -135,6 +139,8 @@ src/
   pages/
     Index.tsx
     NotFound.tsx
+  styles/
+    code-preview-mapping.css
   themes/
     ThemeContext.tsx
   types/
@@ -153,6 +159,7 @@ src/
   setupTests.ts
   vite-env.d.ts
 .gitignore
+CLAUDE.md
 components.json
 eslint.config.js
 index.html
@@ -171,51 +178,6 @@ This section contains the contents of the repository's files.
 
 <file path="public/placeholder.svg">
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" fill="none"><rect width="1200" height="1200" fill="#EAEAEA" rx="3"/><g opacity=".5"><g opacity=".5"><path fill="#FAFAFA" d="M600.709 736.5c-75.454 0-136.621-61.167-136.621-136.62 0-75.454 61.167-136.621 136.621-136.621 75.453 0 136.62 61.167 136.62 136.621 0 75.453-61.167 136.62-136.62 136.62Z"/><path stroke="#C9C9C9" stroke-width="2.418" d="M600.709 736.5c-75.454 0-136.621-61.167-136.621-136.62 0-75.454 61.167-136.621 136.621-136.621 75.453 0 136.62 61.167 136.62 136.621 0 75.453-61.167 136.62-136.62 136.62Z"/></g><path stroke="url(#a)" stroke-width="2.418" d="M0-1.209h553.581" transform="scale(1 -1) rotate(45 1163.11 91.165)"/><path stroke="url(#b)" stroke-width="2.418" d="M404.846 598.671h391.726"/><path stroke="url(#c)" stroke-width="2.418" d="M599.5 795.742V404.017"/><path stroke="url(#d)" stroke-width="2.418" d="m795.717 796.597-391.441-391.44"/><path fill="#fff" d="M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z"/><g clip-path="url(#e)"><path fill="#666" fill-rule="evenodd" d="M616.426 586.58h-31.434v16.176l3.553-3.554.531-.531h9.068l.074-.074 8.463-8.463h2.565l7.18 7.181V586.58Zm-15.715 14.654 3.698 3.699 1.283 1.282-2.565 2.565-1.282-1.283-5.2-5.199h-6.066l-5.514 5.514-.073.073v2.876a2.418 2.418 0 0 0 2.418 2.418h26.598a2.418 2.418 0 0 0 2.418-2.418v-8.317l-8.463-8.463-7.181 7.181-.071.072Zm-19.347 5.442v4.085a6.045 6.045 0 0 0 6.046 6.045h26.598a6.044 6.044 0 0 0 6.045-6.045v-7.108l1.356-1.355-1.282-1.283-.074-.073v-17.989h-38.689v23.43l-.146.146.146.147Z" clip-rule="evenodd"/></g><path stroke="#C9C9C9" stroke-width="2.418" d="M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z"/></g><defs><linearGradient id="a" x1="554.061" x2="-.48" y1=".083" y2=".087" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="b" x1="796.912" x2="404.507" y1="599.963" y2="599.965" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="c" x1="600.792" x2="600.794" y1="403.677" y2="796.082" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="d" x1="404.85" x2="796.972" y1="403.903" y2="796.02" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><clipPath id="e"><path fill="#fff" d="M581.364 580.535h38.689v38.689h-38.689z"/></clipPath></defs></svg>
-</file>
-
-<file path="src/components/resumeAssistant/AISettingsDialog.tsx">
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Check, Thermometer, Sliders } from "lucide-react";
-import { AIModel, aiModels, AIConfigOptions } from "@/utils/aiUtils";
-⋮----
-interface AISettingsDialogProps {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-  apiKey: string;
-  setApiKey: (key: string) => void;
-  apiUrl: string;
-  setApiUrl: (url: string) => void;
-  modelOptions: AIConfigOptions;
-  setModelOptions: (options: AIConfigOptions) => void;
-  customModel: string;
-  setCustomModel: (model: string) => void;
-  saveSettings: () => void;
-}
-⋮----
-const handleModelChange = (value: string) =>
-⋮----
-onValueChange=
 </file>
 
 <file path="src/components/ui/accordion.tsx">
@@ -719,6 +681,332 @@ import { cn } from "@/lib/utils"
 import { useToast, toast } from "@/hooks/use-toast";
 </file>
 
+<file path="src/hooks/use-mobile.tsx">
+export function useIsMobile()
+⋮----
+const onChange = () =>
+</file>
+
+<file path="src/hooks/use-toast.ts">
+import type {
+  ToastActionElement,
+  ToastProps,
+} from "@/components/ui/toast"
+⋮----
+type ToasterToast = ToastProps & {
+  id: string
+  title?: React.ReactNode
+  description?: React.ReactNode
+  action?: ToastActionElement
+}
+⋮----
+function genId()
+⋮----
+type ActionType = typeof actionTypes
+⋮----
+type Action =
+  | {
+      type: ActionType["ADD_TOAST"]
+      toast: ToasterToast
+    }
+  | {
+      type: ActionType["UPDATE_TOAST"]
+      toast: Partial<ToasterToast>
+    }
+  | {
+      type: ActionType["DISMISS_TOAST"]
+      toastId?: ToasterToast["id"]
+    }
+  | {
+      type: ActionType["REMOVE_TOAST"]
+      toastId?: ToasterToast["id"]
+    }
+⋮----
+interface State {
+  toasts: ToasterToast[]
+}
+⋮----
+const addToRemoveQueue = (toastId: string) =>
+⋮----
+export const reducer = (state: State, action: Action): State =>
+⋮----
+// ! Side effects ! - This could be extracted into a dismissToast() action,
+// but I'll keep it here for simplicity
+⋮----
+function dispatch(action: Action)
+⋮----
+type Toast = Omit<ToasterToast, "id">
+⋮----
+function toast(
+⋮----
+const update = (props: ToasterToast)
+const dismiss = () => dispatch(
+⋮----
+function useToast()
+</file>
+
+<file path="src/lib/utils.ts">
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+⋮----
+export function cn(...inputs: ClassValue[])
+</file>
+
+<file path="src/pages/NotFound.tsx">
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+⋮----
+const NotFound = () =>
+</file>
+
+<file path="src/App.css">
+#root {
+⋮----
+.logo {
+.logo:hover {
+.logo.react:hover {
+⋮----
+a:nth-of-type(2) .logo {
+⋮----
+.card {
+⋮----
+.read-the-docs {
+</file>
+
+<file path="src/index.css">
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+⋮----
+@layer base {
+⋮----
+:root {
+⋮----
+.dark {
+⋮----
+* {
+⋮----
+@apply border-border;
+⋮----
+body {
+</file>
+
+<file path="src/vite-env.d.ts">
+/// <reference types="vite/client" />
+</file>
+
+<file path="components.json">
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "default",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "tailwind.config.ts",
+    "css": "src/index.css",
+    "baseColor": "slate",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  }
+}
+</file>
+
+<file path="eslint.config.js">
+export default tseslint.config(
+</file>
+
+<file path="postcss.config.js">
+
+</file>
+
+<file path="tailwind.config.ts">
+import type { Config } from "tailwindcss";
+</file>
+
+<file path="tsconfig.app.json">
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
+    "noFallthroughCasesInSwitch": false,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src"]
+}
+</file>
+
+<file path="tsconfig.json">
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "noImplicitAny": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "noUnusedLocals": false,
+    "strictNullChecks": false
+  }
+}
+</file>
+
+<file path="tsconfig.node.json">
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["vite.config.ts"]
+}
+</file>
+
+<file path="src/components/resume-layouts/ExecutiveLayout.tsx">
+import React from 'react';
+import { Mail, Phone, MapPin, Link, Globe, Award, BookOpen, Users, Calendar } from 'lucide-react';
+⋮----
+interface ExecutiveLayoutProps {
+  resumeData: any;
+}
+⋮----
+// Extract additional sections from extraData
+⋮----
+{/* Executive Header */}
+⋮----
+{/* Executive Photo */}
+⋮----
+{/* Executive Info */}
+⋮----
+{/* Executive Summary */}
+⋮----
+{/* Executive Contact */}
+⋮----
+{/* Main Content */}
+⋮----
+{/* Executive Experience */}
+⋮----
+{/* Strategic Projects */}
+⋮----
+{/* Executive Sidebar */}
+⋮----
+{/* Core Competencies */}
+⋮----
+{/* Education */}
+⋮----
+{/* Professional Certifications */}
+⋮----
+{/* Languages */}
+⋮----
+{/* Awards & Recognition */}
+⋮----
+{/* Board & Volunteer Experience */}
+⋮----
+{/* Professional Interests */}
+</file>
+
+<file path="src/components/resumeAssistant/AISettingsDialog.tsx">
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Check, Thermometer, Sliders } from "lucide-react";
+import { AIModel, aiModels, AIConfigOptions } from "@/utils/aiUtils";
+⋮----
+interface AISettingsDialogProps {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+  apiKey: string;
+  setApiKey: (key: string) => void;
+  apiUrl: string;
+  setApiUrl: (url: string) => void;
+  modelOptions: AIConfigOptions;
+  setModelOptions: (options: AIConfigOptions) => void;
+  customModel: string;
+  setCustomModel: (model: string) => void;
+  saveSettings: () => void;
+}
+⋮----
+const handleModelChange = (value: string) =>
+⋮----
+onValueChange=
+</file>
+
+<file path="src/components/ui/textarea.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+export interface TextareaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+⋮----
+className=
+</file>
+
 <file path="src/components/DynamicFields.tsx">
 import React from 'react';
 ⋮----
@@ -891,68 +1179,274 @@ const entryContainer = getEntryContainer(0); // Get the first (and only) entry c
 // Verify updated state (1 entry)
 </file>
 
-<file path="src/hooks/use-mobile.tsx">
-export function useIsMobile()
-⋮----
-const onChange = () =>
+<file path="src/data/exampleResume.json">
+{
+  "theme": "modern",
+  "basics": {
+    "name": "Alexandra Chen",
+    "email": "alexandra.chen@email.com",
+    "phone": "+1 (555) 123-4567",
+    "jobTitle": "Senior Software Engineer",
+    "location": {
+      "city": "San Francisco",
+      "countryCode": "US"
+    },
+    "website": "https://alexandrachen.dev",
+    "summary": "Passionate Senior Software Engineer with 8+ years of experience building scalable web applications and leading cross-functional teams. Expertise in React, Node.js, and cloud architecture. Committed to writing clean code, mentoring junior developers, and driving technical innovation.",
+    "photoUrl": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
+    "linkedin": "https://linkedin.com/in/alexandra-chen",
+    "github": "https://github.com/alexandra-chen",
+    "portfolio": "https://alexandrachen.dev/portfolio"
+  },
+  "work": [
+    {
+      "name": "TechFlow Inc.",
+      "position": "Senior Software Engineer",
+      "startDate": "2021-03-01",
+      "endDate": "2024-12-01",
+      "description": "Led development of microservices architecture serving 2M+ users daily. Built React-based dashboard increasing user engagement by 40%. Mentored 4 junior developers and established code review best practices. Technologies: React, Node.js, PostgreSQL, AWS, Docker, Kubernetes.",
+      "location": "San Francisco, CA",
+      "website": "https://techflow.com"
+    },
+    {
+      "name": "StartupCore",
+      "position": "Full Stack Developer",
+      "startDate": "2019-01-15",
+      "endDate": "2021-02-28",
+      "description": "Developed MVP for B2B SaaS platform from ground up, resulting in $2M Series A funding. Implemented real-time chat system and payment processing. Reduced API response times by 60% through optimization. Technologies: Vue.js, Python, MongoDB, Redis, Stripe API.",
+      "location": "Austin, TX",
+      "website": "https://startupcore.com"
+    },
+    {
+      "name": "Digital Solutions Ltd",
+      "position": "Software Developer",
+      "startDate": "2017-06-01",
+      "endDate": "2018-12-31",
+      "description": "Built responsive e-commerce platforms for 15+ clients generating $5M+ in revenue. Integrated third-party APIs including payment gateways and shipping providers. Collaborated with UX/UI designers to deliver pixel-perfect implementations. Technologies: Angular, .NET Core, SQL Server, Azure.",
+      "location": "Remote",
+      "website": "https://digitalsolutions.com"
+    },
+    {
+      "name": "CodeCraft Agency",
+      "position": "Junior Developer",
+      "startDate": "2016-01-10",
+      "endDate": "2017-05-30",
+      "description": "Developed custom WordPress themes and plugins for small businesses. Fixed bugs and implemented new features for existing web applications. Participated in daily standups and sprint planning meetings. Technologies: PHP, JavaScript, MySQL, WordPress, jQuery.",
+      "location": "Seattle, WA",
+      "website": "https://codecraft.agency"
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of California, Berkeley",
+      "area": "Computer Science",
+      "studyType": "Master of Science",
+      "endDate": "2015-12-15",
+      "gpa": "3.8/4.0",
+      "courses": ["Advanced Algorithms", "Machine Learning", "Distributed Systems", "Software Engineering"]
+    },
+    {
+      "institution": "Stanford University",
+      "area": "Computer Science",
+      "studyType": "Bachelor of Science",
+      "endDate": "2013-06-15",
+      "gpa": "3.7/4.0",
+      "honors": "Magna Cum Laude",
+      "activities": ["ACM Programming Team Captain", "Women in CS Vice President"]
+    }
+  ],
+  "skills": [
+    {
+      "name": "JavaScript"
+    },
+    {
+      "name": "TypeScript"
+    },
+    {
+      "name": "React"
+    },
+    {
+      "name": "Vue.js"
+    },
+    {
+      "name": "Angular"
+    },
+    {
+      "name": "Node.js"
+    },
+    {
+      "name": "Python"
+    },
+    {
+      "name": "Java"
+    },
+    {
+      "name": "C#"
+    },
+    {
+      "name": "PostgreSQL"
+    },
+    {
+      "name": "MongoDB"
+    },
+    {
+      "name": "Redis"
+    },
+    {
+      "name": "AWS"
+    },
+    {
+      "name": "Azure"
+    },
+    {
+      "name": "Docker"
+    },
+    {
+      "name": "Kubernetes"
+    },
+    {
+      "name": "GraphQL"
+    },
+    {
+      "name": "REST APIs"
+    },
+    {
+      "name": "Git"
+    },
+    {
+      "name": "Agile/Scrum"
+    },
+    {
+      "name": "Test-Driven Development"
+    },
+    {
+      "name": "CI/CD"
+    }
+  ],
+  "projects": [
+    {
+      "name": "CloudSync Dashboard",
+      "description": "Real-time analytics dashboard for cloud infrastructure monitoring",
+      "url": "https://github.com/alexandra-chen/cloudsync-dashboard",
+      "technologies": ["React", "D3.js", "WebSocket", "Node.js"]
+    },
+    {
+      "name": "AI Code Reviewer",
+      "description": "Machine learning tool for automated code quality analysis",
+      "url": "https://github.com/alexandra-chen/ai-code-reviewer",
+      "technologies": ["Python", "TensorFlow", "FastAPI", "Docker"]
+    }
+  ],
+  "certifications": [
+    {
+      "name": "AWS Solutions Architect - Professional",
+      "issuer": "Amazon Web Services",
+      "date": "2023-08-15",
+      "credentialId": "AWS-PSA-12345"
+    },
+    {
+      "name": "Certified Kubernetes Administrator (CKA)",
+      "issuer": "Cloud Native Computing Foundation",
+      "date": "2022-11-20",
+      "credentialId": "CKA-67890"
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "Native"
+    },
+    {
+      "language": "Mandarin Chinese",
+      "fluency": "Fluent"
+    },
+    {
+      "language": "Spanish",
+      "fluency": "Conversational"
+    }
+  ],
+  "awards": [
+    {
+      "title": "Employee of the Year 2023",
+      "awarder": "TechFlow Inc.",
+      "date": "2023-12-01",
+      "summary": "Recognized for outstanding technical leadership and mentorship"
+    },
+    {
+      "title": "Best Innovation Award",
+      "awarder": "StartupCore",
+      "date": "2020-06-15",
+      "summary": "Led development of breakthrough real-time collaboration feature"
+    }
+  ],
+  "volunteer": [
+    {
+      "organization": "Code for Good",
+      "position": "Volunteer Developer",
+      "url": "https://codeforgood.org",
+      "startDate": "2020-01-01",
+      "summary": "Develop web applications for non-profit organizations. Built donation platform for local animal shelter."
+    }
+  ],
+  "interests": [
+    "Open Source Contributing",
+    "Rock Climbing",
+    "Photography",
+    "Travel",
+    "Cooking",
+    "AI/Machine Learning Research"
+  ]
+}
 </file>
 
-<file path="src/hooks/use-toast.ts">
-import type {
-  ToastActionElement,
-  ToastProps,
-} from "@/components/ui/toast"
+<file path="src/hooks/useCodePreviewMapping.tsx">
+import { useState, useCallback, useRef } from 'react';
+import { editor } from 'monaco-editor';
 ⋮----
-type ToasterToast = ToastProps & {
-  id: string
-  title?: React.ReactNode
-  description?: React.ReactNode
-  action?: ToastActionElement
+interface CodeSection {
+  id: string;
+  type: 'personalInfo' | 'workExperience' | 'education' | 'skills' | 'custom';
+  startLine: number;
+  endLine: number;
+  startColumn: number;
+  endColumn: number;
+  previewSelector?: string; // CSS selector for the corresponding preview element
 }
 ⋮----
-function genId()
+previewSelector?: string; // CSS selector for the corresponding preview element
 ⋮----
-type ActionType = typeof actionTypes
-⋮----
-type Action =
-  | {
-      type: ActionType["ADD_TOAST"]
-      toast: ToasterToast
-    }
-  | {
-      type: ActionType["UPDATE_TOAST"]
-      toast: Partial<ToasterToast>
-    }
-  | {
-      type: ActionType["DISMISS_TOAST"]
-      toastId?: ToasterToast["id"]
-    }
-  | {
-      type: ActionType["REMOVE_TOAST"]
-      toastId?: ToasterToast["id"]
-    }
-⋮----
-interface State {
-  toasts: ToasterToast[]
+interface UseCodePreviewMappingReturn {
+  highlightedSection: string | null;
+  highlightCodeSection: (sectionId: string) => void;
+  clearHighlight: () => void;
+  registerCodeSection: (section: CodeSection) => void;
+  getCodeSections: () => CodeSection[];
+  addPreviewHover: (element: HTMLElement, sectionId: string) => void;
+  removePreviewHover: (element: HTMLElement) => void;
 }
 ⋮----
-const addToRemoveQueue = (toastId: string) =>
+export const useCodePreviewMapping = (
+  editorInstance?: editor.IStandaloneCodeEditor | null
+): UseCodePreviewMappingReturn =>
 ⋮----
-export const reducer = (state: State, action: Action): State =>
+// Detect personal info sections
 ⋮----
-// ! Side effects ! - This could be extracted into a dismissToast() action,
-// but I'll keep it here for simplicity
+// Detect work experience sections
 ⋮----
-function dispatch(action: Action)
+// Detect education sections
 ⋮----
-type Toast = Omit<ToasterToast, "id">
+// Detect skills sections
 ⋮----
-function toast(
+// Clear previous decorations
 ⋮----
-const update = (props: ToasterToast)
-const dismiss = () => dispatch(
+// Add new decoration
 ⋮----
-function useToast()
+// Scroll to the highlighted section
+⋮----
+const handleMouseEnter = ()
+const handleMouseLeave = ()
+⋮----
+// Store the handlers for cleanup
 </file>
 
 <file path="src/hooks/useDynamicFormFields.tsx">
@@ -1074,100 +1568,42 @@ const newItemId = Date.now().toString() + Math.random().toString(36).substring(2
 // 3. Return Value
 </file>
 
-<file path="src/lib/utils.ts">
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+<file path="src/styles/code-preview-mapping.css">
+/* Code editor highlighting styles */
+.code-preview-highlight {
 ⋮----
-export function cn(...inputs: ClassValue[])
-</file>
-
-<file path="src/pages/NotFound.tsx">
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+.code-preview-glyph {
 ⋮----
-const NotFound = () =>
-</file>
-
-<file path="src/themes/ThemeContext.tsx">
-// src/themes/ThemeContext.tsx
-import React, { createContext, useContext, useState } from 'react';
+.code-preview-margin {
 ⋮----
-// Define theme types
-export type ThemeName = 'simple' | 'centered' | 'sidebar' | 'modern';
+/* Preview section highlighting styles */
+.preview-section-highlight {
 ⋮----
-// Theme context type
-interface ThemeContextType {
-  currentTheme: ThemeName;
-  setTheme: (theme: ThemeName) => void;
-}
+.preview-section-highlight::before {
 ⋮----
-// Create context with default values
+.preview-section-highlight::after {
 ⋮----
-// Theme provider component
-export const ThemeProvider: React.FC<
+/* Different colors for different section types */
+.preview-section-highlight[data-section="personal-info"]::before {
 ⋮----
-const setTheme = (theme: ThemeName) =>
+.preview-section-highlight[data-section="personal-info"]::after {
 ⋮----
-// Custom hook to use the theme
-export const useTheme = ()
+.preview-section-highlight[data-section="work-experience"]::before {
 ⋮----
-// Theme configuration
-export interface ThemeConfig {
-  layout: {
-    containerClass: string;
-    contentClass: string;
-  };
-  personalInfo: {
-    containerClass: string;
-    titleClass: string;
-    subtitleClass: string;
-    gridClass: string;
-    infoContainerClass: string;
-    avatarContainerClass: string;
-    contactContainerClass: string;
-    contactItemClass: string;
-    labelClass: string;
-    valueClass: string;
-  };
-  section: {
-    containerClass: string;
-    titleClass: string;
-    contentClass: string;
-  };
-  workExperience: {
-    containerClass: string;
-    titleClass: string;
-    entryClass: string;
-    jobTitleClass: string;
-    companyClass: string;
-    periodClass: string;
-    descriptionClass: string;
-  };
-  education: {
-    containerClass: string;
-    titleClass: string;
-    entryClass: string;
-    institutionClass: string;
-    degreeClass: string;
-    periodClass: string;
-  };
-  skills: {
-    containerClass: string;
-    titleClass: string;
-    skillsListClass: string;
-    skillItemClass: string;
-  };
-}
+.preview-section-highlight[data-section="work-experience"]::after {
 ⋮----
-// Define themes
+.preview-section-highlight[data-section="education"]::before {
 ⋮----
-// Simple layout (left example in image)
+.preview-section-highlight[data-section="education"]::after {
 ⋮----
-// Centered layout (middle example in image)
+.preview-section-highlight[data-section="skills"]::before {
 ⋮----
-// Sidebar layout (right example in image)
+.preview-section-highlight[data-section="skills"]::after {
 ⋮----
-// Modern layout (combination of the best elements)
+/* Hover effects for preview sections */
+.preview-section-hoverable {
+⋮----
+.preview-section-hoverable:hover {
 </file>
 
 <file path="src/types/resumeAssistantTypes.ts">
@@ -1443,38 +1879,6 @@ export const getQuickPrompts = (personalInfo:
 export const getTemplatePrompts = (workExperience:
 </file>
 
-<file path="src/App.css">
-#root {
-⋮----
-.logo {
-.logo:hover {
-.logo.react:hover {
-⋮----
-a:nth-of-type(2) .logo {
-⋮----
-.card {
-⋮----
-.read-the-docs {
-</file>
-
-<file path="src/index.css">
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-⋮----
-@layer base {
-⋮----
-:root {
-⋮----
-.dark {
-⋮----
-* {
-⋮----
-@apply border-border;
-⋮----
-body {
-</file>
-
 <file path="src/main.tsx">
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
@@ -1484,119 +1888,85 @@ import App from './App.tsx'
 
 </file>
 
-<file path="src/vite-env.d.ts">
-/// <reference types="vite/client" />
+<file path="CLAUDE.md">
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## code structure reference
+
+`repomix-output.xml`
+
+## Development Commands
+
+- `npm run dev` - Start development server (localhost:3000)
+- `npm run build` - Production build
+- `npm run build:dev` - Development build
+- `npm run lint` - Run ESLint
+- `npm run preview` - Preview production build
+- `npm run test` - Run tests with Vitest
+- `npm run test:ui` - Run tests with Vitest UI
+- `npm run coverage` - Generate test coverage report
+
+## Architecture Overview
+
+This is a React-based resume builder application with the following key architecture:
+
+### Core Structure
+- **Framework**: Vite + React 18 + TypeScript
+- **UI**: Shadcn/ui components with Radix UI primitives
+- **Styling**: Tailwind CSS with custom design system
+- **Testing**: Vitest with @testing-library
+- **State**: React hooks (useState) for local state, Context for themes
+
+### Key Components
+- `Index.tsx` - Main page with tabbed interface (Editor/AI Assistant)
+- `LayoutEditor.tsx` - Core editor with layout selection, code editing, and JSON editing modes
+- `ResumePreview.tsx` - Live preview with PDF export capability
+- `ResumeAssistant.tsx` - AI-powered chat interface for resume improvements
+
+### Resume Data Structure
+The application uses a centralized `ResumeDataState` interface in `utils/jsonResume.ts`:
+- Personal info, work experience, education, skills
+- Extra data field for custom properties
+- JSON Resume format compatibility for import/export
+
+### Layout System
+- Four built-in layouts: Simple, Modern, Sidebar, Centered
+- Custom layout support via Monaco editor with live preview
+- Template system in `resume-layouts/layoutTemplates.tsx`
+
+### AI Integration
+- OpenAI API integration with configurable endpoints
+- Chat interface with system prompts and templates
+- Supports custom models and parameters
+
+## Path Resolution
+Uses `@/` alias for `src/` directory imports.
+
+## Testing
+Tests are located alongside components (`.test.tsx`) and utilities (`.test.ts`). Setup uses jsdom environment with @testing-library/jest-dom matchers.
 </file>
 
-<file path="components.json">
-{
-  "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "default",
-  "rsc": false,
-  "tsx": true,
-  "tailwind": {
-    "config": "tailwind.config.ts",
-    "css": "src/index.css",
-    "baseColor": "slate",
-    "cssVariables": true,
-    "prefix": ""
-  },
-  "aliases": {
-    "components": "@/components",
-    "utils": "@/lib/utils",
-    "ui": "@/components/ui",
-    "lib": "@/lib",
-    "hooks": "@/hooks"
-  }
-}
-</file>
+<file path="index.html">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>skill-story-scribe</title>
+    <meta name="description" content="resume" />
+    <meta name="author" content="jing" />
+    <meta property="og:image" content="/og-image.png" />
+  </head>
 
-<file path="eslint.config.js">
-export default tseslint.config(
-</file>
-
-<file path="postcss.config.js">
-
-</file>
-
-<file path="tsconfig.app.json">
-{
-  "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-    "jsx": "react-jsx",
-
-    /* Linting */
-    "strict": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noImplicitAny": false,
-    "noFallthroughCasesInSwitch": false,
-
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  },
-  "include": ["src"]
-}
-</file>
-
-<file path="tsconfig.json">
-{
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "noImplicitAny": false,
-    "noUnusedParameters": false,
-    "skipLibCheck": true,
-    "allowJs": true,
-    "noUnusedLocals": false,
-    "strictNullChecks": false
-  }
-}
-</file>
-
-<file path="tsconfig.node.json">
-{
-  "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2023"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true
-  },
-  "include": ["vite.config.ts"]
-}
+  <body>
+    <div id="root"></div>
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
 </file>
 
 <file path="src/components/resumeAssistant/ChatMessages.tsx">
@@ -1629,13 +1999,20 @@ interface PromptTemplatesProps {
 export function PromptTemplates(
 </file>
 
-<file path="src/components/ui/textarea.tsx">
-import { cn } from "@/lib/utils"
+<file path="src/components/Skills.tsx">
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { X } from "lucide-react";
 ⋮----
-export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+interface SkillsProps {
+  skills: string[];
+  onChange: (skills: string[]) => void;
+}
 ⋮----
-className=
+const addSkill = (e: React.FormEvent) =>
+⋮----
+const removeSkill = (skillToRemove: string) =>
 </file>
 
 <file path="src/hooks/useResumePDFGenerator.tsx">
@@ -1701,85 +2078,88 @@ return pdfDataUri as string; // Cast because output('datauristring') should retu
 downloadPDF: handlePrintPDF as () => void, // Cast if necessary, useReactToPrint can return undefined if not ready
 </file>
 
-<file path="index.html">
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skill-story-scribe</title>
-    <meta name="description" content="resume" />
-    <meta name="author" content="jing" />
-    <meta property="og:image" content="/og-image.png" />
-  </head>
-
-  <body>
-    <div id="root"></div>
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
-</file>
-
-<file path="tailwind.config.ts">
-import type { Config } from "tailwindcss";
-</file>
-
-<file path="src/components/Skills.tsx">
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { X } from "lucide-react";
+<file path="src/themes/ThemeContext.tsx">
+// src/themes/ThemeContext.tsx
+import React, { createContext, useContext, useState } from 'react';
 ⋮----
-interface SkillsProps {
-  skills: string[];
-  onChange: (skills: string[]) => void;
+// Define theme types
+export type ThemeName = 'simple' | 'centered' | 'sidebar' | 'modern' | 'executive';
+⋮----
+// Theme context type
+interface ThemeContextType {
+  currentTheme: ThemeName;
+  setTheme: (theme: ThemeName) => void;
 }
 ⋮----
-const addSkill = (e: React.FormEvent) =>
+// Create context with default values
 ⋮----
-const removeSkill = (skillToRemove: string) =>
-</file>
-
-<file path="src/utils/aiUtils.ts">
-import { toast } from "sonner";
+// Theme provider component
+export const ThemeProvider: React.FC<
 ⋮----
-interface Message {
-  role: "system" | "user" | "assistant";
-  content: string;
+const setTheme = (theme: ThemeName) =>
+⋮----
+// Custom hook to use the theme
+export const useTheme = ()
+⋮----
+// Theme configuration
+export interface ThemeConfig {
+  layout: {
+    containerClass: string;
+    contentClass: string;
+  };
+  personalInfo: {
+    containerClass: string;
+    titleClass: string;
+    subtitleClass: string;
+    gridClass: string;
+    infoContainerClass: string;
+    avatarContainerClass: string;
+    contactContainerClass: string;
+    contactItemClass: string;
+    labelClass: string;
+    valueClass: string;
+  };
+  section: {
+    containerClass: string;
+    titleClass: string;
+    contentClass: string;
+  };
+  workExperience: {
+    containerClass: string;
+    titleClass: string;
+    entryClass: string;
+    jobTitleClass: string;
+    companyClass: string;
+    periodClass: string;
+    descriptionClass: string;
+  };
+  education: {
+    containerClass: string;
+    titleClass: string;
+    entryClass: string;
+    institutionClass: string;
+    degreeClass: string;
+    periodClass: string;
+  };
+  skills: {
+    containerClass: string;
+    titleClass: string;
+    skillsListClass: string;
+    skillItemClass: string;
+  };
 }
 ⋮----
-interface ChatResponse {
-  choices: {
-    message: {
-      content: string;
-    };
-  }[];
-}
+// Define themes
 ⋮----
-export type AIModel = "gpt-3.5-turbo" | "gpt-4" | "claude-instant" | "claude-2" | "llama-2" | "mistral" | "custom";
+// Simple layout (left example in image)
 ⋮----
-export interface AIModelOption {
-  id: AIModel;
-  name: string;
-  description: string;
-  defaultTemperature: number;
-  maxTokens: number;
-}
+// Centered layout (middle example in image)
 ⋮----
-export interface AIConfigOptions {
-  model: AIModel | string;
-  temperature: number;
-  maxTokens: number;
-}
+// Sidebar layout (right example in image)
 ⋮----
-export async function callAIAPI(
-  messages: Message[], 
-  apiKey: string, 
-  apiUrl: string, 
-  options: AIConfigOptions
-): Promise<string>
+// Modern layout (combination of the best elements)
+⋮----
+// Executive layout - sophisticated C-suite professional design
 </file>
 
 <file path="src/App.tsx">
@@ -1822,6 +2202,46 @@ dist-ssr
 *.sw?
 .aider*
 .qodo
+</file>
+
+<file path="src/utils/aiUtils.ts">
+import { toast } from "sonner";
+⋮----
+interface Message {
+  role: "system" | "user" | "assistant";
+  content: string;
+}
+⋮----
+interface ChatResponse {
+  choices: {
+    message: {
+      content: string;
+    };
+  }[];
+}
+⋮----
+export type AIModel = "gpt-3.5-turbo" | "gpt-4" | "claude-instant" | "claude-2" | "llama-2" | "mistral" | "custom";
+⋮----
+export interface AIModelOption {
+  id: AIModel;
+  name: string;
+  description: string;
+  defaultTemperature: number;
+  maxTokens: number;
+}
+⋮----
+export interface AIConfigOptions {
+  model: AIModel | string;
+  temperature: number;
+  maxTokens: number;
+}
+⋮----
+export async function callAIAPI(
+  messages: Message[], 
+  apiKey: string, 
+  apiUrl: string, 
+  options: AIConfigOptions
+): Promise<string>
 </file>
 
 <file path="README.md">
@@ -1877,57 +2297,8 @@ This project is a React application built with:
 ## experiment ai analyze repo
 
 https://github.com/yamadashy/repomix
-</file>
 
-<file path="src/components/resume-layouts/layoutTemplates.tsx">
-import React from "react";
-import { themes } from "@/themes/ThemeContext";
-import { Mail, Phone, MapPin, Link } from "lucide-react";
-⋮----
-export interface ResumeLayoutProps {
-  resumeData: any;
-}
-⋮----
-{/* Personal Info Section */}
-⋮----
-{/* Summary Section */}
-⋮----
-{/* Work Experience Section */}
-⋮----
-{/* Education Section */}
-⋮----
-{/* Skills Section */}
-⋮----
-{/* Personal Info Section */}
-⋮----
-{/* Summary Section */}
-⋮----
-{/* Work Experience Section */}
-⋮----
-{/* Education Section */}
-⋮----
-{/* Skills Section */}
-⋮----
-{/* Left Sidebar */}
-⋮----
-{/* Skills in sidebar */}
-⋮----
-{/* Main Content */}
-⋮----
-{/* Personal Info Section */}
-⋮----
-{/* Summary Section */}
-⋮----
-{/* Work Experience Section */}
-⋮----
-{/* Education Section */}
-⋮----
-{/* Skills Section */}
-⋮----
-// Generate JSX strings for use in the code editor
-⋮----
-// Helper function to convert a JSX component to its string representation for display
-export const getLayoutJSXString = (layoutName: string) =>
+repomix --compress
 </file>
 
 <file path="src/components/resumeAssistant/ChatInput.tsx">
@@ -1943,6 +2314,40 @@ interface ChatInputProps {
   isLoading: boolean;
   handleKeyDown: (e: React.KeyboardEvent) => void;
 }
+</file>
+
+<file path="src/components/Education.tsx">
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Plus, Trash2 } from "lucide-react";
+⋮----
+export interface EducationEntry {
+  id: string;
+  institution: string;
+  degree: string;
+  field: string;
+  graduationDate: string;
+}
+⋮----
+interface EducationProps {
+  entries: EducationEntry[];
+  onChange: (entries: EducationEntry[]) => void;
+}
+⋮----
+const addEducation = () =>
+⋮----
+const updateEducation = (id: string, field: keyof EducationEntry, value: string) =>
+⋮----
+const removeEducation = (id:string) =>
+⋮----
+updateEducation(edu.id, "institution", e.target.value)
+⋮----
+updateEducation(edu.id, "degree", e.target.value)
+⋮----
+updateEducation(edu.id, "field", e.target.value)
+⋮----
+updateEducation(edu.id, "graduationDate", e.target.value)
 </file>
 
 <file path="src/components/ResumeAssistant.tsx">
@@ -2083,40 +2488,6 @@ transformedCodeForDebug: transformedCode // Include for debugging
 }, [customLayoutCode, resumeData]); // Dependencies for useMemo
 </file>
 
-<file path="src/components/Education.tsx">
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Plus, Trash2 } from "lucide-react";
-⋮----
-export interface EducationEntry {
-  id: string;
-  institution: string;
-  degree: string;
-  field: string;
-  graduationDate: string;
-}
-⋮----
-interface EducationProps {
-  entries: EducationEntry[];
-  onChange: (entries: EducationEntry[]) => void;
-}
-⋮----
-const addEducation = () =>
-⋮----
-const updateEducation = (id: string, field: keyof EducationEntry, value: string) =>
-⋮----
-const removeEducation = (id:string) =>
-⋮----
-updateEducation(edu.id, "institution", e.target.value)
-⋮----
-updateEducation(edu.id, "degree", e.target.value)
-⋮----
-updateEducation(edu.id, "field", e.target.value)
-⋮----
-updateEducation(edu.id, "graduationDate", e.target.value)
-</file>
-
 <file path="vite.config.ts">
 /// <reference types="vitest" />
 import { defineConfig } from "vite";
@@ -2124,6 +2495,70 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 ⋮----
 // https://vitejs.dev/config/
+</file>
+
+<file path="src/components/resume-layouts/layoutTemplates.tsx">
+import React from "react";
+import { themes } from "@/themes/ThemeContext";
+import { Mail, Phone, MapPin, Link } from "lucide-react";
+⋮----
+export interface ResumeLayoutProps {
+  resumeData: any;
+}
+⋮----
+{/* Personal Info Section */}
+⋮----
+{/* Summary Section */}
+⋮----
+{/* Work Experience Section */}
+⋮----
+{/* Education Section */}
+⋮----
+{/* Skills Section */}
+⋮----
+{/* Personal Info Section */}
+⋮----
+{/* Summary Section */}
+⋮----
+{/* Work Experience Section */}
+⋮----
+{/* Education Section */}
+⋮----
+{/* Skills Section */}
+⋮----
+{/* Left Sidebar */}
+⋮----
+{/* Skills in sidebar */}
+⋮----
+{/* Main Content */}
+⋮----
+{/* Personal Info Section */}
+⋮----
+{/* Summary Section */}
+⋮----
+{/* Work Experience Section */}
+⋮----
+{/* Education Section */}
+⋮----
+{/* Skills Section */}
+⋮----
+// Extract additional sections from extraData
+⋮----
+{/* Executive Header */}
+⋮----
+{/* Main Content */}
+⋮----
+{/* Executive Experience */}
+⋮----
+{/* Strategic Projects */}
+⋮----
+{/* Executive Sidebar */}
+⋮----
+{/* Core Competencies */}
+⋮----
+{/* Education */}
+⋮----
+{/* Additional sections for certifications, languages, awards, etc. */}
 </file>
 
 <file path="src/components/WorkExperience.tsx">
@@ -2316,105 +2751,6 @@ interface SidebarLayoutProps {
 {/* Main Content */}
 </file>
 
-<file path="src/utils/jsonResume.ts">
-import { PersonalInfoData } from "@/components/PersonalInfo";
-import { WorkExperienceEntry } from "@/components/WorkExperience";
-import { EducationEntry } from "@/components/Education";
-import { ThemeName } from "@/themes/ThemeContext";
-⋮----
-// Define ResumeDataState interface
-export interface ResumeDataState {
-  personalInfo: PersonalInfoData;
-  workExperience: WorkExperienceEntry[];
-  education: EducationEntry[];
-  skills: string[];
-  extraData: Record<string, any>;
-}
-⋮----
-export interface JsonResume {
-  theme: ThemeName;
-  basics: {
-    [key: string]: any;
-    name: string;
-    email: string;
-    phone: string;
-    jobTitle?: string;
-    location: {
-      city?: string;
-      countryCode: string;
-    };
-  };
-  work: Array<{
-    [key: string]: any;
-    name?: string;
-    position?: string;
-    startDate?: string;
-    endDate?: string;
-    description?: string;
-  }>;
-  education: Array<{
-    [key: string]: any;
-    institution?: string;
-    area?: string;
-    studyType?: string;
-    endDate?: string;
-  }>;
-  skills: Array<{
-    [key: string]: any;
-    name: string;
-  }>;
-  [key: string]: any; // Allow for additional top-level properties
-}
-⋮----
-[key: string]: any; // Allow for additional top-level properties
-⋮----
-export const exportToJsonResume = (
-  resumeData: ResumeDataState,
-  theme: ThemeName
-): JsonResume =>
-⋮----
-// Create basics object with all personal info fields
-⋮----
-countryCode: "US", // Default countryCode, can be made dynamic if needed
-⋮----
-jobTitle: resumeData.personalInfo.jobTitle, // Ensure jobTitle is included
-⋮----
-// Add any additional fields from personalInfo (excluding already mapped ones and objects)
-⋮----
-// startDate: edu.startDate, // Removed as per review, EducationEntry likely doesn't have startDate
-⋮----
-// summary: edu.description, // Removed as per review, EducationEntry likely doesn't have description/summary
-⋮----
-// Add any extra data fields at the top level
-⋮----
-export const importFromJsonResume = (
-  jsonResume: JsonResume
-):
-⋮----
-// Create personalInfo object with required fields
-⋮----
-location: jsonResume.basics.location?.city || '', // Added safe navigation
-jobTitle: jsonResume.basics.jobTitle || jsonResume.basics.label || "", // Prefer jobTitle, fallback to label
-⋮----
-// Add any additional fields from the JSON
-⋮----
-// Extract work experience
-⋮----
-// Extract education
-⋮----
-// startDate: edu.startDate || '', // Removed, EducationEntry likely doesn't have startDate
-⋮----
-// description: edu.summary || '', // Removed, EducationEntry likely doesn't have description
-⋮----
-// Extract skills
-⋮----
-// Extract extra data (any top-level properties that are not standard)
-⋮----
-if (!['theme', 'basics', 'work', 'education', 'skills', 'meta'].includes(key)) { // Exclude 'meta' as well
-⋮----
-theme: jsonResume.meta?.theme || jsonResume.theme || 'modern', // Prefer meta.theme
-</file>
-
 <file path="package.json">
 {
   "name": "vite_react_shadcn_ts",
@@ -2512,6 +2848,105 @@ theme: jsonResume.meta?.theme || jsonResume.theme || 'modern', // Prefer meta.th
     "vitest": "^3.1.4"
   }
 }
+</file>
+
+<file path="src/utils/jsonResume.ts">
+import { PersonalInfoData } from "@/components/PersonalInfo";
+import { WorkExperienceEntry } from "@/components/WorkExperience";
+import { EducationEntry } from "@/components/Education";
+import { ThemeName } from "@/themes/ThemeContext";
+⋮----
+// Define ResumeDataState interface
+export interface ResumeDataState {
+  personalInfo: PersonalInfoData;
+  workExperience: WorkExperienceEntry[];
+  education: EducationEntry[];
+  skills: string[];
+  extraData: Record<string, any>;
+}
+⋮----
+export interface JsonResume {
+  theme: ThemeName;
+  basics: {
+    [key: string]: any;
+    name: string;
+    email: string;
+    phone: string;
+    jobTitle?: string;
+    location: {
+      city?: string;
+      countryCode: string;
+    };
+  };
+  work: Array<{
+    [key: string]: any;
+    name?: string;
+    position?: string;
+    startDate?: string;
+    endDate?: string;
+    description?: string;
+  }>;
+  education: Array<{
+    [key: string]: any;
+    institution?: string;
+    area?: string;
+    studyType?: string;
+    endDate?: string;
+  }>;
+  skills: Array<{
+    [key: string]: any;
+    name: string;
+  }>;
+  [key: string]: any; // Allow for additional top-level properties
+}
+⋮----
+[key: string]: any; // Allow for additional top-level properties
+⋮----
+export const exportToJsonResume = (
+  resumeData: ResumeDataState,
+  theme: ThemeName
+): JsonResume =>
+⋮----
+// Create basics object with all personal info fields
+⋮----
+countryCode: "US", // Default countryCode, can be made dynamic if needed
+⋮----
+jobTitle: resumeData.personalInfo.jobTitle, // Ensure jobTitle is included
+⋮----
+// Add any additional fields from personalInfo (excluding already mapped ones and objects)
+⋮----
+// startDate: edu.startDate, // Removed as per review, EducationEntry likely doesn't have startDate
+⋮----
+// summary: edu.description, // Removed as per review, EducationEntry likely doesn't have description/summary
+⋮----
+// Add any extra data fields at the top level
+⋮----
+export const importFromJsonResume = (
+  jsonResume: JsonResume
+):
+⋮----
+// Create personalInfo object with required fields
+⋮----
+location: jsonResume.basics.location?.city || '', // Added safe navigation
+jobTitle: jsonResume.basics.jobTitle || jsonResume.basics.label || "", // Prefer jobTitle, fallback to label
+⋮----
+// Add any additional fields from the JSON
+⋮----
+// Extract work experience
+⋮----
+// Extract education
+⋮----
+// startDate: edu.startDate || '', // Removed, EducationEntry likely doesn't have startDate
+⋮----
+// description: edu.summary || '', // Removed, EducationEntry likely doesn't have description
+⋮----
+// Extract skills
+⋮----
+// Extract extra data (any top-level properties that are not standard)
+⋮----
+if (!['theme', 'basics', 'work', 'education', 'skills', 'meta'].includes(key)) { // Exclude 'meta' as well
+⋮----
+theme: jsonResume.meta?.theme || jsonResume.theme || 'modern', // Prefer meta.theme
 </file>
 
 <file path="src/components/FoldablePanel.tsx">
@@ -2631,6 +3066,10 @@ interface ResumePreviewProps {
   // Removed: onPreviewPdf?: () => void;
   extraData?: Record<string, any>;
   customLayoutCode?: string;
+  isCodeChanging?: boolean;
+  onPreviewUpdate?: () => void;
+  onSectionHighlight?: (sectionId: string) => void;
+  onSectionClearHighlight?: () => void;
 }
 ⋮----
 // Removed: onPreviewPdf?: () => void;
@@ -2646,10 +3085,21 @@ const { downloadPDF } = useResumePDFGenerator({ // Removed: generatePdfPreviewUr
 ⋮----
 // transformedCodeForDebug // Can be used if displaying detailed error messages
 ⋮----
-// Debounce or use ResizeObserver for better performance if this causes issues
+}, 300); // Debounce for better performance
 ⋮----
-// Update totalPages when content changes, or when custom layout is rendered/errored
-}, [resumeLayoutData, customRenderedElement, customLayoutError, theme]); // Added theme dependency
+// Add hover effects to preview sections after render
+⋮----
+const setupSectionHovers = () =>
+⋮----
+const handleMouseEnter = () =>
+⋮----
+const handleMouseLeave = () =>
+⋮----
+// Store handlers for cleanup
+⋮----
+// Setup hover effects after a small delay to ensure DOM is ready
+⋮----
+// Clean up event listeners
 ⋮----
 // Removed: generatePdfPreview function
 // Removed: generatePdfPreviewWithReactToPrint (now part of downloadPDF)
@@ -2661,6 +3111,8 @@ const renderLayout = () =>
 return customRenderedElement; // This is already React.ReactNode or null
 ⋮----
 // Standard layout rendering
+⋮----
+{/* Preview status indicators */}
 ⋮----
 onClick={downloadPDF} // Use downloadPDF from the hook
 ⋮----
@@ -2681,6 +3133,9 @@ import { useTheme, ThemeName } from "@/themes/ThemeContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShowPreviewButton } from "@/components/ShowPreviewButton";
 import LayoutEditor from '@/components/LayoutEditor';
+import exampleResumeJson from '@/data/exampleResume.json';
+⋮----
+// Convert the example JSON to ResumeDataState format
 ⋮----
 // LIFTED STATE FOR LAYOUT CODE EDITOR
 ⋮----
@@ -2719,17 +3174,20 @@ import { EducationEntry } from './Education';
 import { ModernLayout } from './resume-layouts/ModernLayout';
 import { SidebarLayout } from './resume-layouts/SidebarLayout';
 import { CenteredLayout } from './resume-layouts/CenteredLayout';
+import { ExecutiveLayout } from './resume-layouts/ExecutiveLayout';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import MonacoEditor from '@monaco-editor/react';
+import MonacoEditor, { Monaco } from '@monaco-editor/react';
+import { editor } from 'monaco-editor';
 import { useTheme } from '@/themes/ThemeContext';
 import { getLayoutJSXString } from './resume-layouts/layoutTemplates';
 import { ResumeDataState } from '../utils/jsonResume'; // Import ResumeDataState
 import { ErrorBoundary } from './ErrorBoundary';
+import { useCodePreviewMapping } from '../hooks/useCodePreviewMapping';
 ⋮----
 // @ts-ignore
 ⋮----
@@ -2760,6 +3218,7 @@ interface LayoutEditorProps {
   setEditorValue: (value: string) => void;
   jsonValue: string;
   setJsonValue: (value: string) => void;
+  onCodeChanging?: (changing: boolean) => void;
 }
 ⋮----
 // resumeData and setResumeData are no longer passed from Index.tsx
@@ -2771,11 +3230,127 @@ interface LayoutEditorProps {
 ⋮----
 // Extract data from resumeDataSource, providing fallbacks for robustness
 ⋮----
+maintainability: number; // 0-100
+⋮----
+// Code-preview mapping
+⋮----
+// Monaco Editor configuration
+const configureMonacoEditor = (monaco: Monaco) =>
+⋮----
+// Configure TypeScript for JSX support
+⋮----
+// Also configure JavaScript defaults for better JSX support
+⋮----
+// Add React and JSX types
+⋮----
+// Also add to javascript defaults for broader compatibility
+⋮----
+// Add comprehensive resume data types and utility functions
+⋮----
+// Also add resume data types to JavaScript defaults
+⋮----
+// Add code snippets and completion providers
+⋮----
+// Resume data snippets
+⋮----
+insertTextFormat: 2, // Snippet format
+⋮----
+insertTextFormat: 2, // Snippet format
+⋮----
+insertTextFormat: 2, // Snippet format
+⋮----
+insertTextFormat: 2, // Snippet format
+⋮----
+insertTextFormat: 2, // Snippet format
+⋮----
+// Add hover provider for better documentation
+⋮----
+// Define custom dark theme with comprehensive syntax highlighting
+⋮----
+// Comments
+⋮----
+// Keywords
+⋮----
+// Strings and literals
+⋮----
+// Types and classes
+⋮----
+// Functions and methods
+⋮----
+// Variables and identifiers
+⋮----
+// JSX/HTML Tags
+⋮----
+// JSX/HTML Attributes
+⋮----
+// Operators and punctuation
+⋮----
+// TypeScript/JavaScript specific
+⋮----
+// JSX specific
+⋮----
+// Define light theme as well for consistency
+⋮----
+// Comments
+⋮----
+// Keywords
+⋮----
+// Strings and literals
+⋮----
+// Types and classes
+⋮----
+// Functions and methods
+⋮----
+// Variables and identifiers
+⋮----
+// JSX/HTML Tags
+⋮----
+// JSX/HTML Attributes
+⋮----
+// Effect to handle Monaco editor theme changes and ensure theme is applied correctly
+⋮----
+// For now, always use dark theme for better visibility
+// In the future, this could be based on a global app theme
+⋮----
+// Force refresh to ensure theme is applied properly
+⋮----
+// Additional effect to ensure theme is applied when switching between tabs
+⋮----
+// Small delay to ensure tab switch is complete
+⋮----
+// Trigger layout to refresh the editor
+⋮----
 // Construct jsonToEdit from individual props passed from Index.tsx
 ⋮----
 // Note: resumeDataSource is added to dependency array of above useEffect
 ⋮----
 const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+⋮----
+const validateJSXStructure = (code: string) =>
+⋮----
+// Check for common JSX structure issues
+⋮----
+// Check for unmatched JSX tags
+⋮----
+// Check for missing React Fragment wrapper
+⋮----
+// Check for common variable usage
+⋮----
+const analyzeCodeSections = (code: string) =>
+⋮----
+// Clear existing sections
+⋮----
+// Implementation would clear existing sections
+⋮----
+// Analyze and register new sections
+⋮----
+// Personal Info detection
+⋮----
+// Work Experience detection
+⋮----
+// Education detection
+⋮----
+// Skills detection
 ⋮----
 const resetCustomCode = () =>
 ⋮----
@@ -2791,13 +3366,23 @@ const renderLayout = () =>
 ⋮----
 // Standard layouts expect a single resumeData prop with basics, work, etc.
 ⋮----
-{/* Removed the small preview above the code editor */}
+{/* Compact header with inline layout selection */}
+⋮----
+{/* Compact info section */}
+⋮----
+onMount=
+⋮----
+// Add custom actions
 ⋮----
 onChange=
 ⋮----
-// Remove single-line and multi-line comments before validation
+// Debounced validation
 ⋮----
-// code = code.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '');
+// lightbulb: {
+//   enabled: true,
+// },
+⋮----
+{/* Code change indicator */}
 ⋮----
 // Debounce auto-apply
 ⋮----
