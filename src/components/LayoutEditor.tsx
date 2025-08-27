@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { SimpleLayout } from './resume-layouts/SimpleLayout';
 import { PersonalInfoData } from './PersonalInfo';
 import { WorkExperienceEntry } from './WorkExperience';
 import { EducationEntry } from './Education';
-import { ModernLayout } from './resume-layouts/ModernLayout';
-import { SidebarLayout } from './resume-layouts/SidebarLayout';
-import { CenteredLayout } from './resume-layouts/CenteredLayout';
-import { ExecutiveLayout } from './resume-layouts/ExecutiveLayout';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -21,6 +16,7 @@ import { getLayoutJSXString } from './resume-layouts/layoutTemplates';
 import { ResumeDataState } from '../utils/jsonResume'; // Import ResumeDataState
 import { ErrorBoundary } from './ErrorBoundary';
 import { useCodePreviewMapping } from '../hooks/useCodePreviewMapping';
+import { Mail, Phone, MapPin, Link } from 'lucide-react';
 
 // @ts-ignore
 declare global {
@@ -29,13 +25,8 @@ declare global {
   }
 }
 
-const layouts = {
-  Simple: SimpleLayout,
-  Modern: ModernLayout,
-  Sidebar: SidebarLayout,
-  Centered: CenteredLayout,
-  Executive: ExecutiveLayout,
-};
+// Available layout options (used for dropdown)
+const layouts = ['Simple', 'Modern', 'Sidebar', 'Centered', 'Executive'];
 
 interface LayoutEditorProps {
   selectedLayout: string;
@@ -163,6 +154,58 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       strict: false,
       skipLibCheck: true,
       allowSyntheticDefaultImports: true,
+    });
+
+    // Set diagnostics options for better JSX support
+    monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+      noSemanticValidation: false,
+      noSyntaxValidation: false,
+      noSuggestionDiagnostics: true
+    });
+
+    monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
+      noSemanticValidation: false,
+      noSyntaxValidation: false,
+      noSuggestionDiagnostics: true
+    });
+
+    // Register language configuration for better JSX support
+    monaco.languages.setLanguageConfiguration('typescript', {
+      comments: {
+        lineComment: '//',
+        blockComment: ['/*', '*/']
+      },
+      brackets: [
+        ['{', '}'],
+        ['[', ']'],
+        ['(', ')'],
+        ['<', '>']
+      ],
+      autoClosingPairs: [
+        { open: '{', close: '}' },
+        { open: '[', close: ']' },
+        { open: '(', close: ')' },
+        { open: '"', close: '"', notIn: ['string'] },
+        { open: "'", close: "'", notIn: ['string', 'comment'] },
+        { open: '`', close: '`', notIn: ['string', 'comment'] },
+        { open: '<', close: '>', notIn: ['string'] }
+      ],
+      surroundingPairs: [
+        { open: '{', close: '}' },
+        { open: '[', close: ']' },
+        { open: '(', close: ')' },
+        { open: '"', close: '"' },
+        { open: "'", close: "'" },
+        { open: '`', close: '`' },
+        { open: '<', close: '>' }
+      ],
+      folding: {
+        markers: {
+          start: new RegExp('^\\s*//\\s*#?region\\b'),
+          end: new RegExp('^\\s*//\\s*#?endregion\\b')
+        }
+      },
+      wordPattern: /(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)/g
     });
 
     // Add React and JSX types
@@ -528,8 +571,274 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       'resume-types-js.d.ts'
     );
 
+    // Tailwind CSS class definitions
+    const tailwindClasses = {
+      // Layout
+      'container': 'A component that centers and constrains content',
+      'block': 'display: block',
+      'inline-block': 'display: inline-block',
+      'inline': 'display: inline',
+      'flex': 'display: flex',
+      'inline-flex': 'display: inline-flex',
+      'grid': 'display: grid',
+      'inline-grid': 'display: inline-grid',
+      'hidden': 'display: none',
+      
+      // Flexbox
+      'flex-row': 'flex-direction: row',
+      'flex-col': 'flex-direction: column',
+      'flex-wrap': 'flex-wrap: wrap',
+      'flex-nowrap': 'flex-wrap: nowrap',
+      'items-start': 'align-items: flex-start',
+      'items-center': 'align-items: center',
+      'items-end': 'align-items: flex-end',
+      'items-stretch': 'align-items: stretch',
+      'justify-start': 'justify-content: flex-start',
+      'justify-center': 'justify-content: center',
+      'justify-end': 'justify-content: flex-end',
+      'justify-between': 'justify-content: space-between',
+      'justify-around': 'justify-content: space-around',
+      'justify-evenly': 'justify-content: space-evenly',
+      
+      // Grid
+      'grid-cols-1': 'grid-template-columns: repeat(1, minmax(0, 1fr))',
+      'grid-cols-2': 'grid-template-columns: repeat(2, minmax(0, 1fr))',
+      'grid-cols-3': 'grid-template-columns: repeat(3, minmax(0, 1fr))',
+      'grid-cols-4': 'grid-template-columns: repeat(4, minmax(0, 1fr))',
+      'grid-cols-6': 'grid-template-columns: repeat(6, minmax(0, 1fr))',
+      'grid-cols-12': 'grid-template-columns: repeat(12, minmax(0, 1fr))',
+      'gap-1': 'gap: 0.25rem',
+      'gap-2': 'gap: 0.5rem',
+      'gap-3': 'gap: 0.75rem',
+      'gap-4': 'gap: 1rem',
+      'gap-6': 'gap: 1.5rem',
+      'gap-8': 'gap: 2rem',
+      
+      // Spacing - Padding
+      'p-0': 'padding: 0',
+      'p-1': 'padding: 0.25rem',
+      'p-2': 'padding: 0.5rem',
+      'p-3': 'padding: 0.75rem',
+      'p-4': 'padding: 1rem',
+      'p-6': 'padding: 1.5rem',
+      'p-8': 'padding: 2rem',
+      'p-12': 'padding: 3rem',
+      'px-2': 'padding-left: 0.5rem; padding-right: 0.5rem',
+      'px-3': 'padding-left: 0.75rem; padding-right: 0.75rem',
+      'px-4': 'padding-left: 1rem; padding-right: 1rem',
+      'px-6': 'padding-left: 1.5rem; padding-right: 1.5rem',
+      'py-1': 'padding-top: 0.25rem; padding-bottom: 0.25rem',
+      'py-2': 'padding-top: 0.5rem; padding-bottom: 0.5rem',
+      'py-3': 'padding-top: 0.75rem; padding-bottom: 0.75rem',
+      'py-4': 'padding-top: 1rem; padding-bottom: 1rem',
+      
+      // Spacing - Margin
+      'm-0': 'margin: 0',
+      'm-1': 'margin: 0.25rem',
+      'm-2': 'margin: 0.5rem',
+      'm-3': 'margin: 0.75rem',
+      'm-4': 'margin: 1rem',
+      'm-6': 'margin: 1.5rem',
+      'm-8': 'margin: 2rem',
+      'mx-auto': 'margin-left: auto; margin-right: auto',
+      'mb-2': 'margin-bottom: 0.5rem',
+      'mb-3': 'margin-bottom: 0.75rem',
+      'mb-4': 'margin-bottom: 1rem',
+      'mb-6': 'margin-bottom: 1.5rem',
+      'mt-2': 'margin-top: 0.5rem',
+      'mt-4': 'margin-top: 1rem',
+      'mr-2': 'margin-right: 0.5rem',
+      'ml-2': 'margin-left: 0.5rem',
+      
+      // Sizing
+      'w-full': 'width: 100%',
+      'w-1/2': 'width: 50%',
+      'w-1/3': 'width: 33.333333%',
+      'w-2/3': 'width: 66.666667%',
+      'w-1/4': 'width: 25%',
+      'w-3/4': 'width: 75%',
+      'w-32': 'width: 8rem',
+      'w-48': 'width: 12rem',
+      'w-64': 'width: 16rem',
+      'h-full': 'height: 100%',
+      'h-screen': 'height: 100vh',
+      'h-32': 'height: 8rem',
+      'h-48': 'height: 12rem',
+      'h-64': 'height: 16rem',
+      'min-h-full': 'min-height: 100%',
+      'min-h-screen': 'min-height: 100vh',
+      'max-w-sm': 'max-width: 24rem',
+      'max-w-md': 'max-width: 28rem',
+      'max-w-lg': 'max-width: 32rem',
+      'max-w-xl': 'max-width: 36rem',
+      'max-w-2xl': 'max-width: 42rem',
+      'max-w-4xl': 'max-width: 56rem',
+      'max-w-6xl': 'max-width: 72rem',
+      
+      // Typography
+      'text-xs': 'font-size: 0.75rem; line-height: 1rem',
+      'text-sm': 'font-size: 0.875rem; line-height: 1.25rem',
+      'text-base': 'font-size: 1rem; line-height: 1.5rem',
+      'text-lg': 'font-size: 1.125rem; line-height: 1.75rem',
+      'text-xl': 'font-size: 1.25rem; line-height: 1.75rem',
+      'text-2xl': 'font-size: 1.5rem; line-height: 2rem',
+      'text-3xl': 'font-size: 1.875rem; line-height: 2.25rem',
+      'text-4xl': 'font-size: 2.25rem; line-height: 2.5rem',
+      'font-thin': 'font-weight: 100',
+      'font-light': 'font-weight: 300',
+      'font-normal': 'font-weight: 400',
+      'font-medium': 'font-weight: 500',
+      'font-semibold': 'font-weight: 600',
+      'font-bold': 'font-weight: 700',
+      'font-extrabold': 'font-weight: 800',
+      'italic': 'font-style: italic',
+      'not-italic': 'font-style: normal',
+      'leading-none': 'line-height: 1',
+      'leading-tight': 'line-height: 1.25',
+      'leading-snug': 'line-height: 1.375',
+      'leading-normal': 'line-height: 1.5',
+      'leading-relaxed': 'line-height: 1.625',
+      'leading-loose': 'line-height: 2',
+      'text-left': 'text-align: left',
+      'text-center': 'text-align: center',
+      'text-right': 'text-align: right',
+      'text-justify': 'text-align: justify',
+      
+      // Colors - Text
+      'text-white': 'color: rgb(255 255 255)',
+      'text-black': 'color: rgb(0 0 0)',
+      'text-gray-50': 'color: rgb(249 250 251)',
+      'text-gray-100': 'color: rgb(243 244 246)',
+      'text-gray-200': 'color: rgb(229 231 235)',
+      'text-gray-300': 'color: rgb(209 213 219)',
+      'text-gray-400': 'color: rgb(156 163 175)',
+      'text-gray-500': 'color: rgb(107 114 128)',
+      'text-gray-600': 'color: rgb(75 85 99)',
+      'text-gray-700': 'color: rgb(55 65 81)',
+      'text-gray-800': 'color: rgb(31 41 55)',
+      'text-gray-900': 'color: rgb(17 24 39)',
+      'text-red-500': 'color: rgb(239 68 68)',
+      'text-red-600': 'color: rgb(220 38 38)',
+      'text-green-500': 'color: rgb(34 197 94)',
+      'text-green-600': 'color: rgb(22 163 74)',
+      'text-blue-500': 'color: rgb(59 130 246)',
+      'text-blue-600': 'color: rgb(37 99 235)',
+      'text-indigo-500': 'color: rgb(99 102 241)',
+      'text-purple-500': 'color: rgb(168 85 247)',
+      
+      // Colors - Background
+      'bg-white': 'background-color: rgb(255 255 255)',
+      'bg-black': 'background-color: rgb(0 0 0)',
+      'bg-transparent': 'background-color: transparent',
+      'bg-gray-50': 'background-color: rgb(249 250 251)',
+      'bg-gray-100': 'background-color: rgb(243 244 246)',
+      'bg-gray-200': 'background-color: rgb(229 231 235)',
+      'bg-gray-300': 'background-color: rgb(209 213 219)',
+      'bg-gray-400': 'background-color: rgb(156 163 175)',
+      'bg-gray-500': 'background-color: rgb(107 114 128)',
+      'bg-gray-600': 'background-color: rgb(75 85 99)',
+      'bg-gray-700': 'background-color: rgb(55 65 81)',
+      'bg-gray-800': 'background-color: rgb(31 41 55)',
+      'bg-gray-900': 'background-color: rgb(17 24 39)',
+      'bg-red-50': 'background-color: rgb(254 242 242)',
+      'bg-red-500': 'background-color: rgb(239 68 68)',
+      'bg-green-50': 'background-color: rgb(240 253 244)',
+      'bg-green-500': 'background-color: rgb(34 197 94)',
+      'bg-blue-50': 'background-color: rgb(239 246 255)',
+      'bg-blue-500': 'background-color: rgb(59 130 246)',
+      'bg-blue-600': 'background-color: rgb(37 99 235)',
+      
+      // Borders
+      'border': 'border-width: 1px',
+      'border-0': 'border-width: 0px',
+      'border-2': 'border-width: 2px',
+      'border-4': 'border-width: 4px',
+      'border-t': 'border-top-width: 1px',
+      'border-r': 'border-right-width: 1px',
+      'border-b': 'border-bottom-width: 1px',
+      'border-l': 'border-left-width: 1px',
+      'border-solid': 'border-style: solid',
+      'border-dashed': 'border-style: dashed',
+      'border-dotted': 'border-style: dotted',
+      'border-gray-200': 'border-color: rgb(229 231 235)',
+      'border-gray-300': 'border-color: rgb(209 213 219)',
+      'border-gray-400': 'border-color: rgb(156 163 175)',
+      'border-red-500': 'border-color: rgb(239 68 68)',
+      'border-blue-500': 'border-color: rgb(59 130 246)',
+      
+      // Border Radius
+      'rounded': 'border-radius: 0.25rem',
+      'rounded-sm': 'border-radius: 0.125rem',
+      'rounded-md': 'border-radius: 0.375rem',
+      'rounded-lg': 'border-radius: 0.5rem',
+      'rounded-xl': 'border-radius: 0.75rem',
+      'rounded-2xl': 'border-radius: 1rem',
+      'rounded-full': 'border-radius: 9999px',
+      'rounded-none': 'border-radius: 0px',
+      
+      // Shadows
+      'shadow': 'box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+      'shadow-sm': 'box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05)',
+      'shadow-md': 'box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+      'shadow-lg': 'box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+      'shadow-xl': 'box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+      'shadow-2xl': 'box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25)',
+      'shadow-none': 'box-shadow: 0 0 #0000',
+      
+      // Positioning
+      'relative': 'position: relative',
+      'absolute': 'position: absolute',
+      'fixed': 'position: fixed',
+      'sticky': 'position: sticky',
+      'static': 'position: static',
+      'top-0': 'top: 0px',
+      'right-0': 'right: 0px',
+      'bottom-0': 'bottom: 0px',
+      'left-0': 'left: 0px',
+      'inset-0': 'inset: 0px',
+      
+      // Z-Index
+      'z-0': 'z-index: 0',
+      'z-10': 'z-index: 10',
+      'z-20': 'z-index: 20',
+      'z-30': 'z-index: 30',
+      'z-40': 'z-index: 40',
+      'z-50': 'z-index: 50',
+      
+      // Overflow
+      'overflow-visible': 'overflow: visible',
+      'overflow-hidden': 'overflow: hidden',
+      'overflow-scroll': 'overflow: scroll',
+      'overflow-auto': 'overflow: auto',
+      'overflow-x-auto': 'overflow-x: auto',
+      'overflow-y-auto': 'overflow-y: auto',
+      
+      // Transform & Animation
+      'transform': 'transform: var(--tw-transform)',
+      'transition': 'transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter',
+      'transition-all': 'transition-property: all',
+      'duration-150': 'transition-duration: 150ms',
+      'duration-200': 'transition-duration: 200ms',
+      'duration-300': 'transition-duration: 300ms',
+      'duration-500': 'transition-duration: 500ms',
+      'ease-in': 'transition-timing-function: cubic-bezier(0.4, 0, 1, 1)',
+      'ease-out': 'transition-timing-function: cubic-bezier(0, 0, 0.2, 1)',
+      'ease-in-out': 'transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1)',
+      
+      // Hover states
+      'hover:bg-gray-100': 'background-color: rgb(243 244 246) on hover',
+      'hover:bg-blue-600': 'background-color: rgb(37 99 235) on hover',
+      'hover:text-blue-600': 'color: rgb(37 99 235) on hover',
+      'hover:shadow-lg': 'box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1) on hover',
+      
+      // Focus states
+      'focus:outline-none': 'outline: 2px solid transparent; outline-offset: 2px on focus',
+      'focus:ring-2': 'box-shadow: ring on focus',
+      'focus:ring-blue-500': 'ring color: rgb(59 130 246) on focus'
+    };
+
     // Add code snippets and completion providers
-    monaco.languages.registerCompletionItemProvider('typescriptreact', {
+    monaco.languages.registerCompletionItemProvider('typescript', {
       provideCompletionItems: (model, position, context, token) => {
         const word = model.getWordUntilPosition(position);
         const range = {
@@ -539,8 +848,29 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
           endColumn: word.endColumn,
         };
 
-        const suggestions = [
-          // Resume data snippets
+        // Check if we're inside a className attribute
+        const lineContent = model.getLineContent(position.lineNumber);
+        const isInClassName = /className\s*=\s*["'][^"']*$/.test(lineContent.substring(0, position.column - 1));
+        const isInClassNameTemplate = /className\s*=\s*`[^`]*$/.test(lineContent.substring(0, position.column - 1));
+        
+        let suggestions = [];
+
+        // Add Tailwind CSS class suggestions if inside className
+        if (isInClassName || isInClassNameTemplate) {
+          const tailwindSuggestions = Object.entries(tailwindClasses).map(([className, description]) => ({
+            label: className,
+            kind: monaco.languages.CompletionItemKind.Constant,
+            insertText: className,
+            documentation: `**${className}**\n\n${description}`,
+            detail: 'Tailwind CSS',
+            range,
+          }));
+          
+          suggestions.push(...tailwindSuggestions);
+        }
+
+        // Resume data snippets
+        suggestions.push(
           {
             label: 'personalInfo.fullName',
             kind: monaco.languages.CompletionItemKind.Field,
@@ -646,14 +976,77 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
             insertTextFormat: 2, // Snippet format
             range,
           },
-        ];
+          // Tailwind CSS common patterns
+          {
+            label: 'Card Layout',
+            kind: monaco.languages.CompletionItemKind.Snippet,
+            insertText: [
+              '<div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">',
+              '  ${1:// Card content}',
+              '</div>',
+            ].join('\n'),
+            documentation: 'Common card layout with Tailwind CSS',
+            insertTextFormat: 2,
+            range,
+          },
+          {
+            label: 'Flex Center Layout',
+            kind: monaco.languages.CompletionItemKind.Snippet,
+            insertText: [
+              '<div className="flex items-center justify-center min-h-screen">',
+              '  ${1:// Centered content}',
+              '</div>',
+            ].join('\n'),
+            documentation: 'Flexbox center layout with Tailwind CSS',
+            insertTextFormat: 2,
+            range,
+          },
+          {
+            label: 'Grid Layout',
+            kind: monaco.languages.CompletionItemKind.Snippet,
+            insertText: [
+              '<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">',
+              '  ${1:// Grid items}',
+              '</div>',
+            ].join('\n'),
+            documentation: 'Responsive grid layout with Tailwind CSS',
+            insertTextFormat: 2,
+            range,
+          },
+          {
+            label: 'Button Component',
+            kind: monaco.languages.CompletionItemKind.Snippet,
+            insertText: [
+              '<button className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded transition duration-200">',
+              '  ${1:Button Text}',
+              '</button>',
+            ].join('\n'),
+            documentation: 'Styled button with hover effects using Tailwind CSS',
+            insertTextFormat: 2,
+            range,
+          },
+          {
+            label: 'Input Field',
+            kind: monaco.languages.CompletionItemKind.Snippet,
+            insertText: [
+              '<input',
+              '  type="${1:text}"',
+              '  placeholder="${2:Enter text...}"',
+              '  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"',
+              '/>',
+            ].join('\n'),
+            documentation: 'Styled input field with focus states using Tailwind CSS',
+            insertTextFormat: 2,
+            range,
+          }
+        );
 
         return { suggestions };
       },
     });
 
     // Add hover provider for better documentation
-    monaco.languages.registerHoverProvider('typescriptreact', {
+    monaco.languages.registerHoverProvider('typescript', {
       provideHover: (model, position) => {
         const word = model.getWordAtPosition(position);
         if (!word) return null;
@@ -666,9 +1059,22 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
           extraData: '**Extra Data Object**\n\nCustom data object for additional resume information',
           basics: '**Basics Object (Alias)**\n\nAlias for personalInfo - contains basic personal information',
           work: '**Work Array (Alias)**\n\nAlias for workExperience - contains work history',
+          // Add Tailwind CSS classes to hover map
+          ...tailwindClasses
         };
 
-        const documentation = hoverMap[word.word];
+        // Check if we're hovering over a Tailwind class in className
+        const lineContent = model.getLineContent(position.lineNumber);
+        const beforeCursor = lineContent.substring(0, position.column - 1);
+        const isInClassName = /className\s*=\s*["'`][^"'`]*$/.test(beforeCursor);
+        
+        let documentation = hoverMap[word.word];
+        
+        // Enhanced documentation for Tailwind classes
+        if (isInClassName && tailwindClasses[word.word]) {
+          documentation = `**${word.word}** (Tailwind CSS)\n\n${tailwindClasses[word.word]}`;
+        }
+        
         if (documentation) {
           return {
             range: {
@@ -738,6 +1144,19 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         { token: 'attribute.value.number', foreground: 'B5CEA8' },
         { token: 'attribute.value.unit', foreground: 'B5CEA8' },
         { token: 'attribute.value.html', foreground: 'CE9178' },
+        
+        // Enhanced JSX specific tokens
+        { token: 'tag.open', foreground: '569CD6' },
+        { token: 'tag.close', foreground: '569CD6' },
+        { token: 'tag.self-closing', foreground: '569CD6' },
+        { token: 'jsx.tag', foreground: '569CD6' },
+        { token: 'jsx.tag.open', foreground: '569CD6' },
+        { token: 'jsx.tag.close', foreground: '569CD6' },
+        { token: 'jsx.attribute', foreground: '92C5F7' },
+        { token: 'jsx.attribute.name', foreground: '92C5F7' },
+        { token: 'jsx.attribute.value', foreground: 'CE9178' },
+        { token: 'jsx.expression', foreground: 'FFD700' },
+        { token: 'jsx.expression.braces', foreground: 'FFD700' },
         
         // Operators and punctuation
         { token: 'operator', foreground: 'D4D4D4' },
@@ -847,10 +1266,8 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       setEditorValue(templateCode);
       setCustomCode(templateCode);
 
-      const LayoutComponent = layouts[selectedLayout];
-      if (LayoutComponent) {
-        setLayoutProps(LayoutComponent.defaultProps || {});
-      }
+      // No need for defaultProps since we're using string templates
+      setLayoutProps({});
 
       setTheme(selectedLayout.toLowerCase() as any);
 
@@ -1142,35 +1559,33 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
 
   const renderLayout = () => {
     try {
-      // Always use custom JSX code if present and valid, regardless of editorMode
-      if (editorValue && editorValue.trim().startsWith('(')) {
-        // Scope for custom code execution using resumeDataSource
-        const scope = {
-          basics: resumeDataSource.personalInfo,
-          work: resumeDataSource.workExperience,
-          education: resumeDataSource.education,
-          skills: resumeDataSource.skills,
-          extraData: resumeDataSource.extraData,
-          // For backward compatibility
-          personalInfo: resumeDataSource.personalInfo,
-          workExperience: resumeDataSource.workExperience,
-        };
-        const func = new Function('React', ...Object.keys(scope), `return ${editorValue}`);
-        return func(React, ...Object.values(scope));
-      } else {
-        // Default rendering if not custom code
-        const LayoutComponent = layouts[selectedLayout] || layouts['Simple'];
-
-        // Standard layouts expect a single resumeData prop with basics, work, etc.
-        const resumeDataForLayout = {
-          basics: resumeDataSource.personalInfo,
-          work: resumeDataSource.workExperience,
-          education: resumeDataSource.education,
-          skills: resumeDataSource.skills,
-          extraData: resumeDataSource.extraData,
-        };
-        return <LayoutComponent resumeData={resumeDataForLayout} />;
+      // Always use the editor value (custom code or template)
+      let codeToExecute = editorValue;
+      
+      // If no custom code, use the template for the selected layout
+      if (!codeToExecute || codeToExecute.trim() === '') {
+        codeToExecute = getLayoutJSXString(selectedLayout);
       }
+      
+      // Scope for code execution using resumeDataSource
+      const scope = {
+        basics: resumeDataSource.personalInfo,
+        work: resumeDataSource.workExperience,
+        education: resumeDataSource.education,
+        skills: resumeDataSource.skills,
+        extraData: resumeDataSource.extraData,
+        // For backward compatibility
+        personalInfo: resumeDataSource.personalInfo,
+        workExperience: resumeDataSource.workExperience,
+        // Add React components needed for layouts
+        Mail,
+        Phone,
+        MapPin,
+        Link,
+      };
+      
+      const func = new Function('React', ...Object.keys(scope), `return ${codeToExecute}`);
+      return func(React, ...Object.values(scope));
     } catch (err) {
       return (
         <div className="p-4 border border-red-200 bg-red-50 rounded-md">
@@ -1199,7 +1614,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
               <SelectValue placeholder="Select" />
             </SelectTrigger>
             <SelectContent>
-              {Object.keys(layouts).map((layout) => (
+              {layouts.map((layout) => (
                 <SelectItem key={layout} value={layout}>{layout}</SelectItem>
               ))}
             </SelectContent>
@@ -1251,14 +1666,23 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
               
               <MonacoEditor
                 height="600px"
-                defaultLanguage="typescriptreact"
-                language="typescriptreact"
+                defaultLanguage="typescript"
+                language="typescript"
                 theme={currentEditorTheme}
                 value={editorValue}
                 onMount={(editor, monaco) => {
                   setEditorInstance(editor);
                   setMonaco(monaco);
                   configureMonacoEditor(monaco);
+                  
+                  // Set the correct theme after configuration
+                  monaco.editor.setTheme(currentEditorTheme);
+                  
+                  // Force language mode for better JSX support
+                  const model = editor.getModel();
+                  if (model) {
+                    monaco.editor.setModelLanguage(model, 'typescript');
+                  }
                   
                   // Add custom actions
                   editor.addAction({
@@ -1419,7 +1843,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
                 height="600px"
                 defaultLanguage="json"
                 language="json"
-                theme="vs-dark"
+                theme={currentEditorTheme}
                 value={jsonValue}
                 onChange={(value) => {
                   setJsonValue(value ?? '');
@@ -1528,10 +1952,27 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
           <div className="relative" style={{ height: `${floatingSize.height - 48}px` }}>
             <MonacoEditor
               height="100%"
-              defaultLanguage="typescriptreact"
-              language="typescriptreact"
+              defaultLanguage="typescript"
+              language="typescript"
               theme={currentEditorTheme}
               value={editorValue}
+              onMount={(editor, monaco) => {
+                // Apply the same configuration as the main editor
+                if (!editorInstance) {
+                  setEditorInstance(editor);
+                  setMonaco(monaco);
+                  configureMonacoEditor(monaco);
+                }
+                
+                // Set the correct theme after configuration
+                monaco.editor.setTheme(currentEditorTheme);
+                
+                // Force language mode for better JSX support
+                const model = editor.getModel();
+                if (model) {
+                  monaco.editor.setModelLanguage(model, 'typescript');
+                }
+              }}
               onChange={(value) => {
                 const code = value ?? '';
                 setEditorValue(code);

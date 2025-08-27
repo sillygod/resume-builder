@@ -9,30 +9,25 @@ import { ThemeName } from '@/themes/ThemeContext';
 import React from 'react'; 
 
 // --- Mocks ---
-// Revert to @/ alias paths for mocks, assuming Vitest alias config is correct
-vi.mock('@/components/resume-layouts/SimpleLayout', () => ({ 
-  SimpleLayout: vi.fn(({ resumeData }) => (
-    <div data-testid="simple-layout-mock">
-      Simple Layout: {resumeData?.basics?.fullName || 'No Name'}
-    </div>
-  )) 
-}));
-vi.mock('@/components/resume-layouts/ModernLayout', () => ({ 
-  ModernLayout: vi.fn(({ resumeData }) => (
-    <div data-testid="modern-layout-mock">
-      Modern Layout: {resumeData?.basics?.fullName || 'No Name'}
-    </div>
-  )) 
-}));
-vi.mock('@/components/resume-layouts/CenteredLayout', () => ({ 
-  CenteredLayout: vi.fn(({ resumeData }) => <div data-testid="centered-layout-mock">Centered</div>)
-}));
-vi.mock('@/components/resume-layouts/SidebarLayout', () => ({ 
-  SidebarLayout: vi.fn(({ resumeData }) => <div data-testid="sidebar-layout-mock">Sidebar</div>)
+// Mock the layout templates since we now use string templates
+vi.mock('@/components/resume-layouts/layoutTemplates', () => ({ 
+  getLayoutJSXString: vi.fn((layoutName: string) => {
+    switch (layoutName) {
+      case 'Simple':
+        return `<div data-testid="simple-layout-mock">Simple Layout: {personalInfo.fullName || 'No Name'}</div>`;
+      case 'Modern':
+        return `<div data-testid="modern-layout-mock">Modern Layout: {personalInfo.fullName || 'No Name'}</div>`;
+      case 'Centered':
+        return `<div data-testid="centered-layout-mock">Centered Layout</div>`;
+      case 'Sidebar':
+        return `<div data-testid="sidebar-layout-mock">Sidebar Layout</div>`;
+      default:
+        return `<div data-testid="default-layout-mock">Default Layout</div>`;
+    }
+  })
 }));
 
-import { SimpleLayout as SimpleLayoutMocked } from '@/components/resume-layouts/SimpleLayout';
-import { ModernLayout as ModernLayoutMocked } from '@/components/resume-layouts/ModernLayout';
+import { getLayoutJSXString } from '@/components/resume-layouts/layoutTemplates';
 
 vi.mock('@babel/standalone', () => ({
   transform: vi.fn((code: string, options: any) => {
@@ -67,8 +62,7 @@ describe('ResumePreview Component', () => {
 
   beforeEach(() => {
     vi.clearAllMocks(); 
-    SimpleLayoutMocked.mockClear(); 
-    ModernLayoutMocked.mockClear();
+    (getLayoutJSXString as vi.Mock).mockClear();
     (babelTransformActualMock as vi.Mock).mockClear().mockImplementation((code: string) => {
         if (code.includes("ErrorTriggerForBabel")) { throw new Error("Babel transform error"); }
         return { code: `const CustomLayout = (props) => React.createElement("div", {"data-testid": "custom-layout-success"}, "Custom Layout Rendered: ", props.basics.fullName);` };
@@ -95,17 +89,20 @@ describe('ResumePreview Component', () => {
   afterEach(() => { vi.restoreAllMocks(); });
 
   describe('Basic Rendering and Data Display', () => {
-    it('should invoke ModernLayout when theme is "Modern" and pass correct data', () => {
-      render(<ResumePreview {...defaultProps} theme="Modern" />);
-      expect(ModernLayoutMocked).toHaveBeenCalled();
-      const propsPassedToLayout = (ModernLayoutMocked as vi.Mock).mock.calls[0][0];
-      expect(propsPassedToLayout.resumeData.basics.fullName).toBe(samplePersonalInfo.fullName);
+    it('should use Modern layout template when theme is "modern"', async () => {
+      render(<ResumePreview {...defaultProps} theme="modern" />);
+      await waitFor(() => {
+        expect(getLayoutJSXString).toHaveBeenCalledWith('Modern');
+        expect(screen.getByTestId('modern-layout-mock')).toBeInTheDocument();
+      });
     });
 
-    it('should invoke SimpleLayout when theme is "simple" (lowercase)', () => {
+    it('should use Simple layout template when theme is "simple"', async () => {
       render(<ResumePreview {...defaultProps} theme="simple" />); 
-      expect(SimpleLayoutMocked).toHaveBeenCalled();
-      expect(screen.getByTestId('simple-layout-mock')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(getLayoutJSXString).toHaveBeenCalledWith('Simple');
+        expect(screen.getByTestId('simple-layout-mock')).toBeInTheDocument();
+      });
     });
   });
 

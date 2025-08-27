@@ -1,9 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { SimpleLayout } from './resume-layouts/SimpleLayout';
-import { ModernLayout } from './resume-layouts/ModernLayout';
-import { SidebarLayout } from './resume-layouts/SidebarLayout';
-import { CenteredLayout } from './resume-layouts/CenteredLayout';
+import { getLayoutJSXString } from './resume-layouts/layoutTemplates';
 import { PersonalInfoData } from './PersonalInfo';
 import { WorkExperienceEntry } from './WorkExperience';
 import { EducationEntry } from './Education';
@@ -13,12 +10,7 @@ import { Card } from './ui/card';
 import { useTheme, ThemeName } from '@/themes/ThemeContext';
 import { Mail, Phone, MapPin, Link } from 'lucide-react';
 
-const layouts = {
-  Simple: SimpleLayout,
-  Modern: ModernLayout,
-  Sidebar: SidebarLayout,
-  Centered: CenteredLayout,
-};
+const layouts = ['Simple', 'Modern', 'Sidebar', 'Centered'];
 
 // Map selected layout names to theme names to ensure consistency
 const layoutToThemeMap: Record<string, ThemeName> = {
@@ -64,8 +56,8 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
     }
   }, [selectedLayout, prevSelectedLayout, currentTheme, setTheme]);
   
-  // Get the layout component based on selection
-  const LayoutComponent = layouts[selectedLayout];
+  // Check if selectedLayout is valid
+  const isValidLayout = layouts.includes(selectedLayout);
   
   // Determine the effective theme for styling
   const effectiveTheme = layoutToThemeMap[selectedLayout] || currentTheme;
@@ -181,15 +173,38 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
           <div ref={null} className={`${effectiveTheme === "sidebar" ? "flex" : ""}`}>
             {customCode ? (
               renderCustomCode()
-            ) : LayoutComponent ? (
-              <LayoutComponent 
-                personalInfo={personalInfo}
-                workExperience={workExperience}
-                education={education}
-                skills={skills}
-                extraData={extraData} // Pass extraData to layout component
-                {...layoutProps} 
-              />
+            ) : isValidLayout ? (
+              (() => {
+                try {
+                  const codeToExecute = getLayoutJSXString(selectedLayout);
+                  
+                  // Scope for code execution
+                  const scope = {
+                    basics: personalInfo,
+                    work: workExperience,
+                    education,
+                    skills,
+                    extraData,
+                    // For backward compatibility
+                    personalInfo,
+                    workExperience,
+                    // Add React components needed for layouts
+                    Mail,
+                    Phone,
+                    MapPin,
+                    Link,
+                  };
+                  
+                  const func = new Function('React', ...Object.keys(scope), `return ${codeToExecute}`);
+                  return func(React, ...Object.values(scope));
+                } catch (err) {
+                  return (
+                    <div className="p-4 text-red-600">
+                      Error rendering layout: {(err as Error).message}
+                    </div>
+                  );
+                }
+              })()
             ) : (
               <p className="text-center text-gray-500 my-10">
                 Select a layout to preview.

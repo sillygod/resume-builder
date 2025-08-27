@@ -8,10 +8,8 @@ import { Button } from "./ui/button";
 // Removed: toast (now handled in hooks), html2pdf, useReactToPrint, * as Babel
 // Removed: lucide-react icons (now handled in useCustomLayoutRenderer)
 
-import { SimpleLayout } from "./resume-layouts/SimpleLayout";
-import { ModernLayout } from "./resume-layouts/ModernLayout";
-import { CenteredLayout } from "./resume-layouts/CenteredLayout";
-import { SidebarLayout } from "./resume-layouts/SidebarLayout";
+import { getLayoutJSXString } from "./resume-layouts/layoutTemplates";
+import { Mail, Phone, MapPin, Link } from 'lucide-react';
 
 // Import new hooks
 import { useCustomLayoutRenderer, ResumeLayoutData } from '../hooks/useCustomLayoutRenderer';
@@ -165,18 +163,36 @@ export function ResumePreview({
       return customRenderedElement; // This is already React.ReactNode or null
     }
 
-    // Standard layout rendering
-    switch (theme) {
-      case "simple":
-        return <SimpleLayout resumeData={resumeLayoutData} />;
-      case "modern":
-        return <ModernLayout resumeData={resumeLayoutData} />;
-      case "centered":
-        return <CenteredLayout resumeData={resumeLayoutData} />;
-      case "sidebar":
-        return <SidebarLayout resumeData={resumeLayoutData} />;
-      default:
-        return <ModernLayout resumeData={resumeLayoutData} />;
+    // Standard layout rendering using string templates
+    try {
+      const layoutName = theme.charAt(0).toUpperCase() + theme.slice(1); // Capitalize first letter
+      const codeToExecute = getLayoutJSXString(layoutName) || getLayoutJSXString('Simple');
+      
+      // Scope for code execution using resumeData
+      const scope = {
+        basics: resumeLayoutData.basics,
+        work: resumeLayoutData.work,
+        education: resumeLayoutData.education,
+        skills: resumeLayoutData.skills,
+        extraData: resumeLayoutData.extraData,
+        // For backward compatibility
+        personalInfo: resumeLayoutData.basics,
+        workExperience: resumeLayoutData.work,
+        // Add React components needed for layouts
+        Mail,
+        Phone,
+        MapPin,
+        Link,
+      };
+      
+      const func = new Function('React', ...Object.keys(scope), `return ${codeToExecute}`);
+      return func(React, ...Object.values(scope));
+    } catch (err) {
+      return (
+        <div className="p-4 text-red-600">
+          Error rendering layout: {(err as Error).message}
+        </div>
+      );
     }
   };
 
