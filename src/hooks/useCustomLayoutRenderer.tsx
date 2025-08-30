@@ -40,7 +40,7 @@ export const useCustomLayoutRenderer = ({
     let codeToTransform = customLayoutCode.trim();
     // Remove any comments from the code
     codeToTransform = codeToTransform
-      .replace(/\/\/.*$/gm, '')
+      .replace(/^\/\/.*$/gm, '')
       .replace(/\/\*[\s\S]*?\*\//g, '')
       .replace(/^\s*[\r\n]/gm, ''); // Remove empty lines
     // Remove import statements

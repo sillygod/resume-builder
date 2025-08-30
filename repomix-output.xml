@@ -42,17 +42,15 @@ The content is organized as follows:
 </file_summary>
 
 <directory_structure>
+.github/
+  workflows/
+    deploy.yml
 public/
   placeholder.svg
 src/
   components/
     resume-layouts/
-      CenteredLayout.tsx
-      ExecutiveLayout.tsx
       layoutTemplates.tsx
-      ModernLayout.tsx
-      SidebarLayout.tsx
-      SimpleLayout.tsx
     resumeAssistant/
       AISettingsDialog.tsx
       ChatInput.tsx
@@ -175,6 +173,57 @@ vite.config.ts
 
 <files>
 This section contains the contents of the repository's files.
+
+<file path=".github/workflows/deploy.yml">
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build
+      run: npm run build
+
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: './dist'
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+</file>
 
 <file path="public/placeholder.svg">
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" fill="none"><rect width="1200" height="1200" fill="#EAEAEA" rx="3"/><g opacity=".5"><g opacity=".5"><path fill="#FAFAFA" d="M600.709 736.5c-75.454 0-136.621-61.167-136.621-136.62 0-75.454 61.167-136.621 136.621-136.621 75.453 0 136.62 61.167 136.62 136.621 0 75.453-61.167 136.62-136.62 136.62Z"/><path stroke="#C9C9C9" stroke-width="2.418" d="M600.709 736.5c-75.454 0-136.621-61.167-136.621-136.62 0-75.454 61.167-136.621 136.621-136.621 75.453 0 136.62 61.167 136.62 136.621 0 75.453-61.167 136.62-136.62 136.62Z"/></g><path stroke="url(#a)" stroke-width="2.418" d="M0-1.209h553.581" transform="scale(1 -1) rotate(45 1163.11 91.165)"/><path stroke="url(#b)" stroke-width="2.418" d="M404.846 598.671h391.726"/><path stroke="url(#c)" stroke-width="2.418" d="M599.5 795.742V404.017"/><path stroke="url(#d)" stroke-width="2.418" d="m795.717 796.597-391.441-391.44"/><path fill="#fff" d="M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z"/><g clip-path="url(#e)"><path fill="#666" fill-rule="evenodd" d="M616.426 586.58h-31.434v16.176l3.553-3.554.531-.531h9.068l.074-.074 8.463-8.463h2.565l7.18 7.181V586.58Zm-15.715 14.654 3.698 3.699 1.283 1.282-2.565 2.565-1.282-1.283-5.2-5.199h-6.066l-5.514 5.514-.073.073v2.876a2.418 2.418 0 0 0 2.418 2.418h26.598a2.418 2.418 0 0 0 2.418-2.418v-8.317l-8.463-8.463-7.181 7.181-.071.072Zm-19.347 5.442v4.085a6.045 6.045 0 0 0 6.046 6.045h26.598a6.044 6.044 0 0 0 6.045-6.045v-7.108l1.356-1.355-1.282-1.283-.074-.073v-17.989h-38.689v23.43l-.146.146.146.147Z" clip-rule="evenodd"/></g><path stroke="#C9C9C9" stroke-width="2.418" d="M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z"/></g><defs><linearGradient id="a" x1="554.061" x2="-.48" y1=".083" y2=".087" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="b" x1="796.912" x2="404.507" y1="599.963" y2="599.965" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="c" x1="600.792" x2="600.794" y1="403.677" y2="796.082" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="d" x1="404.85" x2="796.972" y1="403.903" y2="796.02" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><clipPath id="e"><path fill="#fff" d="M581.364 580.535h38.689v38.689h-38.689z"/></clipPath></defs></svg>
@@ -910,49 +959,6 @@ import type { Config } from "tailwindcss";
 }
 </file>
 
-<file path="src/components/resume-layouts/ExecutiveLayout.tsx">
-import React from 'react';
-import { Mail, Phone, MapPin, Link, Globe, Award, BookOpen, Users, Calendar } from 'lucide-react';
-⋮----
-interface ExecutiveLayoutProps {
-  resumeData: any;
-}
-⋮----
-// Extract additional sections from extraData
-⋮----
-{/* Executive Header */}
-⋮----
-{/* Executive Photo */}
-⋮----
-{/* Executive Info */}
-⋮----
-{/* Executive Summary */}
-⋮----
-{/* Executive Contact */}
-⋮----
-{/* Main Content */}
-⋮----
-{/* Executive Experience */}
-⋮----
-{/* Strategic Projects */}
-⋮----
-{/* Executive Sidebar */}
-⋮----
-{/* Core Competencies */}
-⋮----
-{/* Education */}
-⋮----
-{/* Professional Certifications */}
-⋮----
-{/* Languages */}
-⋮----
-{/* Awards & Recognition */}
-⋮----
-{/* Board & Volunteer Experience */}
-⋮----
-{/* Professional Interests */}
-</file>
-
 <file path="src/components/resumeAssistant/AISettingsDialog.tsx">
 import React from "react";
 import { Button } from "@/components/ui/button";
@@ -1088,32 +1094,6 @@ expect(fullNameInput.value).toBe(newFullName); // Check input value after re-ren
 data={currentData} // currentData now includes previous fullName change
 ⋮----
 const user = userEvent.setup(); // userEvent for clicks
-</file>
-
-<file path="src/components/ResumePreview.test.tsx">
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { ResumePreview, ResumePreviewProps } from './ResumePreview';
-import { PersonalInfoData } from '@/components/PersonalInfo';
-import { WorkExperienceEntry } from '@/components/WorkExperience';
-import { EducationEntry } from '@/components/Education';
-import { ThemeName } from '@/themes/ThemeContext';
-import React from 'react';
-⋮----
-// --- Mocks ---
-// Revert to @/ alias paths for mocks, assuming Vitest alias config is correct
-⋮----
-// Return valid JS code (React.createElement) for the new Function constructor
-⋮----
-const html2pdfInstanceMock = { /* ... (same as before) ... */ };
-vi.mock('html2pdf.js', () => ({ /* ... (same as before) ... */ }));
-⋮----
-cloneNode: vi.fn(function(this: any, deep: boolean) { /* ... more detailed cloneNode ... */
-⋮----
-// Check for the component's custom error message part
-⋮----
-// And check for the specific React error message part that the component includes
 </file>
 
 <file path="src/components/ShowPreviewButton.tsx">
@@ -1888,66 +1868,6 @@ import App from './App.tsx'
 
 </file>
 
-<file path="CLAUDE.md">
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
-## code structure reference
-
-`repomix-output.xml`
-
-## Development Commands
-
-- `npm run dev` - Start development server (localhost:3000)
-- `npm run build` - Production build
-- `npm run build:dev` - Development build
-- `npm run lint` - Run ESLint
-- `npm run preview` - Preview production build
-- `npm run test` - Run tests with Vitest
-- `npm run test:ui` - Run tests with Vitest UI
-- `npm run coverage` - Generate test coverage report
-
-## Architecture Overview
-
-This is a React-based resume builder application with the following key architecture:
-
-### Core Structure
-- **Framework**: Vite + React 18 + TypeScript
-- **UI**: Shadcn/ui components with Radix UI primitives
-- **Styling**: Tailwind CSS with custom design system
-- **Testing**: Vitest with @testing-library
-- **State**: React hooks (useState) for local state, Context for themes
-
-### Key Components
-- `Index.tsx` - Main page with tabbed interface (Editor/AI Assistant)
-- `LayoutEditor.tsx` - Core editor with layout selection, code editing, and JSON editing modes
-- `ResumePreview.tsx` - Live preview with PDF export capability
-- `ResumeAssistant.tsx` - AI-powered chat interface for resume improvements
-
-### Resume Data Structure
-The application uses a centralized `ResumeDataState` interface in `utils/jsonResume.ts`:
-- Personal info, work experience, education, skills
-- Extra data field for custom properties
-- JSON Resume format compatibility for import/export
-
-### Layout System
-- Four built-in layouts: Simple, Modern, Sidebar, Centered
-- Custom layout support via Monaco editor with live preview
-- Template system in `resume-layouts/layoutTemplates.tsx`
-
-### AI Integration
-- OpenAI API integration with configurable endpoints
-- Chat interface with system prompts and templates
-- Supports custom models and parameters
-
-## Path Resolution
-Uses `@/` alias for `src/` directory imports.
-
-## Testing
-Tests are located alongside components (`.test.tsx`) and utilities (`.test.ts`). Setup uses jsdom environment with @testing-library/jest-dom matchers.
-</file>
-
 <file path="index.html">
 <!DOCTYPE html>
 <html lang="en">
@@ -1997,6 +1917,36 @@ interface PromptTemplatesProps {
 }
 ⋮----
 export function PromptTemplates(
+</file>
+
+<file path="src/components/ResumePreview.test.tsx">
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { ResumePreview, ResumePreviewProps } from './ResumePreview';
+import { PersonalInfoData } from '@/components/PersonalInfo';
+import { WorkExperienceEntry } from '@/components/WorkExperience';
+import { EducationEntry } from '@/components/Education';
+import { ThemeName } from '@/themes/ThemeContext';
+import React from 'react';
+⋮----
+// --- Mocks ---
+// Mock the layout templates since we now use string templates
+⋮----
+import { getLayoutJSXString } from '@/components/resume-layouts/layoutTemplates';
+⋮----
+// Return valid JS code (React.createElement) for the new Function constructor
+⋮----
+import { transform as babelTransformActualMock } from '@babel/standalone';
+⋮----
+const html2pdfInstanceMock = { /* ... (same as before) ... */ };
+vi.mock('html2pdf.js', () => ({ /* ... (same as before) ... */ }));
+⋮----
+cloneNode: vi.fn(function(this: any, deep: boolean) { /* ... more detailed cloneNode ... */
+⋮----
+// Check for the component's custom error message part
+⋮----
+// And check for the specific React error message part that the component includes
 </file>
 
 <file path="src/components/Skills.tsx">
@@ -2204,6 +2154,66 @@ dist-ssr
 .qodo
 </file>
 
+<file path="CLAUDE.md">
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## code structure reference
+
+`repomix-output.xml`
+
+## Development Commands
+
+- `npm run dev` - Start development server (localhost:3000)
+- `npm run build` - Production build
+- `npm run build:dev` - Development build
+- `npm run lint` - Run ESLint
+- `npm run preview` - Preview production build
+- `npm run test` - Run tests with Vitest
+- `npm run test:ui` - Run tests with Vitest UI
+- `npm run coverage` - Generate test coverage report
+
+## Architecture Overview
+
+This is a React-based resume builder application with the following key architecture:
+
+### Core Structure
+- **Framework**: Vite + React 18 + TypeScript
+- **UI**: Shadcn/ui components with Radix UI primitives
+- **Styling**: Tailwind CSS with custom design system
+- **Testing**: Vitest with @testing-library
+- **State**: React hooks (useState) for local state, Context for themes
+
+### Key Components
+- `Index.tsx` - Main page with tabbed interface (Editor/AI Assistant)
+- `LayoutEditor.tsx` - Core editor with layout selection, code editing, and JSON editing modes
+- `ResumePreview.tsx` - Live preview with PDF export capability
+- `ResumeAssistant.tsx` - AI-powered chat interface for resume improvements
+
+### Resume Data Structure
+The application uses a centralized `ResumeDataState` interface in `utils/jsonResume.ts`:
+- Personal info, work experience, education, skills
+- Extra data field for custom properties
+- JSON Resume format compatibility for import/export
+
+### Layout System
+- Four built-in layouts: Simple, Modern, Sidebar, Centered
+- Custom layout support via Monaco editor with live preview
+- Template system in `resume-layouts/layoutTemplates.tsx`
+
+### AI Integration
+- OpenAI API integration with configurable endpoints
+- Chat interface with system prompts and templates
+- Supports custom models and parameters
+
+## Path Resolution
+Uses `@/` alias for `src/` directory imports.
+
+## Testing
+Tests are located alongside components (`.test.tsx`) and utilities (`.test.ts`). Setup uses jsdom environment with @testing-library/jest-dom matchers.
+</file>
+
 <file path="src/utils/aiUtils.ts">
 import { toast } from "sonner";
 ⋮----
@@ -2242,63 +2252,6 @@ export async function callAIAPI(
   apiUrl: string, 
   options: AIConfigOptions
 ): Promise<string>
-</file>
-
-<file path="README.md">
-# Resume Builder
-
-A web application that helps users create and manage their resumes. It allows for data input for personal information, work experience, education, and skills.
-
-## Key Features
-
-- Import and export resume data in JSON Resume format.
-- Live preview of the resume as it's being built.
-- AI-powered assistant to help write or improve resume content.
-- Customizable layouts and themes for the resume.
-- Ability to edit resume layout code directly.
-
-## Running Locally
-
-1. **Clone the repository:**
-   ```bash
-   git clone <repository-url>
-   cd <repository-directory>
-   ```
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-3. **Start the development server:**
-   ```bash
-   npm run dev
-   ```
-   The application will typically be available at `http://localhost:5173`.
-
-## Building for Production
-
-1. **Run the build script:**
-   ```bash
-   npm run build
-   ```
-2. **Output:**
-   The production-ready files will be generated in the `dist` folder.
-
-## Tech Stack
-
-This project is a React application built with:
-
-- **Vite:** For fast development and optimized builds.
-- **TypeScript:** For static typing and improved code quality.
-- **Shadcn UI:** For pre-built, accessible, and customizable UI components.
-- **Tailwind CSS:** For utility-first CSS styling.
-- **JSON Resume:** As the standard format for resume data.
-
-
-## experiment ai analyze repo
-
-https://github.com/yamadashy/repomix
-
-repomix --compress
 </file>
 
 <file path="src/components/resumeAssistant/ChatInput.tsx">
@@ -2488,6 +2441,63 @@ transformedCodeForDebug: transformedCode // Include for debugging
 }, [customLayoutCode, resumeData]); // Dependencies for useMemo
 </file>
 
+<file path="README.md">
+# Resume Builder
+
+A web application that helps users create and manage their resumes. It allows for data input for personal information, work experience, education, and skills.
+
+## Key Features
+
+- Import and export resume data in JSON Resume format.
+- Live preview of the resume as it's being built.
+- AI-powered assistant to help write or improve resume content.
+- Customizable layouts and themes for the resume.
+- Ability to edit resume layout code directly.
+
+## Running Locally
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   The application will typically be available at `http://localhost:5173`.
+
+## Building for Production
+
+1. **Run the build script:**
+   ```bash
+   npm run build
+   ```
+2. **Output:**
+   The production-ready files will be generated in the `dist` folder.
+
+## Tech Stack
+
+This project is a React application built with:
+
+- **Vite:** For fast development and optimized builds.
+- **TypeScript:** For static typing and improved code quality.
+- **Shadcn UI:** For pre-built, accessible, and customizable UI components.
+- **Tailwind CSS:** For utility-first CSS styling.
+- **JSON Resume:** As the standard format for resume data.
+
+
+## experiment ai analyze repo
+
+https://github.com/yamadashy/repomix
+
+repomix --compress
+</file>
+
 <file path="vite.config.ts">
 /// <reference types="vitest" />
 import { defineConfig } from "vite";
@@ -2495,70 +2505,6 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 ⋮----
 // https://vitejs.dev/config/
-</file>
-
-<file path="src/components/resume-layouts/layoutTemplates.tsx">
-import React from "react";
-import { themes } from "@/themes/ThemeContext";
-import { Mail, Phone, MapPin, Link } from "lucide-react";
-⋮----
-export interface ResumeLayoutProps {
-  resumeData: any;
-}
-⋮----
-{/* Personal Info Section */}
-⋮----
-{/* Summary Section */}
-⋮----
-{/* Work Experience Section */}
-⋮----
-{/* Education Section */}
-⋮----
-{/* Skills Section */}
-⋮----
-{/* Personal Info Section */}
-⋮----
-{/* Summary Section */}
-⋮----
-{/* Work Experience Section */}
-⋮----
-{/* Education Section */}
-⋮----
-{/* Skills Section */}
-⋮----
-{/* Left Sidebar */}
-⋮----
-{/* Skills in sidebar */}
-⋮----
-{/* Main Content */}
-⋮----
-{/* Personal Info Section */}
-⋮----
-{/* Summary Section */}
-⋮----
-{/* Work Experience Section */}
-⋮----
-{/* Education Section */}
-⋮----
-{/* Skills Section */}
-⋮----
-// Extract additional sections from extraData
-⋮----
-{/* Executive Header */}
-⋮----
-{/* Main Content */}
-⋮----
-{/* Executive Experience */}
-⋮----
-{/* Strategic Projects */}
-⋮----
-{/* Executive Sidebar */}
-⋮----
-{/* Core Competencies */}
-⋮----
-{/* Education */}
-⋮----
-{/* Additional sections for certifications, languages, awards, etc. */}
 </file>
 
 <file path="src/components/WorkExperience.tsx">
@@ -2613,6 +2559,17 @@ updateExperience(experience.id, "startDate", e.target.value)
 updateExperience(experience.id, "endDate", e.target.value)
 ⋮----
 updateExperience(experience.id, "description", e.target.value)
+</file>
+
+<file path="src/components/resume-layouts/layoutTemplates.tsx">
+import React from "react";
+import { themes } from "@/themes/ThemeContext";
+⋮----
+export interface ResumeLayoutProps {
+  resumeData: any;
+}
+⋮----
+export const getLayoutJSXString = (layoutName: string) =>
 </file>
 
 <file path="src/components/PersonalInfo.tsx">
@@ -2691,64 +2648,6 @@ className="input" // Assuming 'input' is a defined style
 {/* Use fields and helper functions from the hook */}
 ⋮----
 onChange={(e) => handleChange(field, e.target.value)} // Uses local handleChange
-</file>
-
-<file path="src/components/resume-layouts/CenteredLayout.tsx">
-import React from 'react';
-import { Mail, Phone, MapPin, Link } from 'lucide-react';
-⋮----
-interface CenteredLayoutProps {
-  resumeData: any;
-}
-</file>
-
-<file path="src/components/resume-layouts/SimpleLayout.tsx">
-import React from 'react';
-import { Mail, Phone, MapPin, Link} from 'lucide-react';
-⋮----
-interface SimpleLayoutProps {
-  resumeData: any;
-}
-</file>
-
-<file path="src/components/resume-layouts/ModernLayout.tsx">
-import React from 'react';
-import { Mail, Phone, MapPin, Link } from 'lucide-react';
-import { themes } from '@/themes/ThemeContext';
-⋮----
-interface ModernLayoutProps {
-  resumeData: any;
-}
-⋮----
-{/* Personal Info Section */}
-⋮----
-{/* Summary Section */}
-⋮----
-{/* Work Experience Section */}
-⋮----
-{/* Education Section */}
-⋮----
-{/* Skills Section */}
-⋮----
-{/* Display extraData if available */}
-</file>
-
-<file path="src/components/resume-layouts/SidebarLayout.tsx">
-import React from 'react';
-import { Mail, Phone, MapPin, Link } from 'lucide-react';
-import { themes } from '@/themes/ThemeContext';
-⋮----
-interface SidebarLayoutProps {
-  resumeData: any;
-}
-⋮----
-{/* Left Sidebar */}
-⋮----
-{/* Skills in sidebar */}
-⋮----
-{/* Display extraData if available */}
-⋮----
-{/* Main Content */}
 </file>
 
 <file path="package.json">
@@ -2964,10 +2863,7 @@ const handleToggle = () =>
 
 <file path="src/components/LayoutPreview.tsx">
 import React, { useEffect, useState } from 'react';
-import { SimpleLayout } from './resume-layouts/SimpleLayout';
-import { ModernLayout } from './resume-layouts/ModernLayout';
-import { SidebarLayout } from './resume-layouts/SidebarLayout';
-import { CenteredLayout } from './resume-layouts/CenteredLayout';
+import { getLayoutJSXString } from './resume-layouts/layoutTemplates';
 import { PersonalInfoData } from './PersonalInfo';
 import { WorkExperienceEntry } from './WorkExperience';
 import { EducationEntry } from './Education';
@@ -3009,7 +2905,7 @@ extraData = {} // Add default value
 ⋮----
 // Map layout selection to the matching theme
 ⋮----
-// Get the layout component based on selection
+// Check if selectedLayout is valid
 ⋮----
 // Determine the effective theme for styling
 ⋮----
@@ -3032,8 +2928,6 @@ extraData // Pass extraData to the custom code
 // Show a helpful error message with guidance
 ⋮----
 // Provide helpful feedback about the error
-⋮----
-extraData={extraData} // Pass extraData to layout component
 </file>
 
 <file path="src/components/ResumePreview.tsx">
@@ -3047,10 +2941,8 @@ import { Button } from "./ui/button";
 // Removed: toast (now handled in hooks), html2pdf, useReactToPrint, * as Babel
 // Removed: lucide-react icons (now handled in useCustomLayoutRenderer)
 ⋮----
-import { SimpleLayout } from "./resume-layouts/SimpleLayout";
-import { ModernLayout } from "./resume-layouts/ModernLayout";
-import { CenteredLayout } from "./resume-layouts/CenteredLayout";
-import { SidebarLayout } from "./resume-layouts/SidebarLayout";
+import { getLayoutJSXString } from "./resume-layouts/layoutTemplates";
+import { Mail, Phone, MapPin, Link } from 'lucide-react';
 ⋮----
 // Import new hooks
 import { useCustomLayoutRenderer, ResumeLayoutData } from '../hooks/useCustomLayoutRenderer';
@@ -3104,13 +2996,19 @@ const handleMouseLeave = () =>
 // Removed: generatePdfPreview function
 // Removed: generatePdfPreviewWithReactToPrint (now part of downloadPDF)
 ⋮----
-const renderLayout = () =>
-⋮----
 {/* Optionally display transformedCodeForDebug here if needed */}
 ⋮----
 return customRenderedElement; // This is already React.ReactNode or null
 ⋮----
-// Standard layout rendering
+// Standard layout rendering using string templates
+⋮----
+const layoutName = theme.charAt(0).toUpperCase() + theme.slice(1); // Capitalize first letter
+⋮----
+// Scope for code execution using resumeData
+⋮----
+// For backward compatibility
+⋮----
+// Add React components needed for layouts
 ⋮----
 {/* Preview status indicators */}
 ⋮----
@@ -3167,14 +3065,9 @@ resumeDataSource={resumeData} // Pass the entire resumeData object
 
 <file path="src/components/LayoutEditor.tsx">
 import React, { useState, useEffect } from 'react';
-import { SimpleLayout } from './resume-layouts/SimpleLayout';
 import { PersonalInfoData } from './PersonalInfo';
 import { WorkExperienceEntry } from './WorkExperience';
 import { EducationEntry } from './Education';
-import { ModernLayout } from './resume-layouts/ModernLayout';
-import { SidebarLayout } from './resume-layouts/SidebarLayout';
-import { CenteredLayout } from './resume-layouts/CenteredLayout';
-import { ExecutiveLayout } from './resume-layouts/ExecutiveLayout';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -3184,16 +3077,20 @@ import { toast } from 'sonner';
 import MonacoEditor, { Monaco } from '@monaco-editor/react';
 import { editor } from 'monaco-editor';
 import { useTheme } from '@/themes/ThemeContext';
+import { Maximize2, Minimize2, Move, GripVertical } from 'lucide-react';
 import { getLayoutJSXString } from './resume-layouts/layoutTemplates';
 import { ResumeDataState } from '../utils/jsonResume'; // Import ResumeDataState
 import { ErrorBoundary } from './ErrorBoundary';
 import { useCodePreviewMapping } from '../hooks/useCodePreviewMapping';
+import { Mail, Phone, MapPin, Link } from 'lucide-react';
 ⋮----
 // @ts-ignore
 ⋮----
 interface Window {
     __jsonApplyTimeout?: any;
   }
+⋮----
+// Available layout options (used for dropdown)
 ⋮----
 interface LayoutEditorProps {
   selectedLayout: string;
@@ -3230,6 +3127,8 @@ interface LayoutEditorProps {
 ⋮----
 // Extract data from resumeDataSource, providing fallbacks for robustness
 ⋮----
+// Floating editor states
+⋮----
 maintainability: number; // 0-100
 ⋮----
 // Code-preview mapping
@@ -3241,6 +3140,10 @@ const configureMonacoEditor = (monaco: Monaco) =>
 ⋮----
 // Also configure JavaScript defaults for better JSX support
 ⋮----
+// Set diagnostics options for better JSX support
+⋮----
+// Register language configuration for better JSX support
+⋮----
 // Add React and JSX types
 ⋮----
 // Also add to javascript defaults for broader compatibility
@@ -3249,7 +3152,49 @@ const configureMonacoEditor = (monaco: Monaco) =>
 ⋮----
 // Also add resume data types to JavaScript defaults
 ⋮----
+// Tailwind CSS class definitions
+⋮----
+// Layout
+⋮----
+// Flexbox
+⋮----
+// Grid
+⋮----
+// Spacing - Padding
+⋮----
+// Spacing - Margin
+⋮----
+// Sizing
+⋮----
+// Typography
+⋮----
+// Colors - Text
+⋮----
+// Colors - Background
+⋮----
+// Borders
+⋮----
+// Border Radius
+⋮----
+// Shadows
+⋮----
+// Positioning
+⋮----
+// Z-Index
+⋮----
+// Overflow
+⋮----
+// Transform & Animation
+⋮----
+// Hover states
+⋮----
+// Focus states
+⋮----
 // Add code snippets and completion providers
+⋮----
+// Check if we're inside a className attribute
+⋮----
+// Add Tailwind CSS class suggestions if inside className
 ⋮----
 // Resume data snippets
 ⋮----
@@ -3263,7 +3208,17 @@ insertTextFormat: 2, // Snippet format
 ⋮----
 insertTextFormat: 2, // Snippet format
 ⋮----
+// JSX Comment
+⋮----
+// Tailwind CSS common patterns
+⋮----
 // Add hover provider for better documentation
+⋮----
+// Add Tailwind CSS classes to hover map
+⋮----
+// Check if we're hovering over a Tailwind class in className
+⋮----
+// Enhanced documentation for Tailwind classes
 ⋮----
 // Define custom dark theme with comprehensive syntax highlighting
 ⋮----
@@ -3282,6 +3237,8 @@ insertTextFormat: 2, // Snippet format
 // JSX/HTML Tags
 ⋮----
 // JSX/HTML Attributes
+⋮----
+// Enhanced JSX specific tokens
 ⋮----
 // Operators and punctuation
 ⋮----
@@ -3307,6 +3264,8 @@ insertTextFormat: 2, // Snippet format
 ⋮----
 // JSX/HTML Attributes
 ⋮----
+// No need for defaultProps since we're using string templates
+⋮----
 // Effect to handle Monaco editor theme changes and ensure theme is applied correctly
 ⋮----
 // For now, always use dark theme for better visibility
@@ -3320,17 +3279,65 @@ insertTextFormat: 2, // Snippet format
 ⋮----
 // Trigger layout to refresh the editor
 ⋮----
+// Floating editor drag handlers
+const handleMouseDown = (e: React.MouseEvent) =>
+⋮----
+const handleMouseMove = (e: MouseEvent) =>
+⋮----
+const handleMouseUp = () =>
+⋮----
+const handleResizeMouseDown = (e: React.MouseEvent) =>
+⋮----
+const handleResizeMouseMove = (e: MouseEvent) =>
+⋮----
+const handleResizeMouseUp = () =>
+⋮----
+// Add event listeners for drag and resize
+⋮----
+// Handle scroll following
+⋮----
+const handleScroll = () =>
+⋮----
+// Keep the floating editor in a visible position relative to viewport
+⋮----
 // Construct jsonToEdit from individual props passed from Index.tsx
 ⋮----
 // Note: resumeDataSource is added to dependency array of above useEffect
+⋮----
+// Effect to handle floating editor mode changes
+⋮----
+// Effect to sync floating editor mode with main editor mode changes
 ⋮----
 const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
 ⋮----
 const validateJSXStructure = (code: string) =>
 ⋮----
+// Check for JSX comment issues - only flag obvious // comments, not URLs
+⋮----
+// Look for problematic // comments that are clearly not URLs
+⋮----
+// Skip lines that are purely comments (not inside JSX)
+⋮----
+// Skip lines that don't contain JSX
+⋮----
+// Look for // that is clearly a comment (not part of a URL)
+// Skip if the line contains a URL protocol
+⋮----
+// Now check for // comments
+⋮----
 // Check for common JSX structure issues
 ⋮----
-// Check for unmatched JSX tags
+// Check for unmatched JSX tags using a more robust approach
+⋮----
+// Self-closing tag - no need to track
+⋮----
+// Closing tag
+⋮----
+// Opening tag
+⋮----
+// Simple tag without attributes
+⋮----
+// Tag with attributes
 ⋮----
 // Check for missing React Fragment wrapper
 ⋮----
@@ -3356,25 +3363,46 @@ const resetCustomCode = () =>
 ⋮----
 const renderLayout = () =>
 ⋮----
-// Always use custom JSX code if present and valid, regardless of editorMode
+// Always use the editor value (custom code or template)
 ⋮----
-// Scope for custom code execution using resumeDataSource
+// If no custom code, use the template for the selected layout
+⋮----
+// Scope for code execution using resumeDataSource
 ⋮----
 // For backward compatibility
 ⋮----
-// Default rendering if not custom code
+// Add React components needed for layouts
 ⋮----
-// Standard layouts expect a single resumeData prop with basics, work, etc.
+// Clean and prepare the code for execution
+⋮----
+// Fix common JSX formatting issues that can cause parsing errors
+⋮----
+// Normalize line endings
+⋮----
+// Ensure proper spacing around attributes
+⋮----
+// Ensure the code is wrapped in parentheses for JSX evaluation
+⋮----
+// Try to create a safer execution context
+// This is a workaround for JSX execution without proper transpilation
+⋮----
+// Create a dynamic function that binds all variables to the current scope
+⋮----
+// Use a more lenient approach to handle JSX parsing issues
 ⋮----
 {/* Compact header with inline layout selection */}
 ⋮----
 {/* Compact info section */}
 ⋮----
-onMount=
+{/* Floating Editor Toggle Button */}
+⋮----
+{/* Overlay message when floating editor is active */}
+⋮----
+// Set the correct theme after configuration
+⋮----
+// Force language mode for better JSX support
 ⋮----
 // Add custom actions
-⋮----
-onChange=
 ⋮----
 // Debounced validation
 ⋮----
@@ -3400,6 +3428,47 @@ location, // This is an object { city, countryCode } in JSON resume spec
 // Ignore parse errors, don't apply
 ⋮----
 {/* Button removed: now auto-applies */}
+⋮----
+{/* Floating Editor Overlay */}
+⋮----
+{/* Floating Editor Header */}
+⋮----
+{/* Tab Buttons */}
+⋮----
+{/* Floating Editor Content */}
+⋮----
+// Apply the same configuration as the main editor
+⋮----
+// Set the correct theme after configuration
+⋮----
+// Force language mode for better JSX support
+⋮----
+// Debounced validation
+⋮----
+// Debounce auto-apply
+⋮----
+// Reconstruct PersonalInfoData, passing through all fields from basics
+⋮----
+location, // This is an object { city, countryCode } in JSON resume spec
+⋮----
+...otherBasics // Capture any other fields in basics
+⋮----
+// Assuming PersonalInfoData expects location as a string (city)
+// and jsonResume spec has location as { city, countryCode }
+⋮----
+...otherBasics, // Spread remaining fields from basics
+⋮----
+// Ignore parse errors, don't apply
+⋮----
+{/* Resize Handle */}
+⋮----
+{/* Floating Editor Action Buttons */}
+⋮----
+{/* Code change indicator for floating editor */}
+⋮----
+{/* Floating Editor Error Display */}
+⋮----
+{/* Backdrop overlay when dragging */}
 </file>
 
 </files>

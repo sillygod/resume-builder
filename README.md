@@ -25,9 +25,19 @@ A web application that helps users create and manage their resumes. It allows fo
    ```bash
    npm run dev
    ```
-   The application will typically be available at `http://localhost:5173`.
+   The application will be available at `http://localhost:3000`.
 
-## Building for Production
+## Deployment
+
+### GitHub Pages
+
+This project is configured for automatic deployment to GitHub Pages:
+
+1. **Automatic Deployment:** Push to the `main` branch triggers automatic deployment
+2. **Live Site:** Available at `https://yourusername.github.io/resume-builder/`
+3. **Setup:** Enable GitHub Pages in repository Settings → Pages → Source: "GitHub Actions"
+
+### Manual Build
 
 1. **Run the build script:**
    ```bash
@@ -47,8 +57,21 @@ This project is a React application built with:
 - **JSON Resume:** As the standard format for resume data.
 
 
-## experiment ai analyze repo
+## Development Commands
 
-https://github.com/yamadashy/repomix
+- `npm run dev` - Start development server (localhost:3000)
+- `npm run build` - Production build
+- `npm run build:dev` - Development build  
+- `npm run lint` - Run ESLint
+- `npm run preview` - Preview production build
+- `npm run test` - Run tests with Vitest
+- `npm run test:ui` - Run tests with Vitest UI
+- `npm run coverage` - Generate test coverage report
 
+## Code Analysis
+
+This project uses [Repomix](https://github.com/yamadashy/repomix) for codebase analysis:
+
+```bash
 repomix --compress
+```

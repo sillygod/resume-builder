@@ -100,6 +100,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [floatingEditorMode, setFloatingEditorMode] = useState<'code' | 'json'>('code');
   const [validationResults, setValidationResults] = useState<{
     errors: string[];
     warnings: string[];
@@ -939,7 +940,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
               '<section className="mb-6" data-section="${1:section-name}" data-section-label="${2:Section Label}">',
               '  <h2 className="text-2xl font-bold mb-4">${3:Section Title}</h2>',
               '  <div>',
-              '    ${4:// Content goes here}',
+              '    {/* ${4:Content goes here} */}',
               '  </div>',
               '</section>',
             ].join('\n'),
@@ -976,13 +977,22 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
             insertTextFormat: 2, // Snippet format
             range,
           },
+          // JSX Comment
+          {
+            label: 'JSX Comment',
+            kind: monaco.languages.CompletionItemKind.Snippet,
+            insertText: '{/* ${1:comment} */}',
+            documentation: 'Proper JSX comment syntax. Use this instead of // for comments inside JSX elements.',
+            insertTextFormat: 2,
+            range,
+          },
           // Tailwind CSS common patterns
           {
             label: 'Card Layout',
             kind: monaco.languages.CompletionItemKind.Snippet,
             insertText: [
               '<div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">',
-              '  ${1:// Card content}',
+              '  {/* ${1:Card content} */}',
               '</div>',
             ].join('\n'),
             documentation: 'Common card layout with Tailwind CSS',
@@ -994,7 +1004,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
             kind: monaco.languages.CompletionItemKind.Snippet,
             insertText: [
               '<div className="flex items-center justify-center min-h-screen">',
-              '  ${1:// Centered content}',
+              '  {/* ${1:Centered content} */}',
               '</div>',
             ].join('\n'),
             documentation: 'Flexbox center layout with Tailwind CSS',
@@ -1006,7 +1016,7 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
             kind: monaco.languages.CompletionItemKind.Snippet,
             insertText: [
               '<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">',
-              '  ${1:// Grid items}',
+              '  {/* ${1:Grid items} */}',
               '</div>',
             ].join('\n'),
             documentation: 'Responsive grid layout with Tailwind CSS',
@@ -1425,6 +1435,39 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
   ]);
   // Note: resumeDataSource is added to dependency array of above useEffect
 
+  // Effect to handle floating editor mode changes
+  useEffect(() => {
+    if (isFloatingExpanded && floatingEditorMode === 'json' && jsonValue.trim() === '') {
+      const currentResumeStructure = {
+        basics: currentPersonalInfo,
+        work: currentWorkExperience,
+        education: currentEducation,
+        skills: currentSkills,
+        extraData: currentExtraData,
+        theme: currentTheme,
+      };
+      setJsonValue(JSON.stringify(currentResumeStructure, null, 2));
+    }
+  }, [
+    isFloatingExpanded,
+    floatingEditorMode,
+    jsonValue,
+    currentPersonalInfo,
+    currentWorkExperience,
+    currentEducation,
+    currentSkills,
+    currentExtraData,
+    currentTheme,
+    setJsonValue
+  ]);
+
+  // Effect to sync floating editor mode with main editor mode changes
+  useEffect(() => {
+    if (isFloatingExpanded) {
+      setFloatingEditorMode(editorMode as 'code' | 'json');
+    }
+  }, [editorMode, isFloatingExpanded]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLayoutProps({ ...layoutProps, [name]: value });
@@ -1438,19 +1481,98 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       return;
     }
     
+    // Check for JSX comment issues - only flag obvious // comments, not URLs
+    const lines = trimmedCode.split('\n');
+    let hasInvalidJSXComment = false;
+    let invalidCommentLine = -1;
+    
+    // Look for problematic // comments that are clearly not URLs
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const trimmedLine = line.trim();
+      
+      // Skip lines that are purely comments (not inside JSX)
+      if (trimmedLine.startsWith('//')) {
+        continue;
+      }
+      
+      // Skip lines that don't contain JSX
+      if (!trimmedLine.includes('<') && !trimmedLine.includes('>')) {
+        continue;
+      }
+      
+      // Look for // that is clearly a comment (not part of a URL)
+      // Skip if the line contains a URL protocol
+      if (trimmedLine.includes('http://') || trimmedLine.includes('https://')) {
+        continue;
+      }
+      
+      // Now check for // comments
+      if (trimmedLine.includes('//')) {
+        hasInvalidJSXComment = true;
+        invalidCommentLine = i + 1;
+        break;
+      }
+    }
+    
+    if (hasInvalidJSXComment) {
+      setCodeError(`Error: Invalid JSX comment syntax on line ${invalidCommentLine}. Use {/* comment */} instead of // for comments inside JSX elements.`);
+      return;
+    }
+    
     // Check for common JSX structure issues
     if (!trimmedCode.startsWith('(') || !trimmedCode.endsWith(')')) {
       setCodeError("Warning: JSX code should be wrapped in parentheses for proper rendering");
       return;
     }
     
-    // Check for unmatched JSX tags
-    const openTags = (trimmedCode.match(/<[^/][^>]*>/g) || []).length;
-    const closeTags = (trimmedCode.match(/<\/[^>]*>/g) || []).length;
-    const selfClosingTags = (trimmedCode.match(/<[^>]*\/>/g) || []).length;
+    // Check for unmatched JSX tags using a more robust approach
+    let tagStack: string[] = [];
+    const tagRegex = /<\/?[^>]+>/g;
+    let tagMatch;
+    let hasTagError = false;
+    let errorMessage = '';
     
-    if (openTags !== closeTags + selfClosingTags) {
-      setCodeError("Error: Unmatched JSX tags detected. Check that all opening tags have corresponding closing tags.");
+    while ((tagMatch = tagRegex.exec(trimmedCode)) !== null) {
+      const tag = tagMatch[0];
+      
+      if (tag.endsWith('/>')) {
+        // Self-closing tag - no need to track
+        continue;
+      } else if (tag.startsWith('</')) {
+        // Closing tag
+        const tagName = tag.match(/<\/([^>\s]+)/)?.[1];
+        if (tagStack.length === 0) {
+          hasTagError = true;
+          errorMessage = `Error: Unexpected closing tag ${tag} with no matching opening tag.`;
+          break;
+        }
+        const expectedTag = tagStack.pop();
+        if (tagName && expectedTag && tagName !== expectedTag) {
+          hasTagError = true;
+          errorMessage = `Error: Mismatched tags. Expected </${expectedTag}> but found ${tag}.`;
+          break;
+        }
+      } else {
+        // Opening tag
+        const tagName = tag.match(/<([^>\s]+)/)?.[1];
+        if (tagName && !tag.includes('=')) {
+          // Simple tag without attributes
+          tagStack.push(tagName);
+        } else if (tagName) {
+          // Tag with attributes
+          tagStack.push(tagName);
+        }
+      }
+    }
+    
+    if (hasTagError) {
+      setCodeError(errorMessage);
+      return;
+    }
+    
+    if (tagStack.length > 0) {
+      setCodeError(`Error: Unclosed tags detected: ${tagStack.map(tag => `<${tag}>`).join(', ')}. Make sure all opening tags have corresponding closing tags.`);
       return;
     }
     
@@ -1584,8 +1706,62 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
         Link,
       };
       
-      const func = new Function('React', ...Object.keys(scope), `return ${codeToExecute}`);
-      return func(React, ...Object.values(scope));
+      // Clean and prepare the code for execution
+      let cleanedCode = codeToExecute.trim();
+      
+      // Fix common JSX formatting issues that can cause parsing errors
+      cleanedCode = cleanedCode
+        // Normalize line endings
+        .replace(/\r\n/g, '\n')
+        // Ensure proper spacing around attributes
+        .replace(/(\w+)=\s*{/g, '$1={')
+        .replace(/(\w+)=\s*"/g, '$1="');
+      
+      // Ensure the code is wrapped in parentheses for JSX evaluation
+      if (!cleanedCode.startsWith('(')) {
+        cleanedCode = `(${cleanedCode})`;
+      }
+      
+      // Try to create a safer execution context
+      // This is a workaround for JSX execution without proper transpilation
+      try {
+        // Create a dynamic function that binds all variables to the current scope
+        const scopeEntries = Object.entries(scope);
+        const scopeKeys = scopeEntries.map(([key]) => key);
+        const scopeValues = scopeEntries.map(([, value]) => value);
+        
+        // Use a more lenient approach to handle JSX parsing issues
+        const executeCode = new Function(
+          'React',
+          ...scopeKeys,
+          `
+          // Make React available in JSX context
+          const createElement = React.createElement;
+          const Fragment = React.Fragment;
+          
+          try {
+            // Execute the JSX code
+            return ${cleanedCode};
+          } catch (syntaxError) {
+            // If there's a syntax error, try to provide more context
+            console.error('JSX Syntax Error:', syntaxError.message);
+            console.error('Problematic code:', ${JSON.stringify(cleanedCode)});
+            
+            // Try to identify the specific issue
+            if (syntaxError.message.includes('Unexpected token')) {
+              throw new Error('JSX Syntax Error: ' + syntaxError.message + '. This often occurs with malformed JSX tags or unescaped characters in attributes.');
+            }
+            
+            throw syntaxError;
+          }
+          `
+        );
+        
+        return executeCode(React, ...scopeValues);
+      } catch (executionError) {
+        console.error('Failed to execute JSX code:', executionError);
+        throw executionError;
+      }
     } catch (err) {
       return (
         <div className="p-4 border border-red-200 bg-red-50 rounded-md">
@@ -1641,7 +1817,10 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
             }`}>
               {/* Floating Editor Toggle Button */}
               <Button
-                onClick={() => setIsFloatingExpanded(true)}
+                onClick={() => {
+                  setFloatingEditorMode(editorMode as 'code' | 'json');
+                  setIsFloatingExpanded(true);
+                }}
                 className={`absolute top-2 right-2 z-10 p-2 h-8 w-8 text-white transition-all duration-200 ${
                   isFloatingExpanded 
                     ? 'bg-gray-500 cursor-not-allowed' 
@@ -1929,10 +2108,41 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
           >
             <div className="flex items-center gap-2">
               <Move size={16} className="text-blue-100" />
-              <span className="text-sm font-semibold">Code Editor (Active)</span>
+              <span className="text-sm font-semibold">
+                {floatingEditorMode === 'code' ? 'Code Editor' : 'JSON Editor'} (Active)
+              </span>
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" title="Active editor"></div>
             </div>
             <div className="flex items-center gap-2">
+              {/* Tab Buttons */}
+              <div className="flex bg-blue-800 bg-opacity-30 rounded overflow-hidden">
+                <button
+                  onClick={() => {
+                    setFloatingEditorMode('code');
+                    setEditorMode('code');
+                  }}
+                  className={`px-3 py-1 text-xs font-medium transition-colors ${
+                    floatingEditorMode === 'code'
+                      ? 'bg-white text-blue-700'
+                      : 'text-blue-100 hover:bg-blue-800 hover:bg-opacity-50'
+                  }`}
+                >
+                  Code
+                </button>
+                <button
+                  onClick={() => {
+                    setFloatingEditorMode('json');
+                    setEditorMode('json');
+                  }}
+                  className={`px-3 py-1 text-xs font-medium transition-colors ${
+                    floatingEditorMode === 'json'
+                      ? 'bg-white text-blue-700'
+                      : 'text-blue-100 hover:bg-blue-800 hover:bg-opacity-50'
+                  }`}
+                >
+                  JSON
+                </button>
+              </div>
               <span className="text-xs bg-blue-800 bg-opacity-50 px-2 py-1 rounded text-blue-100">
                 Floating Mode
               </span>
@@ -1950,75 +2160,143 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
           
           {/* Floating Editor Content */}
           <div className="relative" style={{ height: `${floatingSize.height - 48}px` }}>
-            <MonacoEditor
-              height="100%"
-              defaultLanguage="typescript"
-              language="typescript"
-              theme={currentEditorTheme}
-              value={editorValue}
-              onMount={(editor, monaco) => {
-                // Apply the same configuration as the main editor
-                if (!editorInstance) {
-                  setEditorInstance(editor);
-                  setMonaco(monaco);
-                  configureMonacoEditor(monaco);
-                }
-                
-                // Set the correct theme after configuration
-                monaco.editor.setTheme(currentEditorTheme);
-                
-                // Force language mode for better JSX support
-                const model = editor.getModel();
-                if (model) {
-                  monaco.editor.setModelLanguage(model, 'typescript');
-                }
-              }}
-              onChange={(value) => {
-                const code = value ?? '';
-                setEditorValue(code);
-                setCustomCode(code);
-                setIsCodeChanged(true);
-                onCodeChanging?.(true);
-                
-                // Debounced validation
-                setTimeout(() => {
-                  validateJSXStructure(code);
-                  setIsCodeChanged(false);
-                  onCodeChanging?.(false);
-                }, 500);
-              }}
-              options={{
-                wordWrap: 'on',
-                minimap: { enabled: true },
-                fontSize: 14,
-                scrollBeyondLastLine: false,
-                automaticLayout: true,
-                suggestOnTriggerCharacters: true,
-                acceptSuggestionOnEnter: 'on',
-                tabCompletion: 'on',
-                parameterHints: {
-                  enabled: true,
-                },
-                hover: {
-                  enabled: true,
-                },
-                folding: true,
-                showFoldingControls: 'always',
-                foldingStrategy: 'indentation',
-                bracketPairColorization: {
-                  enabled: true,
-                },
-                guides: {
-                  indentation: true,
-                  bracketPairs: true,
-                },
-                quickSuggestions: {
-                  other: true,
-                  comments: false,
-                  strings: true,
-                },
-              }}
-            />
+            {floatingEditorMode === 'code' ? (
+              <MonacoEditor
+                height="100%"
+                defaultLanguage="typescript"
+                language="typescript"
+                theme={currentEditorTheme}
+                value={editorValue}
+                onMount={(editor, monaco) => {
+                  // Apply the same configuration as the main editor
+                  if (!editorInstance) {
+                    setEditorInstance(editor);
+                    setMonaco(monaco);
+                    configureMonacoEditor(monaco);
+                  }
+                  
+                  // Set the correct theme after configuration
+                  monaco.editor.setTheme(currentEditorTheme);
+                  
+                  // Force language mode for better JSX support
+                  const model = editor.getModel();
+                  if (model) {
+                    monaco.editor.setModelLanguage(model, 'typescript');
+                  }
+                }}
+                onChange={(value) => {
+                  const code = value ?? '';
+                  setEditorValue(code);
+                  setCustomCode(code);
+                  setIsCodeChanged(true);
+                  onCodeChanging?.(true);
+                  
+                  // Debounced validation
+                  setTimeout(() => {
+                    validateJSXStructure(code);
+                    setIsCodeChanged(false);
+                    onCodeChanging?.(false);
+                  }, 500);
+                }}
+                options={{
+                  wordWrap: 'on',
+                  minimap: { enabled: true },
+                  fontSize: 14,
+                  scrollBeyondLastLine: false,
+                  automaticLayout: true,
+                  suggestOnTriggerCharacters: true,
+                  acceptSuggestionOnEnter: 'on',
+                  tabCompletion: 'on',
+                  parameterHints: {
+                    enabled: true,
+                  },
+                  hover: {
+                    enabled: true,
+                  },
+                  folding: true,
+                  showFoldingControls: 'always',
+                  foldingStrategy: 'indentation',
+                  bracketPairColorization: {
+                    enabled: true,
+                  },
+                  guides: {
+                    indentation: true,
+                    bracketPairs: true,
+                  },
+                  quickSuggestions: {
+                    other: true,
+                    comments: false,
+                    strings: true,
+                  },
+                }}
+              />
+            ) : (
+              <MonacoEditor
+                height="100%"
+                defaultLanguage="json"
+                language="json"
+                theme={currentEditorTheme}
+                value={jsonValue}
+                onChange={(value) => {
+                  setJsonValue(value ?? '');
+                  // Debounce auto-apply
+                  if (window.__jsonApplyTimeout) clearTimeout(window.__jsonApplyTimeout);
+                  window.__jsonApplyTimeout = setTimeout(() => {
+                    try {
+                      const cleaned = (value ?? '').trim();
+                      const fixed = cleaned.replace(/,\s*}/g, '}').replace(/,\s*]/g, ']');
+                      const parsedJson = JSON.parse(fixed);
+
+                      if (onApplyResumeChanges) {
+                        const parsedBasics = parsedJson.basics || {};
+                        const parsedWork = parsedJson.work || [];
+                        const parsedEducation = parsedJson.education || [];
+                        const parsedSkills = parsedJson.skills || [];
+                        const parsedExtraData = parsedJson.extraData || {};
+                        
+                        // Reconstruct PersonalInfoData, passing through all fields from basics
+                        const {
+                          name,
+                          email,
+                          phone,
+                          location, // This is an object { city, countryCode } in JSON resume spec
+                          jobTitle,
+                          ...otherBasics // Capture any other fields in basics
+                        } = parsedBasics;
+                        
+                        const updatedPersonalInfo: PersonalInfoData = {
+                          fullName: name || "",
+                          email: email || "",
+                          phone: phone || "",
+                          // Assuming PersonalInfoData expects location as a string (city)
+                          // and jsonResume spec has location as { city, countryCode }
+                          location: typeof location === 'object' ? location?.city || "" : typeof location === 'string' ? location : "",
+                          jobTitle: jobTitle || "",
+                          ...otherBasics, // Spread remaining fields from basics
+                        };
+
+                        onApplyResumeChanges(
+                          updatedPersonalInfo,
+                          parsedWork,
+                          parsedEducation,
+                          parsedSkills,
+                          parsedExtraData
+                        );
+                      }
+                    } catch (error) {
+                      // Ignore parse errors, don't apply
+                    }
+                  }, 500);
+                }}
+                options={{
+                  wordWrap: 'on',
+                  minimap: { enabled: true },
+                  fontSize: 14,
+                  scrollBeyondLastLine: false,
+                  automaticLayout: true,
+                }}
+              />
+            )}
             
             {/* Resize Handle */}
             <div
@@ -2031,24 +2309,32 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
             
             {/* Floating Editor Action Buttons */}
             <div className="absolute top-2 left-2 flex gap-1 z-10">
-              <Button
-                onClick={resetCustomCode}
-                className="p-1 h-6 text-xs bg-gray-800 hover:bg-gray-700 text-white border-gray-600"
-                size="sm"
-                variant="outline"
-                title="Reset to template"
-              >
-                Reset
-              </Button>
-              <Button
-                onClick={() => editorInstance?.getAction('editor.action.formatDocument')?.run()}
-                className="p-1 h-6 text-xs bg-gray-800 hover:bg-gray-700 text-white border-gray-600"
-                size="sm"
-                variant="outline"
-                title="Format code (Ctrl+Shift+F)"
-              >
-                Format
-              </Button>
+              {floatingEditorMode === 'code' ? (
+                <>
+                  <Button
+                    onClick={resetCustomCode}
+                    className="p-1 h-6 text-xs bg-gray-800 hover:bg-gray-700 text-white border-gray-600"
+                    size="sm"
+                    variant="outline"
+                    title="Reset to template"
+                  >
+                    Reset
+                  </Button>
+                  <Button
+                    onClick={() => editorInstance?.getAction('editor.action.formatDocument')?.run()}
+                    className="p-1 h-6 text-xs bg-gray-800 hover:bg-gray-700 text-white border-gray-600"
+                    size="sm"
+                    variant="outline"
+                    title="Format code (Ctrl+Shift+F)"
+                  >
+                    Format
+                  </Button>
+                </>
+              ) : (
+                <div className="p-1 h-6 text-xs bg-gray-800 text-gray-300 border border-gray-600 rounded px-2 flex items-center">
+                  JSON editing - Auto-applies
+                </div>
+              )}
             </div>
             
             {/* Code change indicator for floating editor */}

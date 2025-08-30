@@ -223,6 +223,11 @@ const Index = () => {
                   skills={resumeData.skills}
                   theme={currentTheme}
                   extraData={resumeData.extraData}
+                  customLayoutCode={editorValue}
+                  isCodeChanging={isCodeChanging}
+                  onPreviewUpdate={() => setIsCodeChanging(false)}
+                  onSectionHighlight={setHighlightedSection}
+                  onSectionClearHighlight={() => setHighlightedSection(null)}
                 />
               </div>
             </div>
