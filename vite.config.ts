@@ -10,6 +10,9 @@ export default defineConfig(({ mode }) => ({
     host: "127.0.0.1",
     port: 3000,
   },
+  preview: {
+    port: 4173,
+  },
   plugins: [
     react(),
   ].filter(Boolean),
