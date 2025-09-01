@@ -170,7 +170,7 @@ const LayoutPreview: React.FC<LayoutPreviewProps> = ({
             effectiveTheme === 'sidebar' ? 'h-auto min-h-[297mm]' : 'h-[297mm]'
           }`}
         >
-          <div ref={null} className={`${effectiveTheme === "sidebar" ? "flex" : ""}`}>
+          <div ref={null} className={`${effectiveTheme === "sidebar" ? "flex h-full" : "flex h-full"}`}>
             {customCode ? (
               renderCustomCode()
             ) : isValidLayout ? (

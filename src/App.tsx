@@ -10,13 +10,15 @@ import { ThemeProvider } from "./themes/ThemeContext";
 
 const queryClient = new QueryClient();
 
+const basename = import.meta.env.MODE === 'production' ? '/resume-builder' : '';
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter basename="/resume-builder">
+        <BrowserRouter basename={basename}>
           <Routes>
             <Route path="/" element={<Index />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

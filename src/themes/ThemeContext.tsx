@@ -187,7 +187,7 @@ export const themes: Record<ThemeName, ThemeConfig> = {
       contentClass: "flex flex-row",
     },
     personalInfo: {
-      containerClass: "bg-gray-800 text-white p-6 w-1/3",
+      containerClass: "bg-gray-800 text-white p-6 w-1/3 overflow-y-auto h-full",
       titleClass: "text-xl font-bold",
       subtitleClass: "text-white text-opacity-90 mt-1",
       gridClass: "flex flex-col mt-4",
@@ -221,10 +221,10 @@ export const themes: Record<ThemeName, ThemeConfig> = {
       periodClass: "text-xs text-gray-500",
     },
     skills: {
-      containerClass: "mb-6",
-      titleClass: "text-sm font-semibold uppercase tracking-wider text-gray-300 mb-3",
-      skillsListClass: "space-y-2",
-      skillItemClass: "flex items-center",
+      containerClass: "mb-6 pt-6 border-t border-gray-600",
+      titleClass: "text-sm font-semibold uppercase tracking-wider text-gray-300 mb-4",
+      skillsListClass: "flex flex-wrap gap-2",
+      skillItemClass: "text-sm bg-gray-700 text-gray-200 px-3 py-1.5 rounded-md",
     },
   },
   

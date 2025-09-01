@@ -99,3 +99,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media print {
+  .h-full {
+    height: 100vh !important;
+  }
+}
+

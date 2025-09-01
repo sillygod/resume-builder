@@ -449,9 +449,9 @@ export const getLayoutJSXString = (layoutName: string) => {
           <h2 className="${themes.sidebar.skills.titleClass}">Skills</h2>
           <div className="${themes.sidebar.skills.skillsListClass}">
             {skills.map((skill) => (
-              <div key={skill} className="${themes.sidebar.skills.skillItemClass}">
-                <span>{skill}</span>
-              </div>
+              <span key={skill} className="${themes.sidebar.skills.skillItemClass}">
+                {skill}
+              </span>
             ))}
           </div>
         </section>

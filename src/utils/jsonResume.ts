@@ -75,7 +75,7 @@ export const exportToJsonResume = (
     basics,
     work: resumeData.workExperience.map((exp) => ({
       name: exp.company,
-      position: exp.position,
+      position: exp.jobTitle, // Use jobTitle field
       startDate: exp.startDate,
       endDate: exp.endDate,
       summary: exp.description, 
@@ -84,9 +84,9 @@ export const exportToJsonResume = (
       institution: edu.institution,
       area: edu.field, 
       studyType: edu.degree, 
-      // startDate: edu.startDate, // Removed as per review, EducationEntry likely doesn't have startDate
+      startDate: edu.startDate,
       endDate: edu.graduationDate, 
-      // summary: edu.description, // Removed as per review, EducationEntry likely doesn't have description/summary
+      summary: edu.description,
     })),
     skills: resumeData.skills.map((skill) => ({
       name: skill,
@@ -133,7 +133,7 @@ export const importFromJsonResume = (
   const workExperience = (jsonResume.work || []).map((work) => ({
     id: Date.now().toString() + Math.random(),
     company: work.name || '',
-    position: work.position || '',
+    jobTitle: work.position || '', // Map to jobTitle field
     startDate: work.startDate || '',
     endDate: work.endDate || '',
     description: work.summary || '',
@@ -145,9 +145,9 @@ export const importFromJsonResume = (
     institution: edu.institution || '',
     field: edu.area || '', 
     degree: edu.studyType || '', 
-    // startDate: edu.startDate || '', // Removed, EducationEntry likely doesn't have startDate
+    startDate: edu.startDate || '',
     graduationDate: edu.endDate || '', 
-    // description: edu.summary || '', // Removed, EducationEntry likely doesn't have description
+    description: edu.summary || '',
   }));
 
   // Extract skills

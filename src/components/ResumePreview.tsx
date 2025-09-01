@@ -236,7 +236,7 @@ export function ResumePreview({
         >
           <div
             ref={contentRef}
-            className={`${theme === "sidebar" ? "flex" : ""}`} // Sidebar layout might need flex container
+            className={`${theme === "sidebar" ? "flex h-full" : "flex h-full"}`} // Sidebar layout might need flex container
           >
             <ErrorBoundary resetKey={customLayoutCode}>
               {renderLayout()}
