@@ -206,50 +206,6 @@ This section contains the contents of the repository's files.
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" fill="none"><rect width="1200" height="1200" fill="#EAEAEA" rx="3"/><g opacity=".5"><g opacity=".5"><path fill="#FAFAFA" d="M600.709 736.5c-75.454 0-136.621-61.167-136.621-136.62 0-75.454 61.167-136.621 136.621-136.621 75.453 0 136.62 61.167 136.62 136.621 0 75.453-61.167 136.62-136.62 136.62Z"/><path stroke="#C9C9C9" stroke-width="2.418" d="M600.709 736.5c-75.454 0-136.621-61.167-136.621-136.62 0-75.454 61.167-136.621 136.621-136.621 75.453 0 136.62 61.167 136.62 136.621 0 75.453-61.167 136.62-136.62 136.62Z"/></g><path stroke="url(#a)" stroke-width="2.418" d="M0-1.209h553.581" transform="scale(1 -1) rotate(45 1163.11 91.165)"/><path stroke="url(#b)" stroke-width="2.418" d="M404.846 598.671h391.726"/><path stroke="url(#c)" stroke-width="2.418" d="M599.5 795.742V404.017"/><path stroke="url(#d)" stroke-width="2.418" d="m795.717 796.597-391.441-391.44"/><path fill="#fff" d="M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z"/><g clip-path="url(#e)"><path fill="#666" fill-rule="evenodd" d="M616.426 586.58h-31.434v16.176l3.553-3.554.531-.531h9.068l.074-.074 8.463-8.463h2.565l7.18 7.181V586.58Zm-15.715 14.654 3.698 3.699 1.283 1.282-2.565 2.565-1.282-1.283-5.2-5.199h-6.066l-5.514 5.514-.073.073v2.876a2.418 2.418 0 0 0 2.418 2.418h26.598a2.418 2.418 0 0 0 2.418-2.418v-8.317l-8.463-8.463-7.181 7.181-.071.072Zm-19.347 5.442v4.085a6.045 6.045 0 0 0 6.046 6.045h26.598a6.044 6.044 0 0 0 6.045-6.045v-7.108l1.356-1.355-1.282-1.283-.074-.073v-17.989h-38.689v23.43l-.146.146.146.147Z" clip-rule="evenodd"/></g><path stroke="#C9C9C9" stroke-width="2.418" d="M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z"/></g><defs><linearGradient id="a" x1="554.061" x2="-.48" y1=".083" y2=".087" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="b" x1="796.912" x2="404.507" y1="599.963" y2="599.965" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="c" x1="600.792" x2="600.794" y1="403.677" y2="796.082" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="d" x1="404.85" x2="796.972" y1="403.903" y2="796.02" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><clipPath id="e"><path fill="#fff" d="M581.364 580.535h38.689v38.689h-38.689z"/></clipPath></defs></svg>
 </file>
 
-<file path="src/components/resumeAssistant/ChatInput.test.tsx">
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { ChatInput } from './ChatInput';
-⋮----
-// Check that setInput was called with the last character
-⋮----
-// The Send icon should be present (though we can't test the icon directly due to mocking)
-⋮----
-// Check that setInput was called with the last character (2)
-⋮----
-expect(setInput).toHaveBeenCalledTimes(13); // 6 chars + 1 newline + 6 chars
-⋮----
-// Button is disabled, so click should not trigger sendMessage
-⋮----
-// Simulate rapid typing
-⋮----
-// setInput should be called for each character
-</file>
-
-<file path="src/components/resumeAssistant/ChatMessages.test.tsx">
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { ChatMessages } from './ChatMessages';
-import { Message } from '@/types/resumeAssistantTypes';
-⋮----
-// Mock the scrollIntoView method
-⋮----
-// System message should not be displayed
-⋮----
-// Should render the container but no messages
-⋮----
-// Find the specific p element with the whitespace-pre-wrap class
-⋮----
-// Just check that the content contains the key parts - whitespace-pre-wrap handles the formatting
-⋮----
-// Add more messages
-⋮----
-// The timestamp is displayed in 12-hour format with AM/PM
-⋮----
-// Should show 3 messages (excluding system)
-</file>
-
 <file path="src/components/ui/accordion.tsx">
 import { ChevronDown } from "lucide-react"
 ⋮----
@@ -751,222 +707,6 @@ import { cn } from "@/lib/utils"
 import { useToast, toast } from "@/hooks/use-toast";
 </file>
 
-<file path="src/components/DynamicFields.test.tsx">
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import DynamicFields from './DynamicFields';
-⋮----
-expect(container.firstChild).toBeNull();
-⋮----
-// String
-⋮----
-// Number
-⋮----
-// Boolean
-⋮----
-// Array of strings
-⋮----
-// Nested object
-⋮----
-// Array of objects
-⋮----
-// Should render a ul but with no items
-⋮----
-// Check main container has correct class
-⋮----
-// Check field containers have correct classes
-⋮----
-// Check headings have correct classes
-</file>
-
-<file path="src/components/ErrorBoundary.test.tsx">
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { ErrorBoundary } from './ErrorBoundary';
-⋮----
-// Component that throws an error
-const ThrowError = (
-⋮----
-// Mock console.error to avoid noise in tests
-⋮----
-// The error message should be in the details
-⋮----
-// Error should be showing
-⋮----
-// Change resetKey and render without error
-⋮----
-// Should show normal content again
-⋮----
-// Error should be showing
-⋮----
-// Rerender with same resetKey
-⋮----
-// Should still show error (boundary not reset)
-⋮----
-const ThrowString = () =>
-⋮----
-// Rerender with different props but no resetKey change
-⋮----
-// Should still show error
-</file>
-
-<file path="src/components/LayoutEditor.test.tsx">
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import LayoutEditor from './LayoutEditor';
-import { ResumeDataState } from '../utils/jsonResume';
-⋮----
-// Mock missing JSDOM methods that Radix UI needs
-⋮----
-// Mock hasPointerCapture and related pointer methods
-⋮----
-// Mock Monaco Editor to avoid complex setup
-⋮----
-onChange=
-⋮----
-// Mock theme context
-⋮----
-// Mock layout templates
-⋮----
-// Mock custom hooks
-⋮----
-// Mock ErrorBoundary
-⋮----
-// Mock toast
-⋮----
-// Look for the layout selection UI - Radix UI Select displays value as text content
-⋮----
-// The tabs are rendered but based on the editorMode prop
-⋮----
-// Preview tab might not be shown in default mode
-⋮----
-// Code tab should be active (has data-state="active") based on default props
-⋮----
-// Due to Radix UI's complex tab implementation, we just verify the component accepts the prop
-// and the tab is clickable
-⋮----
-// Verify the component accepts the setSelectedLayout prop and displays current layout
-⋮----
-// Component should accept the callback
-⋮----
-// Should render some representation of the resume data
-// The exact implementation depends on the preview component
-</file>
-
-<file path="src/components/LayoutPreview.test.tsx">
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import LayoutPreview from './LayoutPreview';
-import { PersonalInfoData } from './PersonalInfo';
-import { WorkExperienceEntry } from './WorkExperience';
-import { EducationEntry } from './Education';
-⋮----
-// Mock theme context
-⋮----
-// Mock layout templates
-⋮----
-// Mock Babel for JSX compilation
-⋮----
-// Mock toast
-⋮----
-// The component should render some content, even if mocked
-⋮----
-// Should not throw errors with different layouts
-⋮----
-// Should handle custom code without errors
-</file>
-
-<file path="src/components/ResumeAssistant.test.tsx">
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import React from 'react';
-import { ResumeAssistant } from './ResumeAssistant';
-⋮----
-// Mock localStorage
-⋮----
-// Mock child components
-⋮----
-onChange=
-⋮----
-// Mock AI utils
-⋮----
-// Mock resume assistant utils
-⋮----
-// Mock toast
-⋮----
-// Find the settings button by finding the settings icon within it
-⋮----
-// Wait for the async operation to complete
-⋮----
-// Open settings using the same approach as the previous test
-⋮----
-// Set API key
-⋮----
-// Save settings
-⋮----
-// Switch to templates tab
-⋮----
-// Click template button
-⋮----
-// Should add template to input (this depends on the implementation)
-⋮----
-// The loading state would be set during actual API call
-⋮----
-// Set up localStorage to have API key
-⋮----
-// After sending, input should be cleared (depending on implementation)
-</file>
-
-<file path="src/components/Skills.test.tsx">
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { Skills } from './Skills';
-⋮----
-await user.type(input, 'JavaScript'); // Already exists
-⋮----
-await user.click(addButton); // Submit without typing
-⋮----
-// Find the X button for the "React" skill
-⋮----
-await user.type(input, 'javascript'); // Different case
-⋮----
-// Should add because it's case-sensitive
-⋮----
-// Input should still be focused for adding more skills
-</file>
-
-<file path="src/hooks/use-mobile.test.tsx">
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
-import { useIsMobile } from './use-mobile';
-⋮----
-// Mock matchMedia
-const createMockMatchMedia = (matches: boolean) =>
-⋮----
-addListener: vi.fn(), // deprecated
-removeListener: vi.fn(), // deprecated
-⋮----
-value: 767, // Less than 768
-⋮----
-value: 768, // Equal to or greater than 768
-⋮----
-// Start with desktop width
-⋮----
-// Simulate resize to mobile width
-⋮----
-// Mock to prevent immediate setting of isMobile
-⋮----
-// Should return boolean, not undefined (due to !!isMobile)
-⋮----
-// The hook uses MOBILE_BREAKPOINT = 768
-// So anything < 768 should be mobile
-⋮----
-// Should have called removeEventListener for each mount
-</file>
-
 <file path="src/hooks/use-mobile.tsx">
 export function useIsMobile()
 ⋮----
@@ -1031,34 +771,6 @@ const dismiss = () => dispatch(
 function useToast()
 </file>
 
-<file path="src/hooks/useEditableListManager.test.tsx">
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
-import { useEditableListManager, Identifiable } from './useEditableListManager';
-⋮----
-interface TestItem extends Identifiable {
-  name: string;
-  value: string;
-}
-⋮----
-const firstNewId = firstCall[firstCall.length - 1].id; // Get the last item from first call
-const secondNewId = secondCall[secondCall.length - 1].id; // Get the last item from second call
-⋮----
-expect(updatedItems[1]).toMatchObject(initialItems[1]); // Second item unchanged
-⋮----
-expect(updatedItems[0]).toMatchObject(initialItems[0]); // First item unchanged
-⋮----
-expect(updatedItems).toEqual(initialItems); // No changes
-⋮----
-expect(updatedItems).toEqual(initialItems); // No changes
-⋮----
-// Add item
-⋮----
-// Update item
-⋮----
-// Remove item
-</file>
-
 <file path="src/lib/utils.ts">
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
@@ -1066,78 +778,11 @@ import { twMerge } from "tailwind-merge"
 export function cn(...inputs: ClassValue[])
 </file>
 
-<file path="src/pages/Index.test.tsx">
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import Index from './Index';
-import React from 'react';
-⋮----
-// Remove the Index mock to test the actual component
-⋮----
-// Mock JSDOM methods that might be needed
-⋮----
-// Ensure document.body exists
-⋮----
-// Mock all child components to focus on Index logic
-⋮----
-// Mock theme context
-⋮----
-// Mock JSON import
-⋮----
-// Mock utility functions
-⋮----
-// Mock URL.createObjectURL for export functionality
-⋮----
-// Mock document methods for export functionality
-⋮----
-// Test that the component can be imported and instantiated
-⋮----
-// Mock test - component structure validation
-⋮----
-// Mock test - default state validation
-⋮----
-// Mock test - tab switching functionality
-⋮----
-// Mock test - button rendering
-⋮----
-// Mock test - export functionality
-⋮----
-// Mock test - import functionality
-⋮----
-// Mock test - preview toggle
-⋮----
-// Mock test - resume changes application
-⋮----
-// Mock test - default layout display
-⋮----
-// Mock test - preview toggle functionality
-⋮----
-// Mock test - PDF button functionality
-</file>
-
 <file path="src/pages/NotFound.tsx">
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 ⋮----
 const NotFound = () =>
-</file>
-
-<file path="src/themes/ThemeContext.test.tsx">
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, act } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { ThemeProvider, useTheme, themes, ThemeName } from './ThemeContext';
-⋮----
-// Test component that uses the theme context
-const TestComponent = () =>
-⋮----
-// Component to test theme outside provider
-const ComponentWithoutProvider = () =>
-⋮----
-// The setTheme function should exist and be callable (though it won't change state)
-⋮----
-// Should not throw error when clicked
 </file>
 
 <file path="src/App.css">
@@ -1152,52 +797,6 @@ a:nth-of-type(2) .logo {
 .card {
 ⋮----
 .read-the-docs {
-</file>
-
-<file path="src/App.test.tsx">
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import App from './App';
-⋮----
-// Mock window.matchMedia
-⋮----
-addListener: vi.fn(), // deprecated
-removeListener: vi.fn(), // deprecated
-⋮----
-// Mock the pages to avoid complex component dependencies
-⋮----
-// Mock ThemeProvider to avoid theme context complexity
-⋮----
-// Mock Toaster component to avoid Sonner's matchMedia usage
-⋮----
-// Check that the component tree renders (indicating providers are working)
-⋮----
-// Mock production environment
-⋮----
-// The basename is used internally by BrowserRouter,
-// so we just ensure the app still renders correctly
-⋮----
-// Restore original environment
-</file>
-
-<file path="src/index.css">
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-⋮----
-@layer base {
-⋮----
-:root {
-⋮----
-.dark {
-⋮----
-* {
-⋮----
-@apply border-border;
-⋮----
-body {
-⋮----
-.h-full {
 </file>
 
 <file path="src/vite-env.d.ts">
@@ -1407,6 +1006,50 @@ const handleModelChange = (value: string) =>
 onValueChange=
 </file>
 
+<file path="src/components/resumeAssistant/ChatInput.test.tsx">
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { ChatInput } from './ChatInput';
+⋮----
+// Check that setInput was called with the last character
+⋮----
+// The Send icon should be present (though we can't test the icon directly due to mocking)
+⋮----
+// Check that setInput was called with the last character (2)
+⋮----
+expect(setInput).toHaveBeenCalledTimes(13); // 6 chars + 1 newline + 6 chars
+⋮----
+// Button is disabled, so click should not trigger sendMessage
+⋮----
+// Simulate rapid typing
+⋮----
+// setInput should be called for each character
+</file>
+
+<file path="src/components/resumeAssistant/ChatMessages.test.tsx">
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { ChatMessages } from './ChatMessages';
+import { Message } from '@/types/resumeAssistantTypes';
+⋮----
+// Mock the scrollIntoView method
+⋮----
+// System message should not be displayed
+⋮----
+// Should render the container but no messages
+⋮----
+// Find the specific p element with the whitespace-pre-wrap class
+⋮----
+// Just check that the content contains the key parts - whitespace-pre-wrap handles the formatting
+⋮----
+// Add more messages
+⋮----
+// The timestamp is displayed in 12-hour format with AM/PM
+⋮----
+// Should show 3 messages (excluding system)
+</file>
+
 <file path="src/components/ui/textarea.tsx">
 import { cn } from "@/lib/utils"
 ⋮----
@@ -1414,6 +1057,34 @@ export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
 ⋮----
 className=
+</file>
+
+<file path="src/components/DynamicFields.test.tsx">
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import DynamicFields from './DynamicFields';
+⋮----
+expect(container.firstChild).toBeNull();
+⋮----
+// String
+⋮----
+// Number
+⋮----
+// Boolean
+⋮----
+// Array of strings
+⋮----
+// Nested object
+⋮----
+// Array of objects
+⋮----
+// Should render a ul but with no items
+⋮----
+// Check main container has correct class
+⋮----
+// Check field containers have correct classes
+⋮----
+// Check headings have correct classes
 </file>
 
 <file path="src/components/DynamicFields.tsx">
@@ -1446,6 +1117,37 @@ const entryContainer = getEntryContainer(0);
 const removeButton = within(firstEntryContainer).getAllByRole('button')[0]; // Assumes trash icon button is the first/only direct button
 </file>
 
+<file path="src/components/ErrorBoundary.test.tsx">
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { ErrorBoundary } from './ErrorBoundary';
+⋮----
+// Component that throws an error
+const ThrowError = (
+⋮----
+// Mock console.error to avoid noise in tests
+⋮----
+// The error message should be in the details
+⋮----
+// Error should be showing
+⋮----
+// Change resetKey and render without error
+⋮----
+// Should show normal content again
+⋮----
+// Error should be showing
+⋮----
+// Rerender with same resetKey
+⋮----
+// Should still show error (boundary not reset)
+⋮----
+const ThrowString = () =>
+⋮----
+// Rerender with different props but no resetKey change
+⋮----
+// Should still show error
+</file>
+
 <file path="src/components/ErrorBoundary.tsx">
 import React, { Component, ReactNode } from 'react';
 ⋮----
@@ -1474,42 +1176,113 @@ static getDerivedStateFromProps(props: Props, state: State): State | null
 componentDidCatch(error: Error, errorInfo: React.ErrorInfo)
 </file>
 
-<file path="src/components/PersonalInfo.test.tsx">
+<file path="src/components/LayoutEditor.test.tsx">
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event'; // Still use for clicks
-import { PersonalInfo, PersonalInfoData } from './PersonalInfo'; // Adjust path as needed
+import userEvent from '@testing-library/user-event';
+import LayoutEditor from './LayoutEditor';
+import { ResumeDataState } from '../utils/jsonResume';
 ⋮----
-// Mock JSDOM methods for Radix UI AlertDialog
+// Mock missing JSDOM methods that Radix UI needs
 ⋮----
-// Mock useDynamicFormFields hook
+// Mock hasPointerCapture and related pointer methods
 ⋮----
-// ... other initial rendering assertions ...
-⋮----
-expect(screen.getByLabelText('Summary').tagName).toBe('TEXTAREA');
-expect(screen.getByLabelText('Description').tagName).toBe('TEXTAREA');
-expect(screen.getByLabelText('Bio').tagName).toBe('TEXTAREA');
-⋮----
-expect(screen.getByLabelText('About').tagName).toBe('INPUT');
+// Mock Monaco Editor to avoid complex setup
 ⋮----
 onChange=
 ⋮----
-// Use fireEvent.change for direct value setting
+// Mock theme context
 ⋮----
-expect(fullNameInput.value).toBe(newFullName); // Check input value after re-render
+// Mock layout templates
 ⋮----
-data={currentData} // currentData now includes previous fullName change
+// Mock custom hooks
 ⋮----
-// Since we're mocking useDynamicFormFields, we can test that the component
-// properly renders fields from the hook's return value
+// Mock ErrorBoundary
 ⋮----
-const customFieldInput = screen.getByLabelText('Custom Field');
-expect(customFieldInput).toBeInTheDocument();
-expect(customFieldInput).toHaveValue('');
+// Mock toast
 ⋮----
-const bioTextarea = screen.getByLabelText('Bio');
-expect(bioTextarea.tagName).toBe('TEXTAREA');
-expect(bioTextarea).toHaveValue('My bio text');
+// Look for the layout selection UI - Radix UI Select displays value as text content
+⋮----
+// The tabs are rendered but based on the editorMode prop
+⋮----
+// Preview tab might not be shown in default mode
+⋮----
+// Code tab should be active (has data-state="active") based on default props
+⋮----
+// Due to Radix UI's complex tab implementation, we just verify the component accepts the prop
+// and the tab is clickable
+⋮----
+// Verify the component accepts the setSelectedLayout prop and displays current layout
+⋮----
+// Component should accept the callback
+⋮----
+// Should render some representation of the resume data
+// The exact implementation depends on the preview component
+</file>
+
+<file path="src/components/LayoutPreview.test.tsx">
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import LayoutPreview from './LayoutPreview';
+import { PersonalInfoData } from './PersonalInfo';
+import { WorkExperienceEntry } from './WorkExperience';
+import { EducationEntry } from './Education';
+⋮----
+// Mock theme context
+⋮----
+// Mock layout templates
+⋮----
+// Mock Babel for JSX compilation
+⋮----
+// Mock toast
+⋮----
+// The component should render some content, even if mocked
+⋮----
+// Should not throw errors with different layouts
+⋮----
+// Should handle custom code without errors
+</file>
+
+<file path="src/components/ResumeAssistant.test.tsx">
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
+import { ResumeAssistant } from './ResumeAssistant';
+⋮----
+// Mock localStorage
+⋮----
+// Mock child components
+⋮----
+onChange=
+⋮----
+// Mock AI utils
+⋮----
+// Mock resume assistant utils
+⋮----
+// Mock toast
+⋮----
+// Find the settings button by finding the settings icon within it
+⋮----
+// Wait for the async operation to complete
+⋮----
+// Open settings using the same approach as the previous test
+⋮----
+// Set API key
+⋮----
+// Save settings
+⋮----
+// Switch to templates tab
+⋮----
+// Click template button
+⋮----
+// Should add template to input (this depends on the implementation)
+⋮----
+// The loading state would be set during actual API call
+⋮----
+// Set up localStorage to have API key
+⋮----
+// After sending, input should be cleared (depending on implementation)
 </file>
 
 <file path="src/components/ShowPreviewButton.tsx">
@@ -1522,6 +1295,41 @@ interface ShowPreviewButtonProps {
   togglePreview: () => void;
   handlePreviewPdf: () => void;
 }
+</file>
+
+<file path="src/components/Skills.test.tsx">
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { Skills } from './Skills';
+⋮----
+await user.type(input, 'JavaScript'); // Already exists
+⋮----
+await user.click(addButton); // Submit without typing
+⋮----
+// Find the X button for the "React" skill
+⋮----
+await user.type(input, 'javascript'); // Different case
+⋮----
+// Should add because it's case-sensitive
+⋮----
+// Input should still be focused for adding more skills
+</file>
+
+<file path="src/components/Skills.tsx">
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { X } from "lucide-react";
+⋮----
+interface SkillsProps {
+  skills: string[];
+  onChange: (skills: string[]) => void;
+}
+⋮----
+const addSkill = (e: React.FormEvent) =>
+⋮----
+const removeSkill = (skillToRemove: string) =>
 </file>
 
 <file path="src/components/WorkExperience.test.tsx">
@@ -1795,6 +1603,35 @@ const entryContainer = getEntryContainer(0); // Get the first (and only) entry c
 }
 </file>
 
+<file path="src/hooks/use-mobile.test.tsx">
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { renderHook, act } from '@testing-library/react';
+import { useIsMobile } from './use-mobile';
+⋮----
+// Mock matchMedia
+const createMockMatchMedia = (matches: boolean) =>
+⋮----
+addListener: vi.fn(), // deprecated
+removeListener: vi.fn(), // deprecated
+⋮----
+value: 767, // Less than 768
+⋮----
+value: 768, // Equal to or greater than 768
+⋮----
+// Start with desktop width
+⋮----
+// Simulate resize to mobile width
+⋮----
+// Mock to prevent immediate setting of isMobile
+⋮----
+// Should return boolean, not undefined (due to !!isMobile)
+⋮----
+// The hook uses MOBILE_BREAKPOINT = 768
+// So anything < 768 should be mobile
+⋮----
+// Should have called removeEventListener for each mount
+</file>
+
 <file path="src/hooks/useCodePreviewMapping.tsx">
 import { useState, useCallback, useRef } from 'react';
 import { editor } from 'monaco-editor';
@@ -1917,6 +1754,34 @@ getInputType,     // Exposing helper directly
 shouldUseTextarea,// Exposing helper directly
 </file>
 
+<file path="src/hooks/useEditableListManager.test.tsx">
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { renderHook, act } from '@testing-library/react';
+import { useEditableListManager, Identifiable } from './useEditableListManager';
+⋮----
+interface TestItem extends Identifiable {
+  name: string;
+  value: string;
+}
+⋮----
+const firstNewId = firstCall[firstCall.length - 1].id; // Get the last item from first call
+const secondNewId = secondCall[secondCall.length - 1].id; // Get the last item from second call
+⋮----
+expect(updatedItems[1]).toMatchObject(initialItems[1]); // Second item unchanged
+⋮----
+expect(updatedItems[0]).toMatchObject(initialItems[0]); // First item unchanged
+⋮----
+expect(updatedItems).toEqual(initialItems); // No changes
+⋮----
+expect(updatedItems).toEqual(initialItems); // No changes
+⋮----
+// Add item
+⋮----
+// Update item
+⋮----
+// Remove item
+</file>
+
 <file path="src/hooks/useEditableListManager.tsx">
 import { useCallback } from 'react';
 ⋮----
@@ -1964,6 +1829,56 @@ const newItemId = Date.now().toString() + Math.random().toString(36).substring(2
 // 3. Return Value
 </file>
 
+<file path="src/pages/Index.test.tsx">
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import Index from './Index';
+import React from 'react';
+⋮----
+// Remove the Index mock to test the actual component
+⋮----
+// Mock JSDOM methods that might be needed
+⋮----
+// Ensure document.body exists
+⋮----
+// Mock all child components to focus on Index logic
+⋮----
+// Mock theme context
+⋮----
+// Mock JSON import
+⋮----
+// Mock utility functions
+⋮----
+// Mock URL.createObjectURL for export functionality
+⋮----
+// Mock document methods for export functionality
+⋮----
+// Test that the component can be imported and instantiated
+⋮----
+// Mock test - component structure validation
+⋮----
+// Mock test - default state validation
+⋮----
+// Mock test - tab switching functionality
+⋮----
+// Mock test - button rendering
+⋮----
+// Mock test - export functionality
+⋮----
+// Mock test - import functionality
+⋮----
+// Mock test - preview toggle
+⋮----
+// Mock test - resume changes application
+⋮----
+// Mock test - default layout display
+⋮----
+// Mock test - preview toggle functionality
+⋮----
+// Mock test - PDF button functionality
+</file>
+
 <file path="src/styles/code-preview-mapping.css">
 /* Code editor highlighting styles */
 .code-preview-highlight {
@@ -2000,6 +1915,23 @@ const newItemId = Date.now().toString() + Math.random().toString(36).substring(2
 .preview-section-hoverable {
 ⋮----
 .preview-section-hoverable:hover {
+</file>
+
+<file path="src/themes/ThemeContext.test.tsx">
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, act } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { ThemeProvider, useTheme, themes, ThemeName } from './ThemeContext';
+⋮----
+// Test component that uses the theme context
+const TestComponent = () =>
+⋮----
+// Component to test theme outside provider
+const ComponentWithoutProvider = () =>
+⋮----
+// The setTheme function should exist and be callable (though it won't change state)
+⋮----
+// Should not throw error when clicked
 </file>
 
 <file path="src/types/resumeAssistantTypes.ts">
@@ -2275,6 +2207,52 @@ export const getQuickPrompts = (personalInfo:
 export const getTemplatePrompts = (workExperience:
 </file>
 
+<file path="src/App.test.tsx">
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import App from './App';
+⋮----
+// Mock window.matchMedia
+⋮----
+addListener: vi.fn(), // deprecated
+removeListener: vi.fn(), // deprecated
+⋮----
+// Mock the pages to avoid complex component dependencies
+⋮----
+// Mock ThemeProvider to avoid theme context complexity
+⋮----
+// Mock Toaster component to avoid Sonner's matchMedia usage
+⋮----
+// Check that the component tree renders (indicating providers are working)
+⋮----
+// Mock production environment
+⋮----
+// The basename is used internally by BrowserRouter,
+// so we just ensure the app still renders correctly
+⋮----
+// Restore original environment
+</file>
+
+<file path="src/index.css">
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+⋮----
+@layer base {
+⋮----
+:root {
+⋮----
+.dark {
+⋮----
+* {
+⋮----
+@apply border-border;
+⋮----
+body {
+⋮----
+.h-full {
+</file>
+
 <file path="src/main.tsx">
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
@@ -2322,8 +2300,9 @@ jobs:
 </file>
 
 <file path="src/components/resumeAssistant/ChatMessages.tsx">
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { Loader2 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 import { Message } from "@/types/resumeAssistantTypes";
 ⋮----
 interface ChatMessagesProps {
@@ -2351,78 +2330,42 @@ interface PromptTemplatesProps {
 export function PromptTemplates(
 </file>
 
-<file path="src/components/ResumePreview.test.tsx">
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor, fireEvent, act } from '@testing-library/react';
-import { ResumePreview } from './ResumePreview';
-import { PersonalInfoData } from '@/components/PersonalInfo';
-import { WorkExperienceEntry } from '@/components/WorkExperience';
-import { EducationEntry } from '@/components/Education';
-import { ThemeName } from '@/themes/ThemeContext';
-import React from 'react';
+<file path="src/components/PersonalInfo.test.tsx">
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event'; // Still use for clicks
+import { PersonalInfo, PersonalInfoData } from './PersonalInfo'; // Adjust path as needed
 ⋮----
-// --- Mocks ---
-// Mock the layout templates
+// Mock JSDOM methods for Radix UI AlertDialog
 ⋮----
-// Mock hooks used by ResumePreview
+// Mock useDynamicFormFields hook
 ⋮----
-// Mock ErrorBoundary
+// ... other initial rendering assertions ...
 ⋮----
-// Mock lucide-react icons
+expect(screen.getByLabelText('Summary').tagName).toBe('TEXTAREA');
+expect(screen.getByLabelText('Description').tagName).toBe('TEXTAREA');
+expect(screen.getByLabelText('Bio').tagName).toBe('TEXTAREA');
 ⋮----
-// Import mocked functions for type safety
-import { getLayoutJSXString } from '@/components/resume-layouts/layoutTemplates';
-import { useCustomLayoutRenderer } from '@/hooks/useCustomLayoutRenderer';
-import { useResumePDFGenerator } from '@/hooks/useResumePDFGenerator';
+expect(screen.getByLabelText('About').tagName).toBe('INPUT');
 ⋮----
-// Define interfaces
-interface ResumePreviewProps {
-  personalInfo: PersonalInfoData;
-  workExperience: WorkExperienceEntry[];
-  education: EducationEntry[];
-  skills: string[];
-  theme?: ThemeName;
-  extraData?: Record<string, any>;
-  customLayoutCode?: string;
-  isCodeChanging?: boolean;
-  onPreviewUpdate?: () => void;
-  onSectionHighlight?: (sectionId: string) => void;
-  onSectionClearHighlight?: () => void;
-}
+onChange=
 ⋮----
-// Mock React.useRef to return our mock element
+// Use fireEvent.change for direct value setting
 ⋮----
-// Wait for any async operations to complete
+expect(fullNameInput.value).toBe(newFullName); // Check input value after re-render
 ⋮----
-// The component may show "Preview Updating..." initially due to useEffect
+data={currentData} // currentData now includes previous fullName change
 ⋮----
-// Wait for the updating to potentially complete
+// Since we're mocking useDynamicFormFields, we can test that the component
+// properly renders fields from the hook's return value
 ⋮----
-// Should not show pagination buttons initially
+const customFieldInput = screen.getByLabelText('Custom Field');
+expect(customFieldInput).toBeInTheDocument();
+expect(customFieldInput).toHaveValue('');
 ⋮----
-// Set content height to exceed one page
-⋮----
-// Wait for the useEffect timer to complete (300ms debounce + some buffer)
-⋮----
-// Check if pagination appears (may depend on internal state)
-⋮----
-// Mock ref to be null
-</file>
-
-<file path="src/components/Skills.tsx">
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { X } from "lucide-react";
-⋮----
-interface SkillsProps {
-  skills: string[];
-  onChange: (skills: string[]) => void;
-}
-⋮----
-const addSkill = (e: React.FormEvent) =>
-⋮----
-const removeSkill = (skillToRemove: string) =>
+const bioTextarea = screen.getByLabelText('Bio');
+expect(bioTextarea.tagName).toBe('TEXTAREA');
+expect(bioTextarea).toHaveValue('My bio text');
 </file>
 
 <file path="src/hooks/useResumePDFGenerator.tsx">
@@ -2486,90 +2429,6 @@ return pdfDataUri as string; // Cast because output('datauristring') should retu
 // 3. Return Value
 ⋮----
 downloadPDF: handlePrintPDF as () => void, // Cast if necessary, useReactToPrint can return undefined if not ready
-</file>
-
-<file path="src/themes/ThemeContext.tsx">
-// src/themes/ThemeContext.tsx
-import React, { createContext, useContext, useState } from 'react';
-⋮----
-// Define theme types
-export type ThemeName = 'simple' | 'centered' | 'sidebar' | 'modern' | 'executive';
-⋮----
-// Theme context type
-interface ThemeContextType {
-  currentTheme: ThemeName;
-  setTheme: (theme: ThemeName) => void;
-}
-⋮----
-// Create context with default values
-⋮----
-// Theme provider component
-export const ThemeProvider: React.FC<
-⋮----
-const setTheme = (theme: ThemeName) =>
-⋮----
-// Custom hook to use the theme
-export const useTheme = ()
-⋮----
-// Theme configuration
-export interface ThemeConfig {
-  layout: {
-    containerClass: string;
-    contentClass: string;
-  };
-  personalInfo: {
-    containerClass: string;
-    titleClass: string;
-    subtitleClass: string;
-    gridClass: string;
-    infoContainerClass: string;
-    avatarContainerClass: string;
-    contactContainerClass: string;
-    contactItemClass: string;
-    labelClass: string;
-    valueClass: string;
-  };
-  section: {
-    containerClass: string;
-    titleClass: string;
-    contentClass: string;
-  };
-  workExperience: {
-    containerClass: string;
-    titleClass: string;
-    entryClass: string;
-    jobTitleClass: string;
-    companyClass: string;
-    periodClass: string;
-    descriptionClass: string;
-  };
-  education: {
-    containerClass: string;
-    titleClass: string;
-    entryClass: string;
-    institutionClass: string;
-    degreeClass: string;
-    periodClass: string;
-  };
-  skills: {
-    containerClass: string;
-    titleClass: string;
-    skillsListClass: string;
-    skillItemClass: string;
-  };
-}
-⋮----
-// Define themes
-⋮----
-// Simple layout (left example in image)
-⋮----
-// Centered layout (middle example in image)
-⋮----
-// Sidebar layout (right example in image)
-⋮----
-// Modern layout (combination of the best elements)
-⋮----
-// Executive layout - sophisticated C-suite professional design
 </file>
 
 <file path=".gitignore">
@@ -2659,6 +2518,189 @@ Uses `@/` alias for `src/` directory imports.
 
 ## Testing
 Tests are located alongside components (`.test.tsx`) and utilities (`.test.ts`). Setup uses jsdom environment with @testing-library/jest-dom matchers.
+
+### Testing Guidelines
+- **ALWAYS run tests before committing**: Use `npm run test` to ensure existing tests pass
+- **Test coverage is required**: When adding new features, you MUST write corresponding tests
+- **Don't break existing tests**: Before modifying any code, run tests to establish baseline, then ensure they still pass after changes
+- **Test-driven approach**: For new components or utilities without existing test coverage, create tests first
+- **Run coverage reports**: Use `npm run coverage` to identify untested code paths that need coverage
+</file>
+
+<file path="src/components/Education.tsx">
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Plus, Trash2 } from "lucide-react";
+⋮----
+export interface EducationEntry {
+  id: string;
+  institution: string;
+  degree: string;
+  field: string;
+  graduationDate: string;
+}
+⋮----
+interface EducationProps {
+  entries: EducationEntry[];
+  onChange: (entries: EducationEntry[]) => void;
+}
+⋮----
+const addEducation = () =>
+⋮----
+const updateEducation = (id: string, field: keyof EducationEntry, value: string) =>
+⋮----
+const removeEducation = (id:string) =>
+⋮----
+updateEducation(edu.id, "institution", e.target.value)
+⋮----
+updateEducation(edu.id, "degree", e.target.value)
+⋮----
+updateEducation(edu.id, "field", e.target.value)
+⋮----
+updateEducation(edu.id, "graduationDate", e.target.value)
+</file>
+
+<file path="src/components/ResumePreview.test.tsx">
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, waitFor, fireEvent, act } from '@testing-library/react';
+import { ResumePreview } from './ResumePreview';
+import { PersonalInfoData } from '@/components/PersonalInfo';
+import { WorkExperienceEntry } from '@/components/WorkExperience';
+import { EducationEntry } from '@/components/Education';
+import { ThemeName } from '@/themes/ThemeContext';
+import React from 'react';
+⋮----
+// --- Mocks ---
+// Mock the layout templates
+⋮----
+// Mock hooks used by ResumePreview
+⋮----
+// Mock ErrorBoundary
+⋮----
+// Mock lucide-react icons
+⋮----
+// Import mocked functions for type safety
+import { getLayoutJSXString } from '@/components/resume-layouts/layoutTemplates';
+import { useCustomLayoutRenderer } from '@/hooks/useCustomLayoutRenderer';
+import { useResumePDFGenerator } from '@/hooks/useResumePDFGenerator';
+⋮----
+// Define interfaces
+interface ResumePreviewProps {
+  personalInfo: PersonalInfoData;
+  workExperience: WorkExperienceEntry[];
+  education: EducationEntry[];
+  skills: string[];
+  theme?: ThemeName;
+  extraData?: Record<string, any>;
+  customLayoutCode?: string;
+  isCodeChanging?: boolean;
+  onPreviewUpdate?: () => void;
+  onSectionHighlight?: (sectionId: string) => void;
+  onSectionClearHighlight?: () => void;
+}
+⋮----
+// Mock React.useRef to return our mock element
+⋮----
+// Wait for any async operations to complete
+⋮----
+// The component may show "Preview Updating..." initially due to useEffect
+⋮----
+// Wait for the updating to potentially complete
+⋮----
+// Should not show pagination buttons initially
+⋮----
+// Set content height to exceed one page
+⋮----
+// Wait for the useEffect timer to complete (300ms debounce + some buffer)
+⋮----
+// Check if pagination appears (may depend on internal state)
+⋮----
+// Mock ref to be null
+</file>
+
+<file path="src/themes/ThemeContext.tsx">
+// src/themes/ThemeContext.tsx
+import React, { createContext, useContext, useState } from 'react';
+⋮----
+// Define theme types
+export type ThemeName = 'simple' | 'centered' | 'sidebar' | 'modern' | 'executive';
+⋮----
+// Theme context type
+interface ThemeContextType {
+  currentTheme: ThemeName;
+  setTheme: (theme: ThemeName) => void;
+}
+⋮----
+// Create context with default values
+⋮----
+// Theme provider component
+export const ThemeProvider: React.FC<
+⋮----
+const setTheme = (theme: ThemeName) =>
+⋮----
+// Custom hook to use the theme
+export const useTheme = ()
+⋮----
+// Theme configuration
+export interface ThemeConfig {
+  layout: {
+    containerClass: string;
+    contentClass: string;
+  };
+  personalInfo: {
+    containerClass: string;
+    titleClass: string;
+    subtitleClass: string;
+    gridClass: string;
+    infoContainerClass: string;
+    avatarContainerClass: string;
+    contactContainerClass: string;
+    contactItemClass: string;
+    labelClass: string;
+    valueClass: string;
+  };
+  section: {
+    containerClass: string;
+    titleClass: string;
+    contentClass: string;
+  };
+  workExperience: {
+    containerClass: string;
+    titleClass: string;
+    entryClass: string;
+    jobTitleClass: string;
+    companyClass: string;
+    periodClass: string;
+    descriptionClass: string;
+  };
+  education: {
+    containerClass: string;
+    titleClass: string;
+    entryClass: string;
+    institutionClass: string;
+    degreeClass: string;
+    periodClass: string;
+  };
+  skills: {
+    containerClass: string;
+    titleClass: string;
+    skillsListClass: string;
+    skillItemClass: string;
+  };
+}
+⋮----
+// Define themes
+⋮----
+// Simple layout (left example in image)
+⋮----
+// Centered layout (middle example in image)
+⋮----
+// Sidebar layout (right example in image)
+⋮----
+// Modern layout (combination of the best elements)
+⋮----
+// Executive layout - sophisticated C-suite professional design
 </file>
 
 <file path="src/utils/aiUtils.ts">
@@ -2699,19 +2741,6 @@ export async function callAIAPI(
   apiUrl: string, 
   options: AIConfigOptions
 ): Promise<string>
-</file>
-
-<file path="src/App.tsx">
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import { ThemeProvider } from "./themes/ThemeContext";
-⋮----
-{/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
 </file>
 
 <file path="index.html">
@@ -2769,46 +2798,11 @@ interface ChatInputProps {
 }
 </file>
 
-<file path="src/components/Education.tsx">
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Plus, Trash2 } from "lucide-react";
-⋮----
-export interface EducationEntry {
-  id: string;
-  institution: string;
-  degree: string;
-  field: string;
-  graduationDate: string;
-}
-⋮----
-interface EducationProps {
-  entries: EducationEntry[];
-  onChange: (entries: EducationEntry[]) => void;
-}
-⋮----
-const addEducation = () =>
-⋮----
-const updateEducation = (id: string, field: keyof EducationEntry, value: string) =>
-⋮----
-const removeEducation = (id:string) =>
-⋮----
-updateEducation(edu.id, "institution", e.target.value)
-⋮----
-updateEducation(edu.id, "degree", e.target.value)
-⋮----
-updateEducation(edu.id, "field", e.target.value)
-⋮----
-updateEducation(edu.id, "graduationDate", e.target.value)
-</file>
-
 <file path="src/components/ResumeAssistant.tsx">
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -2898,6 +2892,97 @@ updateExperience(experience.id, "startDate", e.target.value)
 updateExperience(experience.id, "endDate", e.target.value)
 ⋮----
 updateExperience(experience.id, "description", e.target.value)
+</file>
+
+<file path="src/App.tsx">
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Index from "./pages/Index";
+import NotFound from "./pages/NotFound";
+import { ThemeProvider } from "./themes/ThemeContext";
+⋮----
+{/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+</file>
+
+<file path="src/components/PersonalInfo.tsx">
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+// Removed: useState from 'react' as it's now managed by the hook mostly
+⋮----
+// Removed: AlertDialog from '@/components/ui/alert-dialog' as Primitive is used directly.
+⋮----
+// Import the new hook and its helper functions if they are exported and needed separately (they are returned by the hook)
+import { 
+  useDynamicFormFields,
+  // formatFieldLabel, // No longer need to import if used from hook's return
+  // getInputType, 
+  // shouldUseTextarea 
+} from '../hooks/useDynamicFormFields'; // Adjust path as necessary
+⋮----
+// formatFieldLabel, // No longer need to import if used from hook's return
+// getInputType,
+// shouldUseTextarea
+} from '../hooks/useDynamicFormFields'; // Adjust path as necessary
+⋮----
+export interface PersonalInfoData {
+  [key: string]: string;
+  fullName: string;
+  jobTitle: string;
+  email: string;
+  phone: string;
+  location: string;
+  // Other fields can be added dynamically
+}
+⋮----
+// Other fields can be added dynamically
+⋮----
+interface PersonalInfoProps {
+  data: PersonalInfoData;
+  onChange: (data: PersonalInfoData) => void;
+}
+⋮----
+// This remains, as it's specific to what PersonalInfo considers its defaults
+⋮----
+// 2. Hook Initialization
+⋮----
+handleAddField, // This is the hook's version
+⋮----
+// Helper functions are now part of the hook's return, use them from there
+⋮----
+// This callback updates the parent's state via the component's onChange prop
+⋮----
+// Local handleChange remains as it calls the props.onChange for existing fields
+const handleChange = (key: string, value: string) =>
+⋮----
+// Removed: local state for fields, isDialogOpen, newFieldName
+// Removed: local handleAddField function
+// Removed: local helper functions (formatFieldLabel, getInputType, shouldUseTextarea)
+⋮----
+{/* Use openDialog from the hook */}
+⋮----
+{/* Use isDialogOpen and setters from the hook for the dialog */}
+⋮----
+<Label htmlFor="newFieldNameInput" className="sr-only">New Field Name</Label> {/* Added label for accessibility */}
+⋮----
+id="newFieldNameInput" // Added id for label association
+⋮----
+value={newFieldName} // From hook
+onChange={(e) => setNewFieldName(e.target.value)} // From hook
+⋮----
+className="input" // Assuming 'input' is a defined style
+⋮----
+{/* Use closeDialog from the hook */}
+⋮----
+{/* Use handleAddField from the hook */}
+⋮----
+{/* Use fields and helper functions from the hook */}
+⋮----
+onChange={(e) => handleChange(field, e.target.value)} // Uses local handleChange
 </file>
 
 <file path="src/hooks/useCustomLayoutRenderer.tsx">
@@ -3075,6 +3160,15 @@ repomix --compress
 ```
 </file>
 
+<file path="vite.config.ts">
+/// <reference types="vitest" />
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+⋮----
+// https://vitejs.dev/config/
+</file>
+
 <file path="src/components/resume-layouts/layoutTemplates.tsx">
 import React from "react";
 import { themes } from "@/themes/ThemeContext";
@@ -3084,93 +3178,6 @@ export interface ResumeLayoutProps {
 }
 ⋮----
 export const getLayoutJSXString = (layoutName: string) =>
-</file>
-
-<file path="src/components/PersonalInfo.tsx">
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
-// Removed: useState from 'react' as it's now managed by the hook mostly
-⋮----
-// Removed: AlertDialog from '@/components/ui/alert-dialog' as Primitive is used directly.
-⋮----
-// Import the new hook and its helper functions if they are exported and needed separately (they are returned by the hook)
-import { 
-  useDynamicFormFields,
-  // formatFieldLabel, // No longer need to import if used from hook's return
-  // getInputType, 
-  // shouldUseTextarea 
-} from '../hooks/useDynamicFormFields'; // Adjust path as necessary
-⋮----
-// formatFieldLabel, // No longer need to import if used from hook's return
-// getInputType,
-// shouldUseTextarea
-} from '../hooks/useDynamicFormFields'; // Adjust path as necessary
-⋮----
-export interface PersonalInfoData {
-  [key: string]: string;
-  fullName: string;
-  jobTitle: string;
-  email: string;
-  phone: string;
-  location: string;
-  // Other fields can be added dynamically
-}
-⋮----
-// Other fields can be added dynamically
-⋮----
-interface PersonalInfoProps {
-  data: PersonalInfoData;
-  onChange: (data: PersonalInfoData) => void;
-}
-⋮----
-// This remains, as it's specific to what PersonalInfo considers its defaults
-⋮----
-// 2. Hook Initialization
-⋮----
-handleAddField, // This is the hook's version
-⋮----
-// Helper functions are now part of the hook's return, use them from there
-⋮----
-// This callback updates the parent's state via the component's onChange prop
-⋮----
-// Local handleChange remains as it calls the props.onChange for existing fields
-const handleChange = (key: string, value: string) =>
-⋮----
-// Removed: local state for fields, isDialogOpen, newFieldName
-// Removed: local handleAddField function
-// Removed: local helper functions (formatFieldLabel, getInputType, shouldUseTextarea)
-⋮----
-{/* Use openDialog from the hook */}
-⋮----
-{/* Use isDialogOpen and setters from the hook for the dialog */}
-⋮----
-<Label htmlFor="newFieldNameInput" className="sr-only">New Field Name</Label> {/* Added label for accessibility */}
-⋮----
-id="newFieldNameInput" // Added id for label association
-⋮----
-value={newFieldName} // From hook
-onChange={(e) => setNewFieldName(e.target.value)} // From hook
-⋮----
-className="input" // Assuming 'input' is a defined style
-⋮----
-{/* Use closeDialog from the hook */}
-⋮----
-{/* Use handleAddField from the hook */}
-⋮----
-{/* Use fields and helper functions from the hook */}
-⋮----
-onChange={(e) => handleChange(field, e.target.value)} // Uses local handleChange
-</file>
-
-<file path="vite.config.ts">
-/// <reference types="vitest" />
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import path from "path";
-⋮----
-// https://vitejs.dev/config/
 </file>
 
 <file path="package.json">
@@ -3236,6 +3243,7 @@ import path from "path";
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
+    "react-markdown": "^10.1.0",
     "react-resizable-panels": "^2.1.3",
     "react-router-dom": "^6.26.2",
     "react-to-print": "^3.0.5",

@@ -1,9 +1,8 @@
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -45,7 +44,7 @@ export function ResumeAssistant({
   const [modelOptions, setModelOptions] = useState<AIConfigOptions>({
     model: localStorage.getItem("ai_model") || "gpt-3.5-turbo",
     temperature: parseFloat(localStorage.getItem("ai_temperature") || "0.7"),
-    maxTokens: parseInt(localStorage.getItem("ai_max_tokens") || "1000")
+    maxTokens: parseInt(localStorage.getItem("ai_max_tokens") || "500")
   });
   const [customModel, setCustomModel] = useState(localStorage.getItem("custom_model") || "");
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -143,7 +142,7 @@ export function ResumeAssistant({
   const templatePrompts = getTemplatePrompts(workExperience);
 
   return (
-    <Card className="w-full h-full shadow-md max-h-[800px] flex flex-col animate-fade-in">
+    <Card className="w-full h-full shadow-md max-h-[800px] flex flex-col animate-fade-in min-w-0 overflow-hidden">
       <CardHeader className="pb-3">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
@@ -163,7 +162,7 @@ export function ResumeAssistant({
         </CardDescription>
       </CardHeader>
 
-      <Tabs defaultValue="chat" className="flex-1 flex flex-col" onValueChange={setActiveTab} value={activeTab}>
+      <Tabs defaultValue="chat" className="flex-1 flex flex-col min-w-0 overflow-hidden" onValueChange={setActiveTab} value={activeTab}>
         <div className="px-4">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="chat" className="flex items-center gap-2">
@@ -181,7 +180,7 @@ export function ResumeAssistant({
           </TabsList>
         </div>
 
-        <TabsContent value="chat" className="flex-1 flex flex-col px-4 pt-4 pb-0 space-y-4 overflow-hidden m-0 mt-2 border-none">
+        <TabsContent value="chat" className="flex-1 flex flex-col px-4 pt-4 pb-0 space-y-4 overflow-hidden m-0 mt-2 border-none min-w-0">
           <ChatMessages messages={messages} isLoading={isLoading} />
           
           <ChatInput 

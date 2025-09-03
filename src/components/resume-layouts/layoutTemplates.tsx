@@ -175,25 +175,25 @@ export const getLayoutJSXString = (layoutName: string) => {
           <div className="${themes.simple.personalInfo.contactContainerClass}">
             {personalInfo.email && (
               <div className="${themes.simple.personalInfo.contactItemClass}">
-                <Mail size={12} />
+                <Mail size={16} />
                 <span>{personalInfo.email}</span>
               </div>
             )}
             {personalInfo.phone && (
               <div className="${themes.simple.personalInfo.contactItemClass}">
-                <Phone size={12} />
+                <Phone size={16} />
                 <span>{personalInfo.phone}</span>
               </div>
             )}
             {personalInfo.location && (
               <div className="${themes.simple.personalInfo.contactItemClass}">
-                <MapPin size={12} />
+                <MapPin size={16} />
                 <span>{personalInfo.location}</span>
               </div>
             )}
             {personalInfo.website && (
               <div className="${themes.simple.personalInfo.contactItemClass}">
-                <Link size={12} />
+                <Link size={16} />
                 <span>{personalInfo.website}</span>
               </div>
             )}
@@ -306,25 +306,25 @@ export const getLayoutJSXString = (layoutName: string) => {
           <div className="${themes.modern.personalInfo.contactContainerClass}">
             {personalInfo.email && (
               <div className="${themes.modern.personalInfo.contactItemClass}">
-                <Mail size={12} />
+                <Mail size={16} />
                 <span>{personalInfo.email}</span>
               </div>
             )}
             {personalInfo.phone && (
               <div className="${themes.modern.personalInfo.contactItemClass}">
-                <Phone size={12} />
+                <Phone size={16} />
                 <span>{personalInfo.phone}</span>
               </div>
             )}
             {personalInfo.location && (
               <div className="${themes.modern.personalInfo.contactItemClass}">
-                <MapPin size={12} />
+                <MapPin size={16} />
                 <span>{personalInfo.location}</span>
               </div>
             )}
             {personalInfo.website && (
               <div className="${themes.modern.personalInfo.contactItemClass}">
-                <Link size={12} />
+                <Link size={16} />
                 <span>{personalInfo.website}</span>
               </div>
             )}
@@ -418,26 +418,26 @@ export const getLayoutJSXString = (layoutName: string) => {
         <div className="${themes.sidebar.personalInfo.contactContainerClass}">
           {personalInfo.email && (
             <div className="${themes.sidebar.personalInfo.contactItemClass}">
-              <Mail size={12} />
-              <span>{personalInfo.email}</span>
+              <Mail size={16} className="flex-shrink-0" />
+              <span className="truncate">{personalInfo.email}</span>
             </div>
           )}
           {personalInfo.phone && (
             <div className="${themes.sidebar.personalInfo.contactItemClass}">
-              <Phone size={12} />
-              <span>{personalInfo.phone}</span>
+              <Phone size={16} className="flex-shrink-0" />
+              <span className="truncate">{personalInfo.phone}</span>
             </div>
           )}
           {personalInfo.location && (
             <div className="${themes.sidebar.personalInfo.contactItemClass}">
-              <MapPin size={12} />
-              <span>{personalInfo.location}</span>
+              <MapPin size={16} className="flex-shrink-0" />
+              <span className="truncate">{personalInfo.location}</span>
             </div>
           )}
           {personalInfo.website && (
             <div className="${themes.sidebar.personalInfo.contactItemClass}">
-              <Link size={12} />
-              <span>{personalInfo.website}</span>
+              <Link size={16} className="flex-shrink-0" />
+              <span className="truncate">{personalInfo.website}</span>
             </div>
           )}
         </div>
@@ -521,25 +521,25 @@ export const getLayoutJSXString = (layoutName: string) => {
           <div className="${themes.centered.personalInfo.contactContainerClass}">
             {personalInfo.email && (
               <div className="${themes.centered.personalInfo.contactItemClass}">
-                <Mail size={12} />
+                <Mail size={16} />
                 <span>{personalInfo.email}</span>
               </div>
             )}
             {personalInfo.phone && (
               <div className="${themes.centered.personalInfo.contactItemClass}">
-                <Phone size={12} />
+                <Phone size={16} />
                 <span>{personalInfo.phone}</span>
               </div>
             )}
             {personalInfo.location && (
               <div className="${themes.centered.personalInfo.contactItemClass}">
-                <MapPin size={12} />
+                <MapPin size={16} />
                 <span>{personalInfo.location}</span>
               </div>
             )}
             {personalInfo.website && (
               <div className="${themes.centered.personalInfo.contactItemClass}">
-                <Link size={12} />
+                <Link size={16} />
                 <span>{personalInfo.website}</span>
               </div>
             )}

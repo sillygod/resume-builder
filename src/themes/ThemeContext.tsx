@@ -187,7 +187,7 @@ export const themes: Record<ThemeName, ThemeConfig> = {
       contentClass: "flex flex-row",
     },
     personalInfo: {
-      containerClass: "bg-gray-800 text-white p-6 w-1/3 overflow-y-auto h-full",
+      containerClass: "bg-gray-800 text-white p-6 w-1/3 min-w-[280px] overflow-y-auto h-full",
       titleClass: "text-xl font-bold",
       subtitleClass: "text-white text-opacity-90 mt-1",
       gridClass: "flex flex-col mt-4",

@@ -55,3 +55,10 @@ Uses `@/` alias for `src/` directory imports.
 
 ## Testing
 Tests are located alongside components (`.test.tsx`) and utilities (`.test.ts`). Setup uses jsdom environment with @testing-library/jest-dom matchers.
+
+### Testing Guidelines
+- **ALWAYS run tests before committing**: Use `npm run test` to ensure existing tests pass
+- **Test coverage is required**: When adding new features, you MUST write corresponding tests
+- **Don't break existing tests**: Before modifying any code, run tests to establish baseline, then ensure they still pass after changes
+- **Test-driven approach**: For new components or utilities without existing test coverage, create tests first
+- **Run coverage reports**: Use `npm run coverage` to identify untested code paths that need coverage
