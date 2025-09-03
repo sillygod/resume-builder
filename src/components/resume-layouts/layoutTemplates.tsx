@@ -18,11 +18,25 @@ export const getLayoutJSXString = (layoutName: string) => {
         {/* Executive Photo */}
         <div className="flex-shrink-0">
           {personalInfo.photoUrl ? (
-            <img
-              src={personalInfo.photoUrl}
-              alt={personalInfo.fullName || "Executive Profile"}
-              className="w-32 h-32 rounded-full object-cover border-4 border-white/20 shadow-2xl"
-            />
+            <div 
+              className="w-32 h-32 rounded-full border-4 border-white/20 shadow-2xl overflow-hidden"
+              style={{
+                backgroundImage: "url(" + personalInfo.photoUrl + ")",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat"
+              }}
+            >
+              <img
+                src={personalInfo.photoUrl}
+                alt={personalInfo.fullName || "Executive Profile"}
+                className="w-32 h-32 rounded-full"
+                style={{ 
+                  objectFit: 'cover',
+                  objectPosition: 'center'
+                }}
+              />
+            </div>
           ) : (
             <div className="w-32 h-32 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 border-4 border-white/20 shadow-2xl flex items-center justify-center text-white">
               Executive
@@ -202,11 +216,25 @@ export const getLayoutJSXString = (layoutName: string) => {
 
         <div className="${themes.simple.personalInfo.avatarContainerClass}">
           {personalInfo.photoUrl ? (
-            <img
-              src={personalInfo.photoUrl}
-              alt={personalInfo.fullName || "Profile"}
-              className="w-full h-full object-cover"
-            />
+            <div 
+              className="w-full h-full"
+              style={{
+                backgroundImage: "url(" + personalInfo.photoUrl + ")",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat"
+              }}
+            >
+              <img
+                src={personalInfo.photoUrl}
+                alt={personalInfo.fullName || "Profile"}
+                className="w-20 h-20 rounded-full"
+                style={{ 
+                  objectFit: "cover",
+                  objectPosition: "center"
+                }}
+              />
+            </div>
           ) : (
             <div className="w-full h-full bg-gray-300 flex items-center justify-center text-gray-500">
               Photo
@@ -283,11 +311,25 @@ export const getLayoutJSXString = (layoutName: string) => {
       <div className="${themes.modern.personalInfo.gridClass}">
         <div className="${themes.modern.personalInfo.avatarContainerClass}">
           {personalInfo.photoUrl ? (
-            <img
-              src={personalInfo.photoUrl}
-              alt={personalInfo.fullName || "Profile"}
-              className="w-full h-full object-cover"
-            />
+            <div 
+              className="w-full h-full"
+              style={{
+                backgroundImage: "url(" + personalInfo.photoUrl + ")",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat"
+              }}
+            >
+              <img
+                src={personalInfo.photoUrl}
+                alt={personalInfo.fullName || "Profile"}
+                className="w-20 h-20 rounded-full"
+                style={{ 
+                  objectFit: "cover",
+                  objectPosition: "center"
+                }}
+              />
+            </div>
           ) : (
             <div className="w-full h-full bg-gray-300 flex items-center justify-center text-gray-500">
               Photo
@@ -399,11 +441,25 @@ export const getLayoutJSXString = (layoutName: string) => {
     <div className="${themes.sidebar.personalInfo.containerClass}">
       <div className="${themes.sidebar.personalInfo.avatarContainerClass}">
         {personalInfo.photoUrl ? (
-          <img
-            src={personalInfo.photoUrl}
-            alt={personalInfo.fullName || "Profile"}
-            className="w-full h-full object-cover"
-          />
+          <div 
+            className="w-full h-full"
+            style={{
+              backgroundImage: "url(" + personalInfo.photoUrl + ")",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat"
+            }}
+          >
+            <img
+              src={personalInfo.photoUrl}
+              alt={personalInfo.fullName || "Profile"}
+              className="w-24 h-24 rounded-full"
+              style={{ 
+                objectFit: "cover",
+                objectPosition: "center"
+              }}
+            />
+          </div>
         ) : (
           <div className="w-full h-full bg-gray-300 flex items-center justify-center text-gray-500">
             Photo
@@ -502,11 +558,25 @@ export const getLayoutJSXString = (layoutName: string) => {
       <div className="${themes.centered.personalInfo.gridClass}">
         <div className="${themes.centered.personalInfo.avatarContainerClass}">
           {personalInfo.photoUrl ? (
-            <img
-              src={personalInfo.photoUrl}
-              alt={personalInfo.fullName || "Profile"}
-              className="w-full h-full object-cover"
-            />
+            <div 
+              className="w-full h-full"
+              style={{
+                backgroundImage: "url(" + personalInfo.photoUrl + ")",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat"
+              }}
+            >
+              <img
+                src={personalInfo.photoUrl}
+                alt={personalInfo.fullName || "Profile"}
+                className="w-24 h-24 rounded-full"
+                style={{ 
+                  objectFit: "cover",
+                  objectPosition: "center"
+                }}
+              />
+            </div>
           ) : (
             <div className="w-full h-full bg-gray-300 flex items-center justify-center text-gray-500">
               Photo

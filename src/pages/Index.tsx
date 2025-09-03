@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShowPreviewButton } from "@/components/ShowPreviewButton";
 import LayoutEditor from '@/components/LayoutEditor';
 import exampleResumeJson from '@/data/exampleResume.json';
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Convert the example JSON to ResumeDataState format
 const exampleData = importFromJsonResume(exampleResumeJson);
@@ -25,6 +26,7 @@ const initialResumeData: ResumeDataState = {
 
 const Index = () => {
   const { currentTheme, setTheme } = useTheme();
+  const isMobile = useIsMobile();
   const [resumeData, setResumeData] = useState<ResumeDataState>(initialResumeData);
   const [showPreview, setShowPreview] = useState(false);
   const [selectedLayout, setSelectedLayout] = useState<string>("Executive");
@@ -121,10 +123,10 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gray-50 relative">
       <div className="container py-8">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 space-y-4 md:space-y-0">
-          <h1 className="text-4xl font-bold text-primary">Resume Builder</h1>
+        <div className="flex flex-col space-y-4 mb-6">
+          <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl'} font-bold text-primary`}>Resume Builder</h1>
 
-          <div className="flex flex-wrap gap-2 items-center">
+          <div className={`flex ${isMobile ? 'flex-col space-y-2' : 'flex-row gap-2'} items-stretch`}>
 
             <input
               type="file"
@@ -162,8 +164,8 @@ const Index = () => {
           </TabsList>
 
           <TabsContent value="editor">
-            <div className="grid gap-8 lg:grid-cols-2">
-              <div className="lg:col-span-1">
+            <div className={`${isMobile ? 'flex flex-col space-y-6' : 'grid gap-8 lg:grid-cols-2'}`}>
+              <div className={`${isMobile ? 'order-1' : 'lg:col-span-1'}`}>
                 <LayoutEditor
                   selectedLayout={selectedLayout}
                   setSelectedLayout={setSelectedLayout}
@@ -185,7 +187,7 @@ const Index = () => {
               </div>
 
               {showPreview && (
-                <div className="lg:col-span-1">
+                <div className={`${isMobile ? 'order-2' : 'lg:col-span-1'}`}>
                   <ResumePreview
                     personalInfo={resumeData.personalInfo}
                     workExperience={resumeData.workExperience}
@@ -205,8 +207,8 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="assistant">
-            <div className="grid gap-8 lg:grid-cols-2">
-              <div className="lg:col-span-1">
+            <div className={`${isMobile ? 'flex flex-col space-y-6' : 'grid gap-8 lg:grid-cols-2'}`}>
+              <div className={`${isMobile ? 'order-1' : 'lg:col-span-1'}`}>
                 <ResumeAssistant
                   personalInfo={resumeData.personalInfo}
                   workExperience={resumeData.workExperience}
@@ -215,7 +217,7 @@ const Index = () => {
                 />
               </div>
 
-              <div className="lg:col-span-1">
+              <div className={`${isMobile ? 'order-2' : 'lg:col-span-1'}`}>
                 <ResumePreview
                   personalInfo={resumeData.personalInfo}
                   workExperience={resumeData.workExperience}

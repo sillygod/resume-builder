@@ -17,6 +17,7 @@ import { ChatMessages } from "./resumeAssistant/ChatMessages";
 import { ChatInput } from "./resumeAssistant/ChatInput";
 import { PromptTemplates } from "./resumeAssistant/PromptTemplates";
 import { AISettingsDialog } from "./resumeAssistant/AISettingsDialog";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function ResumeAssistant({
   personalInfo,
@@ -24,6 +25,7 @@ export function ResumeAssistant({
   education,
   skills,
 }: ResumeAssistantProps) {
+  const isMobile = useIsMobile();
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "system",
@@ -142,12 +144,12 @@ export function ResumeAssistant({
   const templatePrompts = getTemplatePrompts(workExperience);
 
   return (
-    <Card className="w-full h-full shadow-md max-h-[800px] flex flex-col animate-fade-in min-w-0 overflow-hidden">
-      <CardHeader className="pb-3">
+    <Card className={`w-full h-full shadow-md ${isMobile ? 'max-h-[600px]' : 'max-h-[800px]'} flex flex-col animate-fade-in min-w-0 overflow-hidden`}>
+      <CardHeader className={`${isMobile ? 'pb-2' : 'pb-3'}`}>
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <Bot className="h-5 w-5 text-primary" />
-            <CardTitle>Resume Assistant</CardTitle>
+            <CardTitle className={isMobile ? 'text-lg' : ''}>Resume Assistant</CardTitle>
           </div>
           <Button
             variant="ghost"
@@ -157,25 +159,27 @@ export function ResumeAssistant({
             <Settings className="h-4 w-4" />
           </Button>
         </div>
-        <CardDescription>
-          Get advice on improving your resume, grammar, and professional language
-        </CardDescription>
+        {!isMobile && (
+          <CardDescription>
+            Get advice on improving your resume, grammar, and professional language
+          </CardDescription>
+        )}
       </CardHeader>
 
       <Tabs defaultValue="chat" className="flex-1 flex flex-col min-w-0 overflow-hidden" onValueChange={setActiveTab} value={activeTab}>
         <div className="px-4">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="chat" className="flex items-center gap-2">
+            <TabsTrigger value="chat" className={`flex items-center gap-2 ${isMobile ? 'text-xs' : ''}`}>
               <MessageCircle className="h-4 w-4" />
-              <span>Chat</span>
+              <span>{isMobile ? 'Chat' : 'Chat'}</span>
             </TabsTrigger>
-            <TabsTrigger value="quick" className="flex items-center gap-2">
+            <TabsTrigger value="quick" className={`flex items-center gap-2 ${isMobile ? 'text-xs' : ''}`}>
               <Sparkles className="h-4 w-4" />
-              <span>Quick Prompts</span>
+              <span>{isMobile ? 'Quick' : 'Quick Prompts'}</span>
             </TabsTrigger>
-            <TabsTrigger value="templates" className="flex items-center gap-2">
+            <TabsTrigger value="templates" className={`flex items-center gap-2 ${isMobile ? 'text-xs' : ''}`}>
               <BookOpen className="h-4 w-4" />
-              <span>Templates</span>
+              <span>{isMobile ? 'Templates' : 'Templates'}</span>
             </TabsTrigger>
           </TabsList>
         </div>
