@@ -10,6 +10,7 @@ import { Button } from "./ui/button";
 
 import { getLayoutJSXString } from "./resume-layouts/layoutTemplates";
 import { Mail, Phone, MapPin, Link } from 'lucide-react';
+import { themes } from '@/themes/ThemeContext';
 
 // Import new hooks
 import { useCustomLayoutRenderer, ResumeLayoutData } from '../hooks/useCustomLayoutRenderer';
@@ -168,6 +169,11 @@ export function ResumePreview({
       const layoutName = theme.charAt(0).toUpperCase() + theme.slice(1); // Capitalize first letter
       const codeToExecute = getLayoutJSXString(layoutName) || getLayoutJSXString('Simple');
       
+      // For Storybook compatibility, if we can't execute the template, fall back to a simple layout
+      if (!codeToExecute || typeof codeToExecute !== 'string') {
+        return renderSimpleLayout();
+      }
+      
       // Scope for code execution using resumeData
       const scope = {
         basics: resumeLayoutData.basics,
@@ -183,17 +189,103 @@ export function ResumePreview({
         Phone,
         MapPin,
         Link,
+        // Add themes object for template references
+        themes,
       };
       
       const func = new Function('React', ...Object.keys(scope), `return ${codeToExecute}`);
       return func(React, ...Object.values(scope));
     } catch (err) {
-      return (
-        <div className="p-4 text-red-600">
-          Error rendering layout: {(err as Error).message}
-        </div>
-      );
+      console.warn('Error rendering layout template, falling back to simple layout:', (err as Error).message);
+      return renderSimpleLayout();
     }
+  };
+
+  // Fallback simple layout for Storybook and error cases
+  const renderSimpleLayout = () => {
+    const personalInfo = resumeLayoutData.basics;
+    const workExperience = resumeLayoutData.work;
+    const education = resumeLayoutData.education;
+    const skills = resumeLayoutData.skills;
+
+    return (
+      <div className="p-6 space-y-6 bg-white text-black">
+        {/* Personal Info */}
+        <div className="border-b border-gray-200 pb-4">
+          <h1 className="text-2xl font-bold text-gray-800">{personalInfo.fullName || 'Your Name'}</h1>
+          <p className="text-lg text-gray-600 mt-1">{personalInfo.jobTitle || 'Your Job Title'}</p>
+          <div className="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
+            {personalInfo.email && (
+              <div className="flex items-center gap-1">
+                <Mail className="w-4 h-4" />
+                <span>{personalInfo.email}</span>
+              </div>
+            )}
+            {personalInfo.phone && (
+              <div className="flex items-center gap-1">
+                <Phone className="w-4 h-4" />
+                <span>{personalInfo.phone}</span>
+              </div>
+            )}
+            {personalInfo.location && (
+              <div className="flex items-center gap-1">
+                <MapPin className="w-4 h-4" />
+                <span>{personalInfo.location}</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Work Experience */}
+        {workExperience && workExperience.length > 0 && (
+          <div className="border-b border-gray-200 pb-4">
+            <h2 className="text-lg font-semibold text-gray-800 mb-3">WORK EXPERIENCE</h2>
+            <div className="space-y-4">
+              {workExperience.map((job: any) => (
+                <div key={job.id} className="space-y-1">
+                  <div className="font-medium text-gray-800">{job.position || 'Position'}</div>
+                  <div className="text-sm text-gray-700">{job.company || 'Company'}</div>
+                  <div className="text-xs text-gray-500">{job.startDate} - {job.endDate || 'Present'}</div>
+                  {job.description && (
+                    <div className="text-sm text-gray-600 mt-2">{job.description}</div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Education */}
+        {education && education.length > 0 && (
+          <div className="border-b border-gray-200 pb-4">
+            <h2 className="text-lg font-semibold text-gray-800 mb-3">EDUCATION</h2>
+            <div className="space-y-3">
+              {education.map((edu: any) => (
+                <div key={edu.id} className="space-y-1">
+                  <div className="font-medium text-gray-800">{edu.institution || 'Institution'}</div>
+                  <div className="text-sm text-gray-700">{edu.degree} {edu.field && `in ${edu.field}`}</div>
+                  <div className="text-xs text-gray-500">{edu.graduationDate}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Skills */}
+        {skills && skills.length > 0 && (
+          <div className="pb-4">
+            <h2 className="text-lg font-semibold text-gray-800 mb-3">SKILLS</h2>
+            <div className="flex flex-wrap gap-2">
+              {skills.map((skill: string, index: number) => (
+                <span key={index} className="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (

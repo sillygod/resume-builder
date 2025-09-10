@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 .aider*
 .qodo
+
+*storybook.log
+storybook-static
