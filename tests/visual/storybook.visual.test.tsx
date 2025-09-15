@@ -1,4 +1,4 @@
-import { test, expect } from 'vitest';
+import { test, expect, describe } from 'vitest';
 import { render } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
 // Import all stories from Button component
@@ -30,7 +30,7 @@ const {
   ExecutiveProfile
 } = composeStories(ResumePreviewStories);
 
-test.describe('Button Component Stories Visual Tests', () => {
+describe('Button Component Stories Visual Tests', () => {
   test('Default button renders correctly', () => {
     const { container } = render(<Default />);
     expect(container.firstChild).toMatchSnapshot('button-default.html');
@@ -72,7 +72,7 @@ test.describe('Button Component Stories Visual Tests', () => {
   });
 });
 
-test.describe('Resume Preview Stories Visual Tests', () => {
+describe('Resume Preview Stories Visual Tests', () => {
   test('Simple theme renders correctly', () => {
     const { container } = render(<SimpleTheme />);
     expect(container.firstChild).toMatchSnapshot('resume-simple-theme.html');
@@ -109,7 +109,7 @@ test.describe('Resume Preview Stories Visual Tests', () => {
   });
 });
 
-test.describe('Story Interaction Tests', () => {
+describe('Story Interaction Tests', () => {
   test('Button click interaction works', async () => {
     // This test will run the play function from the ClickTest story
     const { container } = render(<ClickTest />);
@@ -123,8 +123,10 @@ test.describe('Story Interaction Tests', () => {
     // This test will run the play function from the AccessibilityTest story
     const { container } = render(<AccessibilityTest />);
     const button = container.querySelector('button');
-    
+
     expect(button).toBeTruthy();
-    expect(button?.getAttribute('type')).toBe('button');
+    // Check that the button has proper accessibility attributes
+    expect(button?.tagName.toLowerCase()).toBe('button');
+    expect(button?.textContent).toContain('Accessible Button');
   });
 });

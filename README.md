@@ -85,82 +85,210 @@ This project is a React application built with:
 
 ## Visual Testing
 
-This project includes comprehensive visual testing setup using **Playwright** and **Storybook Vitest addon** to ensure UI components render consistently across different browsers, viewports, and themes.
+This project includes a comprehensive visual testing framework that ensures UI components render consistently across different browsers, viewports, and themes. The framework combines **Playwright** for full browser testing and **Storybook Vitest Integration** for fast component-level testing.
 
-### Setup Overview
+### Testing Approaches
 
-The visual testing framework consists of:
+Our visual testing strategy uses two complementary approaches:
 
-1. **Playwright Visual Tests** - Full browser visual regression testing with screenshot comparison
-2. **Storybook Vitest Integration** - Component-level testing with HTML snapshots using existing stories
+#### 1. **Playwright Visual Tests** (`npm run test:visual`)
+- **Purpose**: Full browser visual regression testing with pixel-perfect screenshot comparison
+- **Technology**: Playwright with real browser engines (Chromium, Firefox, WebKit)
+- **Speed**: Slower but comprehensive (full browser rendering)
+- **Coverage**: Cross-browser compatibility, responsive behavior, user interactions
+- **Output**: PNG screenshots and HTML reports
+
+#### 2. **Storybook Vitest Integration** (`npm run test:storybook`)
+- **Purpose**: Fast component-level testing with HTML snapshots using existing stories
+- **Technology**: Vitest with jsdom environment + Storybook story composition
+- **Speed**: Fast execution in Node.js environment
+- **Coverage**: Component isolation, props variations, story compositions
+- **Output**: HTML snapshots and test reports
+
+### Command Differences
+
+#### Core Test Commands
+
+| Command | Purpose | Technology | Speed | Use Case |
+|---------|---------|------------|-------|----------|
+| `npm run test:visual` | Browser visual tests | Playwright | Slow | Cross-browser compatibility, interactions |
+| `npm run test:storybook` | Component snapshots | Vitest + Storybook | Fast | Component regression, story validation |
+
+#### UI Debug Commands
+
+| Command | Purpose | Interface | Best For |
+|---------|---------|-----------|----------|
+| `npm run test:visual:ui` | Interactive Playwright UI | Browser-based Playwright UI | Debugging visual failures, updating screenshots |
+| `npm run test:storybook:ui` | Interactive Vitest UI | Web-based Vitest dashboard | Debugging component tests, watching file changes |
+
+#### Key Differences: `test:visual:ui` vs `test:storybook:ui`
+
+**`npm run test:visual:ui` (Playwright UI)**
+- Opens a browser-based interface for Playwright tests
+- **Features**:
+  - Visual test timeline and execution flow
+  - Screenshot diff viewer (before/after)
+  - Step-by-step test execution with DOM inspection
+  - Browser devtools integration
+  - Screenshot update capabilities
+- **Best for**: Debugging visual regressions, updating reference screenshots
+- **Requirements**: Storybook must be running (`npm run storybook`)
+
+**`npm run test:storybook:ui` (Vitest UI)**
+- Opens a web-based dashboard for Vitest component tests
+- **Features**:
+  - Live test running with file watching
+  - Component tree view
+  - HTML snapshot comparison
+  - Coverage reports
+  - Real-time test results
+- **Best for**: Rapid component development, watching test changes
+- **Requirements**: None (runs independently)
 
 ### Testing Architecture
 
 ```
 tests/visual/
 ├── README.md                      # Detailed testing documentation
-├── button.visual.spec.ts          # Playwright tests for Button component
-├── resume-preview.visual.spec.ts  # Playwright tests for Resume Preview
-├── form-components.visual.spec.ts # Playwright tests for form components
-└── storybook.visual.test.ts       # Vitest integration with Storybook stories
+├── button.visual.spec.ts          # Playwright: Button cross-browser tests
+├── resume-preview.visual.spec.ts  # Playwright: Resume theme tests
+├── form-components.visual.spec.ts # Playwright: Form interaction tests
+└── storybook.visual.test.tsx      # Vitest: Component snapshot tests
 ```
 
 ### Configuration Files
 
-- `playwright.config.ts` - Playwright configuration with multi-browser support
-- `vitest.config.storybook.ts` - Vitest configuration for Storybook integration  
-- `.storybook/vitest.setup.ts` - Setup file for Storybook + Vitest integration
-
-### Key Features
-
-#### Playwright Visual Tests
-- **Cross-Browser Testing**: Chromium, Firefox, Safari, Mobile Chrome, Mobile Safari
-- **Responsive Testing**: Multiple viewport sizes (mobile, tablet, desktop)
-- **Theme Testing**: Light/dark modes, print layouts
-- **Interactive States**: Hover, focus, disabled states
-- **Screenshot Comparison**: Automatic visual regression detection
-
-#### Storybook Integration Tests  
-- **Story Composition**: Reuses existing Storybook stories for testing
-- **HTML Snapshots**: Creates HTML snapshots for component regression testing
-- **Fast Execution**: Runs in Node.js environment for speed
-- **Component Isolation**: Tests individual components in isolation
+- **`playwright.config.ts`** - Multi-browser configuration, screenshot settings
+- **`vitest.config.storybook.ts`** - Storybook integration, jsdom environment
+- **`.storybook/vitest.setup.ts`** - Story composition setup
 
 ### Test Coverage
 
-- **Button Components**: All variants, sizes, states, and responsive behavior
-- **Resume Preview**: All themes (simple, modern, centered, sidebar, executive)  
-- **Form Components**: Input fields, cards, form sections with interaction states
-- **Data Variations**: Different resume data sets (minimal, executive, fresh graduate, etc.)
-- **Responsive Layouts**: Testing across mobile, tablet, and desktop viewports
+#### Playwright Visual Tests
+- **Cross-Browser**: Chromium, Firefox, Safari, Mobile Chrome, Mobile Safari
+- **Responsive**: Mobile (375px), Tablet (768px), Desktop (1280px)
+- **Interactions**: Hover states, focus states, disabled states
+- **Themes**: Light/dark mode compatibility
+- **Components**: Button variants, Resume themes, Form components
 
-### Getting Started
+#### Storybook Integration Tests
+- **Button Components**: All 8 variants with HTML snapshots
+- **Resume Previews**: All 5 themes (Simple, Modern, Centered, Sidebar, Executive)
+- **Story Interactions**: Click handlers, accessibility tests
+- **Data Variations**: Minimal data, Executive profile, etc.
 
-1. **Install Dependencies**: Already included in `npm install`
-2. **Start Storybook**: `npm run storybook` (required for Playwright tests)
-3. **Run Visual Tests**: `npm run test:visual`
-4. **Debug Tests**: `npm run test:visual:debug` for interactive debugging
+### Development Workflow
 
-### Updating Screenshots
-
-When making intentional UI changes, update reference screenshots:
-
+#### 1. **Quick Component Testing** (Development)
 ```bash
-# Update all Playwright screenshots
+npm run test:storybook:ui
+```
+- Use during active development
+- Fast feedback loop
+- File watching enabled
+- Component-focused testing
+
+#### 2. **Cross-Browser Validation** (Pre-commit)
+```bash
+npm run test:visual
+```
+- Run before committing UI changes
+- Ensures cross-browser compatibility
+- Validates responsive behavior
+
+#### 3. **Interactive Debugging** (Troubleshooting)
+```bash
+# For component issues
+npm run test:storybook:ui
+
+# For visual/browser issues
+npm run storybook  # In terminal 1
+npm run test:visual:ui  # In terminal 2
+```
+
+### Updating Visual References
+
+#### Playwright Screenshots
+```bash
+# Update all screenshots
 npm run test:visual -- --update-snapshots
 
-# Update specific test screenshots  
+# Update specific component
 npm run test:visual -- --update-snapshots button.visual.spec.ts
+
+# Update specific browser only
+npm run test:visual -- --update-snapshots --project=chromium
+```
+
+#### Storybook Snapshots
+```bash
+# Update HTML snapshots (auto-prompted during test runs)
+npm run test:storybook -- --update-snapshots
 ```
 
 ### CI/CD Integration
 
-- Tests run automatically in CI environments
-- Screenshots captured on test failures for debugging
-- Parallel execution optimized for CI stability
-- HTML reports generated for easy issue identification
+#### Automated Testing Pipeline
+1. **Unit Tests**: `npm run test`
+2. **Component Snapshots**: `npm run test:storybook`
+3. **Visual Regression**: `npm run test:visual`
 
-For detailed testing documentation, see `tests/visual/README.md`.
+#### CI-Specific Features
+- Parallel execution disabled for stability
+- Screenshot artifacts saved on failures
+- HTML reports generated for debugging
+- Retry logic for flaky tests
+
+### Troubleshooting
+
+#### Common Issues
+
+**Playwright Tests Failing**
+```bash
+# Check if Storybook is running
+curl http://localhost:6006
+
+# Start Storybook manually
+npm run storybook
+
+# Run with debug output
+npm run test:visual:debug
+```
+
+**Storybook Tests Failing**
+```bash
+# Clear Vitest cache
+npx vitest --clear-cache
+
+# Run with UI for debugging
+npm run test:storybook:ui
+```
+
+**Screenshot Differences**
+```bash
+# View differences in UI
+npm run test:visual:ui
+
+# Update if changes are intentional
+npm run test:visual -- --update-snapshots
+```
+
+### Performance Tips
+
+1. **Use `test:storybook` for rapid iteration** - 10x faster than Playwright
+2. **Use `test:visual` for final validation** - Ensures production quality
+3. **Run specific browsers** - `--project=chromium` for faster iteration
+4. **Use UI modes for debugging** - Visual inspection of failures
+
+### Best Practices
+
+1. **Component Development**: Start with `test:storybook:ui`
+2. **Feature Completion**: Validate with `test:visual`
+3. **Bug Investigation**: Use appropriate UI mode for the test type
+4. **CI Pipeline**: Run both test types for complete coverage
+5. **Screenshot Updates**: Review changes carefully before updating
+
+For detailed testing documentation and advanced configuration, see `tests/visual/README.md`.
 
 ## Code Analysis
 

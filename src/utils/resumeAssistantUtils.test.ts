@@ -57,14 +57,16 @@ describe('getSystemPrompt', () => {
 
   it('should generate a system prompt incorporating key resume data', () => {
     const prompt = getSystemPrompt(baseProps);
-    expect(prompt).toContain('Current resume information:');
-    expect(prompt).toContain('Name: John Doe');
-    expect(prompt).toContain('Job Title: Software Engineer');
-    // Work Experience: position at company
-    expect(prompt).toContain('Work Experience: Senior Developer at Tech Corp');
-    // Education: degree in field from institution
-    expect(prompt).toContain('Education: B.Sc. Computer Science in Computer Science from State University');
-    expect(prompt).toContain('Skills: JavaScript, React, Node.js');
+    expect(prompt).toContain('CURRENT RESUME CONTENT:');
+    expect(prompt).toContain('- Name: John Doe');
+    expect(prompt).toContain('- Job Title: Software Engineer');
+    // Work experience format: position at company
+    expect(prompt).toContain('- Senior Developer at Tech Corp');
+    // Education format: degree in field from institution
+    expect(prompt).toContain('- B.Sc. Computer Science in Computer Science from State University');
+    expect(prompt).toContain('- JavaScript');
+    expect(prompt).toContain('- React');
+    expect(prompt).toContain('- Node.js');
   });
 
   it('should handle missing optional personal info fields with "Not provided"', () => {
@@ -86,7 +88,7 @@ describe('getSystemPrompt', () => {
       workExperience: [],
     };
     const prompt = getSystemPrompt(propsWithNoWork);
-    expect(prompt).toContain('Work Experience: None provided');
+    expect(prompt).toContain('WORK EXPERIENCE:\nNone provided');
   });
 
   it('should handle empty education array with "None provided"', () => {
@@ -95,7 +97,7 @@ describe('getSystemPrompt', () => {
       education: [],
     };
     const prompt = getSystemPrompt(propsWithNoEducation);
-    expect(prompt).toContain('Education: None provided');
+    expect(prompt).toContain('EDUCATION:\nNone provided');
   });
 
   it('should handle empty skills array with "None provided"', () => {
@@ -104,7 +106,7 @@ describe('getSystemPrompt', () => {
       skills: [],
     };
     const prompt = getSystemPrompt(propsWithNoSkills);
-    expect(prompt).toContain('Skills: None provided');
+    expect(prompt).toContain('SKILLS:\nNone provided');
   });
   
   it('should handle missing fields within work experience entries (e.g. position undefined)', () => {
@@ -119,7 +121,7 @@ describe('getSystemPrompt', () => {
     };
     const prompt = getSystemPrompt(propsWithPartialWork);
     // Expects "undefined at Incomplete Corp" based on current impl: `${w.position} at ${w.company}`
-    expect(prompt).toContain('Work Experience: undefined at Incomplete Corp');
+    expect(prompt).toContain('- undefined at Incomplete Corp');
   });
 
   it('should handle missing fields within education entries (e.g. degree undefined)', () => {
@@ -131,7 +133,7 @@ describe('getSystemPrompt', () => {
     };
     const prompt = getSystemPrompt(propsWithPartialEducation);
     // Expects "undefined in undefined from Incomplete Uni" based on: `${e.degree} in ${e.field} from ${e.institution}`
-    expect(prompt).toContain('Education: undefined in undefined from Incomplete Uni');
+    expect(prompt).toContain('- undefined in undefined from Incomplete Uni');
   });
 });
 

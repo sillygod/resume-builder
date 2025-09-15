@@ -54,22 +54,34 @@ describe('ChatMessages Component', () => {
 
   it('applies correct styling to assistant messages', () => {
     render(<ChatMessages messages={mockMessages} isLoading={false} />);
-    
-    const assistantMessage = screen.getByText('Hello! How can I help you today?').closest('div');
-    expect(assistantMessage).toHaveClass('bg-secondary', 'text-secondary-foreground');
-    
-    const assistantContainer = assistantMessage?.closest('.flex');
+
+    // Find the message container (should have bg-secondary classes)
+    const messageContainer = screen.getByText('Hello! How can I help you today?').closest('.bg-secondary');
+    expect(messageContainer).toHaveClass('bg-secondary', 'text-secondary-foreground');
+
+    // Find the flex container (should justify-start for assistant messages)
+    const assistantContainer = messageContainer?.closest('.flex');
     expect(assistantContainer).toHaveClass('justify-start');
+
+    // Check that the content is wrapped in prose styling
+    const proseContainer = screen.getByText('Hello! How can I help you today?').closest('.prose');
+    expect(proseContainer).toHaveClass('prose', 'prose-sm', 'prose-slate');
   });
 
   it('applies correct styling to user messages', () => {
     render(<ChatMessages messages={mockMessages} isLoading={false} />);
-    
-    const userMessage = screen.getByText('Please review my resume').closest('div');
-    expect(userMessage).toHaveClass('bg-primary', 'text-primary-foreground');
-    
-    const userContainer = userMessage?.closest('.flex');
+
+    // Find the message container (should have bg-primary classes)
+    const messageContainer = screen.getByText('Please review my resume').closest('.bg-primary');
+    expect(messageContainer).toHaveClass('bg-primary', 'text-primary-foreground');
+
+    // Find the flex container (should justify-end for user messages)
+    const userContainer = messageContainer?.closest('.flex');
     expect(userContainer).toHaveClass('justify-end');
+
+    // Check that user content has whitespace-pre-wrap styling
+    const userContent = screen.getByText('Please review my resume').closest('.whitespace-pre-wrap');
+    expect(userContent).toHaveClass('whitespace-pre-wrap');
   });
 
   it('displays timestamps when available', () => {
@@ -121,18 +133,18 @@ describe('ChatMessages Component', () => {
   it('preserves whitespace in message content', () => {
     const messageWithWhitespace: Message[] = [
       {
-        role: 'assistant',
+        role: 'user',
         content: 'Line 1\n\nLine 2\nLine 3',
       }
     ];
-    
+
     render(<ChatMessages messages={messageWithWhitespace} isLoading={false} />);
-    
-    // Find the specific p element with the whitespace-pre-wrap class
-    const messageElement = document.querySelector('p.whitespace-pre-wrap');
+
+    // Find the div with whitespace-pre-wrap class (user messages preserve whitespace)
+    const messageElement = document.querySelector('.whitespace-pre-wrap');
     expect(messageElement).toBeInTheDocument();
     expect(messageElement).toHaveClass('whitespace-pre-wrap');
-    // Just check that the content contains the key parts - whitespace-pre-wrap handles the formatting
+    // Check that the content contains all parts
     expect(messageElement).toHaveTextContent('Line 1');
     expect(messageElement).toHaveTextContent('Line 2');
     expect(messageElement).toHaveTextContent('Line 3');
@@ -145,11 +157,17 @@ describe('ChatMessages Component', () => {
         content: 'This is a very long message that should be constrained by the max width setting to ensure proper layout and readability in the chat interface.',
       }
     ];
-    
+
     render(<ChatMessages messages={longMessage} isLoading={false} />);
-    
+
+    // Find the message container that should have max-w-[70%] class
     const messageContainer = screen.getByText(/This is a very long message/).closest('div');
-    expect(messageContainer).toHaveClass('max-w-[80%]');
+    // Find the container with the max-width class by traversing up the DOM
+    let maxWidthContainer = messageContainer;
+    while (maxWidthContainer && !maxWidthContainer.classList.contains('max-w-[70%]')) {
+      maxWidthContainer = maxWidthContainer.parentElement as HTMLElement;
+    }
+    expect(maxWidthContainer).toHaveClass('max-w-[70%]');
   });
 
   it('scrolls to bottom when messages change', () => {
@@ -160,16 +178,16 @@ describe('ChatMessages Component', () => {
     // Add more messages
     rerender(<ChatMessages messages={mockMessages} isLoading={false} />);
     
-    expect(scrollIntoViewSpy).toHaveBeenCalledWith({ behavior: 'smooth' });
+    expect(scrollIntoViewSpy).toHaveBeenCalledWith({ behavior: 'smooth', block: 'nearest' });
   });
 
   it('applies consistent styling across all messages', () => {
     render(<ChatMessages messages={mockMessages} isLoading={false} />);
     
-    const allMessageBubbles = document.querySelectorAll('.rounded-lg.p-4');
-    
+    const allMessageBubbles = document.querySelectorAll('.rounded-lg.p-3');
+
     allMessageBubbles.forEach(bubble => {
-      expect(bubble).toHaveClass('rounded-lg', 'p-4');
+      expect(bubble).toHaveClass('rounded-lg', 'p-3');
       expect(bubble.querySelector('.text-sm')).toBeInTheDocument();
     });
   });

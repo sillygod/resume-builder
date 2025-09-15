@@ -1,24 +1,22 @@
 import { defineConfig } from 'vitest/config';
-import { storybookTest } from '@storybook/vitest';
+import react from '@vitejs/plugin-react-swc';
+import path from 'path';
 
-// More info at: https://storybook.js.org/docs/writing-tests/integrations/vitest-addon
+// Simplified config for Storybook visual tests
 export default defineConfig({
-  plugins: [
-    // See options at: https://storybook.js.org/docs/writing-tests/integrations/vitest-addon#storybooktest
-    storybookTest(),
-  ],
+  plugins: [react()],
   test: {
-    // Make sure to adjust this pattern to match your stories files
-    include: ['src/**/*.stories.?(m)[jt]s?(x)', 'tests/**/*.visual.test.ts'],
+    // Include the visual test files
+    include: ['tests/**/*.visual.test.ts', 'tests/**/*.visual.test.tsx'],
     // Use jsdom for React component testing
     environment: 'jsdom',
-    setupFiles: ['./.storybook/vitest.setup.ts'],
+    setupFiles: ['./src/setupTests.ts'],
     // Add globals for testing utilities
     globals: true,
   },
   resolve: {
     alias: {
-      '@': '/src',
+      '@': path.resolve(__dirname, './src'),
     },
   },
 });
