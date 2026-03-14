@@ -251,7 +251,7 @@ describe('ThemeContext', () => {
 
     it('executive theme has sophisticated styling', () => {
       const executiveTheme = themes.executive;
-      expect(executiveTheme.personalInfo.titleClass).toContain('text-5xl');
+      expect(executiveTheme.personalInfo.titleClass).toContain('text-4xl');
       expect(executiveTheme.layout.containerClass).toContain('bg-[#0f1219]');
     });
 
