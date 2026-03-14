@@ -102,7 +102,7 @@ export const getLayoutJSXString = (layoutName: string) => {
                 <div className="${themes.executive.workExperience.periodClass}">
                   {exp.startDate} - {exp.endDate}
                 </div>
-                <div>
+                <div className="flex-1 min-w-0">
                   <h3 className="${themes.executive.workExperience.jobTitleClass}">{exp.position}</h3>
                   <p className="${themes.executive.workExperience.companyClass}">{exp.company}</p>
                   <p className="${themes.executive.workExperience.descriptionClass}">{exp.description}</p>
@@ -123,7 +123,7 @@ export const getLayoutJSXString = (layoutName: string) => {
                 <div className="${themes.executive.education.periodClass}">
                   GRAD: {edu.graduationDate}
                 </div>
-                <div>
+                <div className="flex-1 min-w-0">
                   <h3 className="${themes.executive.education.institutionClass}">{edu.institution}</h3>
                   <p className="${themes.executive.education.degreeClass}">{edu.degree} in {edu.field}</p>
                 </div>

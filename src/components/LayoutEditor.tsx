@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { PersonalInfoData } from './PersonalInfo';
 import { WorkExperienceEntry } from './WorkExperience';
 import { EducationEntry } from './Education';
@@ -2090,7 +2091,8 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
       </Tabs>
       
       {/* Floating Editor Overlay */}
-      {isFloatingExpanded && (
+      {isFloatingExpanded && createPortal(
+        <>
         <div
           id="floating-editor-container"
           className="fixed bg-white border-2 border-gray-300 rounded-lg shadow-2xl z-50"
@@ -2356,11 +2358,12 @@ const LayoutEditor: React.FC<LayoutEditorProps> = ({
             </div>
           )}
         </div>
-      )}
-      
-      {/* Backdrop overlay when dragging */}
-      {(isDragging || isResizing) && (
-        <div className="fixed inset-0 z-40 pointer-events-none" />
+        {/* Backdrop overlay when dragging */}
+        {(isDragging || isResizing) && (
+          <div className="fixed inset-0 z-40 pointer-events-none" />
+        )}
+        </>,
+        document.body
       )}
     </Card>
   );

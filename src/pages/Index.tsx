@@ -122,11 +122,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden font-sans pb-16 bg-background">
-      {/* Subtle Scanline overlay */}
-      <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden opacity-20">
-        <div className="h-2 w-full bg-primary/10 blur-[1px] animate-scanline"></div>
-      </div>
-
       <div className="container py-10 relative z-10">
         <div className="flex flex-col space-y-6 mb-10 animate-fade-in [animation-delay:100ms] opacity-0 [animation-fill-mode:forwards]">
 

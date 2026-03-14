@@ -313,15 +313,16 @@ export function ResumePreview({
         onClick={downloadPDF} // Use downloadPDF from the hook
       />
 
-      <div className={`w-[210mm] h-[297mm] max-w-full overflow-hidden transition-all duration-300 ${
+      <div className={`w-[210mm] max-w-full transition-all duration-300 ${
         isUpdating ? 'opacity-75 scale-[0.99]' : 'opacity-100 scale-100'
       }`}>
         <Card
-          className="w-full h-full bg-white shadow-lg animate-fade-in relative"
+          className="w-full h-full bg-white shadow-lg animate-fade-in relative overflow-hidden"
+          style={{ height: '297mm' }}
         >
           <div
             ref={contentRef}
-            className={`flex min-h-[297mm]`} // Allow content to expand
+            className={`w-full min-h-[297mm] flex flex-col`}
             style={{
               transform:
                 currentPage > 1
