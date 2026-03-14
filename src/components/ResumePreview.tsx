@@ -318,17 +318,17 @@ export function ResumePreview({
       }`}>
         <Card
           className="w-full h-full bg-white shadow-lg animate-fade-in relative"
-          style={{
-            transform:
-              currentPage > 1
-                ? `translateY(-${(currentPage - 1) * 100}%)`
-                : "none",
-            transition: "transform 0.3s ease-in-out",
-          }}
         >
           <div
             ref={contentRef}
-            className={`${theme === "sidebar" ? "flex h-full" : "flex h-full"}`} // Sidebar layout might need flex container
+            className={`flex min-h-[297mm]`} // Allow content to expand
+            style={{
+              transform:
+                currentPage > 1
+                  ? `translateY(-${(currentPage - 1) * 297}mm)`
+                  : "none",
+              transition: "transform 0.3s ease-in-out",
+            }}
           >
             <ErrorBoundary resetKey={customLayoutCode}>
               {renderLayout()}
