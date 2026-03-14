@@ -176,7 +176,7 @@ const Index = () => {
         </div>
 
         <Tabs defaultValue="editor" className="w-full animate-fade-in [animation-delay:300ms] opacity-0 [animation-fill-mode:forwards]">
-          <TabsList className="mb-6 max-w-[400px]">
+          <TabsList className="mb-6 border-b border-primary/30 w-full lg:max-w-none">
             <TabsTrigger value="editor">System Editor</TabsTrigger>
             <TabsTrigger value="assistant">AI Core</TabsTrigger>
           </TabsList>
