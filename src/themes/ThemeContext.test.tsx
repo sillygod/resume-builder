@@ -233,26 +233,26 @@ describe('ThemeContext', () => {
   describe('Theme-specific tests', () => {
     it('simple theme has basic styling', () => {
       const simpleTheme = themes.simple;
-      expect(simpleTheme.layout.containerClass).toContain('bg-white');
-      expect(simpleTheme.personalInfo.titleClass).toContain('text-xl');
+      expect(simpleTheme.layout.containerClass).toContain('flex-col');
+      expect(simpleTheme.personalInfo.titleClass).toContain('text-3xl');
     });
 
-    it('modern theme has gradient styling', () => {
+    it('modern theme has shadow styling', () => {
       const modernTheme = themes.modern;
-      expect(modernTheme.personalInfo.containerClass).toContain('gradient');
-      expect(modernTheme.section.containerClass).toContain('shadow');
+      expect(modernTheme.personalInfo.containerClass).toContain('shadow');
+      expect(modernTheme.section.containerClass).toContain('backdrop');
     });
 
     it('sidebar theme has flex-row layout', () => {
       const sidebarTheme = themes.sidebar;
       expect(sidebarTheme.layout.containerClass).toContain('flex-row');
-      expect(sidebarTheme.personalInfo.containerClass).toContain('w-1/3');
+      expect(sidebarTheme.personalInfo.containerClass).toContain('w-[32%]');
     });
 
     it('executive theme has sophisticated styling', () => {
       const executiveTheme = themes.executive;
-      expect(executiveTheme.personalInfo.titleClass).toContain('text-4xl');
-      expect(executiveTheme.layout.containerClass).toContain('gradient-to-br');
+      expect(executiveTheme.personalInfo.titleClass).toContain('text-5xl');
+      expect(executiveTheme.layout.containerClass).toContain('bg-[#0f1219]');
     });
 
     it('centered theme has center alignment', () => {

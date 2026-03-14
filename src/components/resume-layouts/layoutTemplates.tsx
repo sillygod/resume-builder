@@ -9,432 +9,414 @@ export interface ResumeLayoutProps {
 export const getLayoutJSXString = (layoutName: string) => {
   switch(layoutName) {
     case 'Executive':
-      return `// ExecutiveLayout Component
+      return `// Cyber-Executive Layout Component
 (
-  <div className="executive-layout bg-gradient-to-br from-slate-50 via-white to-slate-50 min-h-full">
-    {/* Executive Header */}
-    <div className="relative bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 text-white p-12">
-      <div className="relative flex items-start gap-8 max-w-6xl mx-auto">
-        {/* Executive Photo */}
-        <div className="flex-shrink-0">
-          {personalInfo.photoUrl ? (
-            <div 
-              className="w-32 h-32 rounded-full border-4 border-white/20 shadow-2xl overflow-hidden"
-              style={{
-                backgroundImage: "url(" + personalInfo.photoUrl + ")",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat"
-              }}
-            >
-              <img
-                src={personalInfo.photoUrl}
-                alt={personalInfo.fullName || "Executive Profile"}
-                className="w-32 h-32 rounded-full"
-                style={{ 
-                  objectFit: 'cover',
-                  objectPosition: 'center'
+  <div className="${themes.executive.layout.containerClass}">
+    <div className="${themes.executive.layout.contentClass}">
+      {/* Personal Info Section */}
+      <div className="${themes.executive.personalInfo.containerClass}">
+        <div className="${themes.executive.personalInfo.gridClass}">
+          <div className="${themes.executive.personalInfo.avatarContainerClass}">
+            {personalInfo.photoUrl ? (
+              <div
+                className="w-full h-full"
+                style={{
+                  backgroundImage: "url(" + personalInfo.photoUrl + ")",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat"
                 }}
-              />
-            </div>
-          ) : (
-            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 border-4 border-white/20 shadow-2xl flex items-center justify-center text-white">
-              Executive
-            </div>
-          )}
-        </div>
-
-        {/* Executive Info */}
-        <div className="flex-1">
-          <h1 className="text-4xl font-light tracking-wide text-white mb-2 leading-tight">
-            {personalInfo.fullName || "Executive Name"}
-          </h1>
-          <div className="text-xl font-light text-slate-200 mb-6 tracking-wide">
-            {personalInfo.jobTitle || "Chief Executive Officer"}
-          </div>
-
-          {/* Executive Summary */}
-          {personalInfo.summary && (
-            <div className="text-slate-300 text-lg leading-relaxed mb-6 max-w-3xl font-light">
-              {personalInfo.summary}
-            </div>
-          )}
-
-          {/* Executive Contact */}
-          <div className="grid grid-cols-2 gap-4 text-slate-300">
-            {personalInfo.email && (
-              <div className="flex items-center space-x-2">
-                <Mail size={18} />
-                <span className="font-light tracking-wide">{personalInfo.email}</span>
+              >
+                <img
+                  src={personalInfo.photoUrl}
+                  alt={personalInfo.fullName || "Profile"}
+                  className="w-full h-full"
+                  style={{
+                    objectFit: "cover",
+                    objectPosition: "center"
+                  }}
+                />
               </div>
-            )}
-            {personalInfo.phone && (
-              <div className="flex items-center space-x-2">
-                <Phone size={18} />
-                <span className="font-light tracking-wide">{personalInfo.phone}</span>
-              </div>
-            )}
-            {personalInfo.location && (
-              <div className="flex items-center space-x-2">
-                <MapPin size={18} />
-                <span className="font-light tracking-wide">{personalInfo.location}</span>
-              </div>
-            )}
-            {personalInfo.website && (
-              <div className="flex items-center space-x-2">
-                <Link size={18} />
-                <span className="font-light tracking-wide">{personalInfo.website}</span>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-[#3bd4f5]/30 font-mono text-sm uppercase">
+                IMG_ERR
               </div>
             )}
           </div>
+
+          <div className="${themes.executive.personalInfo.infoContainerClass}">
+            <h1 className="${themes.executive.personalInfo.titleClass}">
+              {personalInfo.fullName || "Your Name"}
+            </h1>
+            <p className="${themes.executive.personalInfo.subtitleClass}">
+              {personalInfo.jobTitle || "Your Profession"}
+            </p>
+
+            <div className="${themes.executive.personalInfo.contactContainerClass}">
+              {personalInfo.email && (
+                <div className="${themes.executive.personalInfo.contactItemClass}">
+                  <span className="${themes.executive.personalInfo.labelClass}">COM.EMAIL</span>
+                  <span className="${themes.executive.personalInfo.valueClass}">{personalInfo.email}</span>
+                </div>
+              )}
+              {personalInfo.phone && (
+                <div className="${themes.executive.personalInfo.contactItemClass}">
+                  <span className="${themes.executive.personalInfo.labelClass}">COM.VOICE</span>
+                  <span className="${themes.executive.personalInfo.valueClass}">{personalInfo.phone}</span>
+                </div>
+              )}
+              {personalInfo.location && (
+                <div className="${themes.executive.personalInfo.contactItemClass}">
+                  <span className="${themes.executive.personalInfo.labelClass}">LOC.COORD</span>
+                  <span className="${themes.executive.personalInfo.valueClass}">{personalInfo.location}</span>
+                </div>
+              )}
+              {personalInfo.website && (
+                <div className="${themes.executive.personalInfo.contactItemClass}">
+                  <span className="${themes.executive.personalInfo.labelClass}">NET.LINK</span>
+                  <span className="${themes.executive.personalInfo.valueClass}">{personalInfo.website}</span>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div className="max-w-6xl mx-auto px-8 py-12">
-      <div className="grid grid-cols-3 gap-12">
-        {/* Main Content */}
-        <div className="col-span-2 space-y-12">
-          {/* Executive Experience */}
-          {workExperience.length > 0 && (
-            <section>
-              <h2 className="text-2xl font-light tracking-wide text-slate-800 mb-8 pb-3 border-b-2 border-slate-200">
-                EXECUTIVE EXPERIENCE
-              </h2>
-              <div className="space-y-8">
-                {workExperience.map((exp) => (
-                  <div key={exp.id} className="relative pl-8">
-                    <div className="absolute left-0 top-2 w-3 h-3 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full shadow-md"></div>
-                    <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-                      <h3 className="text-xl font-semibold text-slate-800 tracking-wide">
-                        {exp.position}
-                      </h3>
-                      <div className="text-lg font-medium text-slate-600 mt-1">
-                        {exp.name || exp.company}
-                      </div>
-                      <div className="bg-gradient-to-r from-slate-100 to-slate-200 text-slate-700 px-4 py-2 rounded-full text-sm font-medium tracking-wide shadow-sm inline-block mt-2">
-                        {exp.startDate} - {exp.endDate}
-                      </div>
-                      <div className="text-slate-700 leading-relaxed font-light mt-4">
-                        {exp.description}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
-        </div>
+      {/* Summary Section */}
+      {personalInfo.summary && (
+        <section className="${themes.executive.section.containerClass}">
+          <h2 className="${themes.executive.section.titleClass}">Executive Summary</h2>
+          <div className="${themes.executive.section.contentClass}">
+            <p className="${themes.executive.workExperience.descriptionClass}">{personalInfo.summary}</p>
+          </div>
+        </section>
+      )}
 
-        {/* Executive Sidebar */}
-        <div className="space-y-10">
-          {/* Core Competencies */}
-          {skills.length > 0 && (
-            <section>
-              <h2 className="text-xl font-light tracking-wide text-slate-800 mb-6 pb-2 border-b border-slate-200">
-                CORE COMPETENCIES
-              </h2>
-              <div className="space-y-3">
-                {skills.map((skill) => (
-                  <div key={skill} className="flex items-center justify-between bg-white rounded-lg shadow-sm border border-slate-200 p-3">
-                    <span className="text-slate-700 font-medium tracking-wide">{skill}</span>
-                    <div className="w-2 h-2 bg-gradient-to-br from-slate-500 to-slate-600 rounded-full"></div>
-                  </div>
-                ))}
+      {/* Work Experience Section */}
+      {workExperience.length > 0 && (
+        <section className="${themes.executive.workExperience.containerClass}">
+          <h2 className="${themes.executive.workExperience.titleClass}">Experience Core</h2>
+          <div className="space-y-4">
+            {workExperience.map((exp) => (
+              <div key={exp.id} className="${themes.executive.workExperience.entryClass}">
+                <div className="${themes.executive.workExperience.periodClass}">
+                  {exp.startDate} - {exp.endDate}
+                </div>
+                <div>
+                  <h3 className="${themes.executive.workExperience.jobTitleClass}">{exp.position}</h3>
+                  <p className="${themes.executive.workExperience.companyClass}">{exp.company}</p>
+                  <p className="${themes.executive.workExperience.descriptionClass}">{exp.description}</p>
+                </div>
               </div>
-            </section>
-          )}
+            ))}
+          </div>
+        </section>
+      )}
 
-          {/* Executive Education */}
-          {education.length > 0 && (
-            <section>
-              <h2 className="text-xl font-light tracking-wide text-slate-800 mb-6 pb-2 border-b border-slate-200">
-                EXECUTIVE EDUCATION
-              </h2>
-              <div className="space-y-4">
-                {education.map((edu) => (
-                  <div key={edu.id} className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
-                    <h3 className="font-semibold text-slate-800 tracking-wide">{edu.institution}</h3>
-                    <div className="text-slate-600 font-medium mt-1">
-                      {edu.degree} in {edu.field}
-                    </div>
-                    <div className="text-slate-500 text-sm mt-2 font-light">
-                      {edu.graduationDate}
-                    </div>
-                  </div>
-                ))}
+      {/* Education Section */}
+      {education.length > 0 && (
+        <section className="${themes.executive.education.containerClass}">
+          <h2 className="${themes.executive.education.titleClass}">Knowledge Base</h2>
+          <div className="space-y-4">
+            {education.map((edu) => (
+              <div key={edu.id} className="${themes.executive.education.entryClass}">
+                <div className="${themes.executive.education.periodClass}">
+                  GRAD: {edu.graduationDate}
+                </div>
+                <div>
+                  <h3 className="${themes.executive.education.institutionClass}">{edu.institution}</h3>
+                  <p className="${themes.executive.education.degreeClass}">{edu.degree} in {edu.field}</p>
+                </div>
               </div>
-            </section>
-          )}
-        </div>
-      </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Skills Section */}
+      {skills.length > 0 && (
+        <section className="${themes.executive.skills.containerClass}">
+          <h2 className="${themes.executive.skills.titleClass}">Systems Competency</h2>
+          <div className="${themes.executive.skills.skillsListClass}">
+            {skills.map((skill) => (
+              <span key={skill} className="${themes.executive.skills.skillItemClass}">
+                {skill}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   </div>
 )`;
     case 'Simple':
-      return `// SimpleLayout Component
+      return `// Netrunner Core Layout Component
 (
-  <div className="${themes.simple.layout.contentClass}">
-    {/* Personal Info Section */}
-    <div className="${themes.simple.personalInfo.containerClass}">
-      <div className="${themes.simple.personalInfo.gridClass}">
-        <div className="${themes.simple.personalInfo.infoContainerClass}">
-          <h1 className="${themes.simple.personalInfo.titleClass}">
-            {personalInfo.fullName || "Your Name"}
-          </h1>
-          <p className="${themes.simple.personalInfo.subtitleClass}">
-            {personalInfo.jobTitle || "Your Profession"}
-          </p>
-          
-          <div className="${themes.simple.personalInfo.contactContainerClass}">
-            {personalInfo.email && (
-              <div className="${themes.simple.personalInfo.contactItemClass}">
-                <Mail size={16} />
-                <span>{personalInfo.email}</span>
+  <div className="${themes.simple.layout.containerClass}">
+    <div className="${themes.simple.layout.contentClass}">
+      {/* Personal Info Section */}
+      <div className="${themes.simple.personalInfo.containerClass}">
+        <div className="${themes.simple.personalInfo.gridClass}">
+          <div className="${themes.simple.personalInfo.infoContainerClass}">
+            <h1 className="${themes.simple.personalInfo.titleClass}">
+              {personalInfo.fullName || "Your Name"}
+            </h1>
+            <p className="${themes.simple.personalInfo.subtitleClass}">
+              {personalInfo.jobTitle || "Your Profession"}
+            </p>
+
+            <div className="${themes.simple.personalInfo.contactContainerClass}">
+              {personalInfo.email && (
+                <div className="${themes.simple.personalInfo.contactItemClass}">
+                  <span className="${themes.simple.personalInfo.labelClass}">COM.EMAIL</span>
+                  <span className="${themes.simple.personalInfo.valueClass}">{personalInfo.email}</span>
+                </div>
+              )}
+              {personalInfo.phone && (
+                <div className="${themes.simple.personalInfo.contactItemClass}">
+                  <span className="${themes.simple.personalInfo.labelClass}">COM.VOICE</span>
+                  <span className="${themes.simple.personalInfo.valueClass}">{personalInfo.phone}</span>
+                </div>
+              )}
+              {personalInfo.location && (
+                <div className="${themes.simple.personalInfo.contactItemClass}">
+                  <span className="${themes.simple.personalInfo.labelClass}">LOC.COORD</span>
+                  <span className="${themes.simple.personalInfo.valueClass}">{personalInfo.location}</span>
+                </div>
+              )}
+              {personalInfo.website && (
+                <div className="${themes.simple.personalInfo.contactItemClass}">
+                  <span className="${themes.simple.personalInfo.labelClass}">NET.LINK</span>
+                  <span className="${themes.simple.personalInfo.valueClass}">{personalInfo.website}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="${themes.simple.personalInfo.avatarContainerClass}">
+            {personalInfo.photoUrl ? (
+              <div
+                className="w-full h-full"
+                style={{
+                  backgroundImage: "url(" + personalInfo.photoUrl + ")",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat"
+                }}
+              >
+                <img
+                  src={personalInfo.photoUrl}
+                  alt={personalInfo.fullName || "Profile"}
+                  className="w-full h-full grayscale"
+                  style={{
+                    objectFit: "cover",
+                    objectPosition: "center"
+                  }}
+                />
               </div>
-            )}
-            {personalInfo.phone && (
-              <div className="${themes.simple.personalInfo.contactItemClass}">
-                <Phone size={16} />
-                <span>{personalInfo.phone}</span>
-              </div>
-            )}
-            {personalInfo.location && (
-              <div className="${themes.simple.personalInfo.contactItemClass}">
-                <MapPin size={16} />
-                <span>{personalInfo.location}</span>
-              </div>
-            )}
-            {personalInfo.website && (
-              <div className="${themes.simple.personalInfo.contactItemClass}">
-                <Link size={16} />
-                <span>{personalInfo.website}</span>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-[#3bd4f5]/50 font-mono text-xs">
+                IMG_ERR
               </div>
             )}
           </div>
         </div>
-
-        <div className="${themes.simple.personalInfo.avatarContainerClass}">
-          {personalInfo.photoUrl ? (
-            <div 
-              className="w-full h-full"
-              style={{
-                backgroundImage: "url(" + personalInfo.photoUrl + ")",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat"
-              }}
-            >
-              <img
-                src={personalInfo.photoUrl}
-                alt={personalInfo.fullName || "Profile"}
-                className="w-20 h-20 rounded-full"
-                style={{ 
-                  objectFit: "cover",
-                  objectPosition: "center"
-                }}
-              />
-            </div>
-          ) : (
-            <div className="w-full h-full bg-gray-300 flex items-center justify-center text-gray-500">
-              Photo
-            </div>
-          )}
-        </div>
       </div>
+
+      {/* Summary Section */}
+      {personalInfo.summary && (
+        <section className="${themes.simple.section.containerClass}">
+          <h2 className="${themes.simple.section.titleClass}">Summary</h2>
+          <div className="${themes.simple.section.contentClass}">
+            <p className="${themes.simple.workExperience.descriptionClass}">{personalInfo.summary}</p>
+          </div>
+        </section>
+      )}
+
+      {/* Work Experience Section */}
+      {workExperience.length > 0 && (
+        <section className="${themes.simple.workExperience.containerClass}">
+          <h2 className="${themes.simple.workExperience.titleClass}">Work Experience</h2>
+          <div className="space-y-4">
+            {workExperience.map((exp) => (
+              <div key={exp.id} className="${themes.simple.workExperience.entryClass}">
+                <h3 className="${themes.simple.workExperience.jobTitleClass}">{exp.position}</h3>
+                <p className="${themes.simple.workExperience.companyClass}">{exp.company}</p>
+                <p className="${themes.simple.workExperience.periodClass}">{exp.startDate} - {exp.endDate}</p>
+                <p className="${themes.simple.workExperience.descriptionClass}">{exp.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Education Section */}
+      {education.length > 0 && (
+        <section className="${themes.simple.education.containerClass}">
+          <h2 className="${themes.simple.education.titleClass}">Education</h2>
+          <div className="space-y-4">
+            {education.map((edu) => (
+              <div key={edu.id} className="${themes.simple.education.entryClass}">
+                <h3 className="${themes.simple.education.institutionClass}">{edu.institution}</h3>
+                <p className="${themes.simple.education.degreeClass}">{edu.degree} in {edu.field}</p>
+                <p className="${themes.simple.education.periodClass}">Graduated: {edu.graduationDate}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Skills Section */}
+      {skills.length > 0 && (
+        <section className="${themes.simple.skills.containerClass}">
+          <h2 className="${themes.simple.skills.titleClass}">Skills</h2>
+          <div className="${themes.simple.skills.skillsListClass}">
+            {skills.map((skill) => (
+              <span key={skill} className="${themes.simple.skills.skillItemClass}">
+                {skill}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
-
-    {/* Summary Section */}
-    {personalInfo.summary && (
-      <section className="${themes.simple.section.containerClass}">
-        <h2 className="${themes.simple.section.titleClass}">Summary</h2>
-        <div className="${themes.simple.section.contentClass}">
-          <p className="text-sm text-gray-600">{personalInfo.summary}</p>
-        </div>
-      </section>
-    )}
-
-    {/* Work Experience Section */}
-    {workExperience.length > 0 && (
-      <section className="${themes.simple.workExperience.containerClass}">
-        <h2 className="${themes.simple.workExperience.titleClass}">Work Experience</h2>
-        <div className="space-y-4">
-          {workExperience.map((exp) => (
-            <div key={exp.id} className="${themes.simple.workExperience.entryClass}">
-              <h3 className="${themes.simple.workExperience.jobTitleClass}">{exp.position}</h3>
-              <p className="${themes.simple.workExperience.companyClass}">{exp.company}</p>
-              <p className="${themes.simple.workExperience.periodClass}">{exp.startDate} - {exp.endDate}</p>
-              <p className="${themes.simple.workExperience.descriptionClass}">{exp.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-    )}
-
-    {/* Education Section */}
-    {education.length > 0 && (
-      <section className="${themes.simple.education.containerClass}">
-        <h2 className="${themes.simple.education.titleClass}">Education</h2>
-        <div className="space-y-4">
-          {education.map((edu) => (
-            <div key={edu.id} className="${themes.simple.education.entryClass}">
-              <h3 className="${themes.simple.education.institutionClass}">{edu.institution}</h3>
-              <p className="${themes.simple.education.degreeClass}">{edu.degree} in {edu.field}</p>
-              <p className="${themes.simple.education.periodClass}">Graduated: {edu.graduationDate}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-    )}
-
-    {/* Skills Section */}
-    {skills.length > 0 && (
-      <section className="${themes.simple.skills.containerClass}">
-        <h2 className="${themes.simple.skills.titleClass}">Skills</h2>
-        <div className="${themes.simple.skills.skillsListClass}">
-          {skills.map((skill) => (
-            <span key={skill} className="${themes.simple.skills.skillItemClass}">
-              {skill}
-            </span>
-          ))}
-        </div>
-      </section>
-    )}
   </div>
 )`;
     case 'Modern':
-      return `// ModernLayout Component
+      return `// Wasteland Tech Layout Component
 (
-  <div className="${themes.modern.layout.contentClass}">
-    {/* Personal Info Section */}
-    <div className="${themes.modern.personalInfo.containerClass}">
-      <div className="${themes.modern.personalInfo.gridClass}">
-        <div className="${themes.modern.personalInfo.avatarContainerClass}">
-          {personalInfo.photoUrl ? (
-            <div 
-              className="w-full h-full"
-              style={{
-                backgroundImage: "url(" + personalInfo.photoUrl + ")",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat"
-              }}
-            >
-              <img
-                src={personalInfo.photoUrl}
-                alt={personalInfo.fullName || "Profile"}
-                className="w-20 h-20 rounded-full"
-                style={{ 
-                  objectFit: "cover",
-                  objectPosition: "center"
-                }}
-              />
-            </div>
-          ) : (
-            <div className="w-full h-full bg-gray-300 flex items-center justify-center text-gray-500">
-              Photo
-            </div>
-          )}
-        </div>
+  <div className="${themes.modern.layout.containerClass}">
+    <div className="${themes.modern.layout.contentClass}">
+      {/* Personal Info Section */}
+      <div className="${themes.modern.personalInfo.containerClass}">
+        <div className="${themes.modern.personalInfo.gridClass}">
+          <div className="${themes.modern.personalInfo.infoContainerClass}">
+            <h1 className="${themes.modern.personalInfo.titleClass}">
+              {personalInfo.fullName || "Your Name"}
+            </h1>
+            <p className="${themes.modern.personalInfo.subtitleClass}">
+              {personalInfo.jobTitle || "Your Profession"}
+            </p>
 
-        <div className="${themes.modern.personalInfo.infoContainerClass}">
-          <h1 className="${themes.modern.personalInfo.titleClass}">
-            {personalInfo.fullName || "Your Name"}
-          </h1>
-          <p className="${themes.modern.personalInfo.subtitleClass}">
-            {personalInfo.jobTitle || "Your Profession"}
-          </p>
-          
-          <div className="${themes.modern.personalInfo.contactContainerClass}">
-            {personalInfo.email && (
-              <div className="${themes.modern.personalInfo.contactItemClass}">
-                <Mail size={16} />
-                <span>{personalInfo.email}</span>
+            <div className="${themes.modern.personalInfo.contactContainerClass}">
+              {personalInfo.email && (
+                <div className="${themes.modern.personalInfo.contactItemClass}">
+                  <span className="${themes.modern.personalInfo.labelClass}">EMAIL</span>
+                  <span className="${themes.modern.personalInfo.valueClass}">{personalInfo.email}</span>
+                </div>
+              )}
+              {personalInfo.phone && (
+                <div className="${themes.modern.personalInfo.contactItemClass}">
+                  <span className="${themes.modern.personalInfo.labelClass}">COMM</span>
+                  <span className="${themes.modern.personalInfo.valueClass}">{personalInfo.phone}</span>
+                </div>
+              )}
+              {personalInfo.location && (
+                <div className="${themes.modern.personalInfo.contactItemClass}">
+                  <span className="${themes.modern.personalInfo.labelClass}">BASE</span>
+                  <span className="${themes.modern.personalInfo.valueClass}">{personalInfo.location}</span>
+                </div>
+              )}
+              {personalInfo.website && (
+                <div className="${themes.modern.personalInfo.contactItemClass}">
+                  <span className="${themes.modern.personalInfo.labelClass}">NODE</span>
+                  <span className="${themes.modern.personalInfo.valueClass}">{personalInfo.website}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="${themes.modern.personalInfo.avatarContainerClass}">
+            {personalInfo.photoUrl ? (
+              <div
+                className="w-full h-full"
+                style={{
+                  backgroundImage: "url(" + personalInfo.photoUrl + ")",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat"
+                }}
+              >
+                <img
+                  src={personalInfo.photoUrl}
+                  alt={personalInfo.fullName || "Profile"}
+                  className="w-full h-full grayscale sepia-[0.2]"
+                  style={{
+                    objectFit: "cover",
+                    objectPosition: "center"
+                  }}
+                />
               </div>
-            )}
-            {personalInfo.phone && (
-              <div className="${themes.modern.personalInfo.contactItemClass}">
-                <Phone size={16} />
-                <span>{personalInfo.phone}</span>
-              </div>
-            )}
-            {personalInfo.location && (
-              <div className="${themes.modern.personalInfo.contactItemClass}">
-                <MapPin size={16} />
-                <span>{personalInfo.location}</span>
-              </div>
-            )}
-            {personalInfo.website && (
-              <div className="${themes.modern.personalInfo.contactItemClass}">
-                <Link size={16} />
-                <span>{personalInfo.website}</span>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-[#9b72d1]/50 font-mono text-sm uppercase">
+                IMG_ERR
               </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* Summary Section */}
+      {personalInfo.summary && (
+        <section className="${themes.modern.section.containerClass}">
+          <h2 className="${themes.modern.section.titleClass}">Profile Data</h2>
+          <div className="${themes.modern.section.contentClass}">
+            <p className="${themes.modern.workExperience.descriptionClass}">{personalInfo.summary}</p>
+          </div>
+        </section>
+      )}
+
+      {/* Work Experience Section */}
+      {workExperience.length > 0 && (
+        <section className="${themes.modern.workExperience.containerClass}">
+          <h2 className="${themes.modern.workExperience.titleClass}">Mission Logs</h2>
+          <div className="space-y-4">
+            {workExperience.map((exp) => (
+              <div key={exp.id} className="${themes.modern.workExperience.entryClass}">
+                <h3 className="${themes.modern.workExperience.jobTitleClass}">{exp.position}</h3>
+                <p className="${themes.modern.workExperience.companyClass}">{exp.company}</p>
+                <p className="${themes.modern.workExperience.periodClass}">{exp.startDate} - {exp.endDate}</p>
+                <p className="${themes.modern.workExperience.descriptionClass}">{exp.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Education Section */}
+      {education.length > 0 && (
+        <section className="${themes.modern.education.containerClass}">
+          <h2 className="${themes.modern.education.titleClass}">Training Base</h2>
+          <div className="space-y-4">
+            {education.map((edu) => (
+              <div key={edu.id} className="${themes.modern.education.entryClass}">
+                <h3 className="${themes.modern.education.institutionClass}">{edu.institution}</h3>
+                <p className="${themes.modern.education.degreeClass}">{edu.degree} in {edu.field}</p>
+                <p className="${themes.modern.education.periodClass}">Graduated: {edu.graduationDate}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Skills Section */}
+      {skills.length > 0 && (
+        <section className="${themes.modern.skills.containerClass}">
+          <h2 className="${themes.modern.skills.titleClass}">Capabilities</h2>
+          <div className="${themes.modern.skills.skillsListClass}">
+            {skills.map((skill) => (
+              <span key={skill} className="${themes.modern.skills.skillItemClass}">
+                {skill}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
-
-    {/* Summary Section */}
-    {personalInfo.summary && (
-      <section className="${themes.modern.section.containerClass}">
-        <h2 className="${themes.modern.section.titleClass}">Summary</h2>
-        <div className="${themes.modern.section.contentClass}">
-          <p className="text-sm text-gray-600">{personalInfo.summary}</p>
-        </div>
-      </section>
-    )}
-
-    {/* Work Experience Section */}
-    {workExperience.length > 0 && (
-      <section className="${themes.modern.workExperience.containerClass}">
-        <h2 className="${themes.modern.workExperience.titleClass}">Work Experience</h2>
-        <div className="space-y-4">
-          {workExperience.map((exp) => (
-            <div key={exp.id} className="${themes.modern.workExperience.entryClass}">
-              <h3 className="${themes.modern.workExperience.jobTitleClass}">{exp.position}</h3>
-              <p className="${themes.modern.workExperience.companyClass}">{exp.company}</p>
-              <p className="${themes.modern.workExperience.periodClass}">{exp.startDate} - {exp.endDate}</p>
-              <p className="${themes.modern.workExperience.descriptionClass}">{exp.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-    )}
-
-    {/* Education Section */}
-    {education.length > 0 && (
-      <section className="${themes.modern.education.containerClass}">
-        <h2 className="${themes.modern.education.titleClass}">Education</h2>
-        <div className="space-y-4">
-          {education.map((edu) => (
-            <div key={edu.id} className="${themes.modern.education.entryClass}">
-              <h3 className="${themes.modern.education.institutionClass}">{edu.institution}</h3>
-              <p className="${themes.modern.education.degreeClass}">{edu.degree} in {edu.field}</p>
-              <p className="${themes.modern.education.periodClass}">Graduated: {edu.graduationDate}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-    )}
-
-    {/* Skills Section */}
-    {skills.length > 0 && (
-      <section className="${themes.modern.skills.containerClass}">
-        <h2 className="${themes.modern.skills.titleClass}">Skills</h2>
-        <div className="${themes.modern.skills.skillsListClass}">
-          {skills.map((skill) => (
-            <span key={skill} className="${themes.modern.skills.skillItemClass}">
-              {skill}
-            </span>
-          ))}
-        </div>
-      </section>
-    )}
   </div>
 )`;
     case 'Sidebar':
-      return `// SidebarLayout Component
+      return `// Corpo DB Layout Component
 (
   <>
     {/* Left Sidebar */}
@@ -453,46 +435,44 @@ export const getLayoutJSXString = (layoutName: string) => {
             <img
               src={personalInfo.photoUrl}
               alt={personalInfo.fullName || "Profile"}
-              className="w-24 h-24 rounded-full"
-              style={{ 
-                objectFit: "cover",
-                objectPosition: "center"
-              }}
+              className="w-full h-full object-cover grayscale"
             />
           </div>
         ) : (
-          <div className="w-full h-full bg-gray-300 flex items-center justify-center text-gray-500">
-            Photo
+          <div className="w-full h-full bg-[#0f1219] flex items-center justify-center text-[#3bd4f5]/50 font-mono text-sm uppercase">
+            IMG_ERR
           </div>
         )}
       </div>
 
       <div className="${themes.sidebar.personalInfo.infoContainerClass}">
-        <h1 className="${themes.sidebar.personalInfo.titleClass}">{personalInfo.fullName || "Your Name"}</h1>
-        <p className="${themes.sidebar.personalInfo.subtitleClass}">{personalInfo.jobTitle || "Your Profession"}</p>
+        <div>
+          <h1 className="${themes.sidebar.personalInfo.titleClass}">{personalInfo.fullName || "Your Name"}</h1>
+          <p className="${themes.sidebar.personalInfo.subtitleClass}">{personalInfo.jobTitle || "Your Profession"}</p>
+        </div>
         
         <div className="${themes.sidebar.personalInfo.contactContainerClass}">
           {personalInfo.email && (
             <div className="${themes.sidebar.personalInfo.contactItemClass}">
-              <Mail size={16} className="flex-shrink-0" />
+              <span className="${themes.sidebar.personalInfo.labelClass}">COM.EMAIL</span>
               <span className="truncate">{personalInfo.email}</span>
             </div>
           )}
           {personalInfo.phone && (
             <div className="${themes.sidebar.personalInfo.contactItemClass}">
-              <Phone size={16} className="flex-shrink-0" />
+              <span className="${themes.sidebar.personalInfo.labelClass}">COM.VOICE</span>
               <span className="truncate">{personalInfo.phone}</span>
             </div>
           )}
           {personalInfo.location && (
             <div className="${themes.sidebar.personalInfo.contactItemClass}">
-              <MapPin size={16} className="flex-shrink-0" />
+              <span className="${themes.sidebar.personalInfo.labelClass}">LOC.COORD</span>
               <span className="truncate">{personalInfo.location}</span>
             </div>
           )}
           {personalInfo.website && (
             <div className="${themes.sidebar.personalInfo.contactItemClass}">
-              <Link size={16} className="flex-shrink-0" />
+              <span className="${themes.sidebar.personalInfo.labelClass}">NET.LINK</span>
               <span className="truncate">{personalInfo.website}</span>
             </div>
           )}
@@ -502,7 +482,7 @@ export const getLayoutJSXString = (layoutName: string) => {
       {/* Skills in sidebar */}
       {skills.length > 0 && (
         <section className="${themes.sidebar.skills.containerClass}">
-          <h2 className="${themes.sidebar.skills.titleClass}">Skills</h2>
+          <h2 className="${themes.sidebar.skills.titleClass}">Skill DB</h2>
           <div className="${themes.sidebar.skills.skillsListClass}">
             {skills.map((skill) => (
               <span key={skill} className="${themes.sidebar.skills.skillItemClass}">
@@ -515,16 +495,27 @@ export const getLayoutJSXString = (layoutName: string) => {
     </div>
 
     {/* Main Content */}
-    <div className="flex-1">
+    <div className="${themes.sidebar.workExperience.containerClass}">
+      {personalInfo.summary && (
+        <section className="${themes.sidebar.section.containerClass}">
+          <h2 className="${themes.sidebar.section.titleClass}">Personnel File</h2>
+          <div className="${themes.sidebar.section.contentClass}">
+            <p className="${themes.sidebar.workExperience.descriptionClass}">{personalInfo.summary}</p>
+          </div>
+        </section>
+      )}
+
       {workExperience.length > 0 && (
-        <section className="${themes.sidebar.workExperience.containerClass}">
-          <h2 className="${themes.sidebar.workExperience.titleClass}">Work Experience</h2>
+        <section className="${themes.sidebar.section.containerClass}">
+          <h2 className="${themes.sidebar.workExperience.titleClass}">Employment Records</h2>
           <div className="space-y-4">
             {workExperience.map((exp) => (
               <div key={exp.id} className="${themes.sidebar.workExperience.entryClass}">
-                <h3 className="${themes.sidebar.workExperience.jobTitleClass}">{exp.position}</h3>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                  <h3 className="${themes.sidebar.workExperience.jobTitleClass}">{exp.position}</h3>
+                  <span className="${themes.sidebar.workExperience.periodClass}">{exp.startDate} - {exp.endDate}</span>
+                </div>
                 <p className="${themes.sidebar.workExperience.companyClass}">{exp.company}</p>
-                <p className="${themes.sidebar.workExperience.periodClass}">{exp.startDate} - {exp.endDate}</p>
                 <p className="${themes.sidebar.workExperience.descriptionClass}">{exp.description}</p>
               </div>
             ))}
@@ -533,14 +524,16 @@ export const getLayoutJSXString = (layoutName: string) => {
       )}
 
       {education.length > 0 && (
-        <section className="${themes.sidebar.workExperience.containerClass}">
-          <h2 className="${themes.sidebar.education.titleClass}">Education</h2>
+        <section className="${themes.sidebar.section.containerClass}">
+          <h2 className="${themes.sidebar.education.titleClass}">Education History</h2>
           <div className="space-y-4">
             {education.map((edu) => (
               <div key={edu.id} className="${themes.sidebar.education.entryClass}">
-                <h3 className="${themes.sidebar.education.institutionClass}">{edu.institution}</h3>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                  <h3 className="${themes.sidebar.education.institutionClass}">{edu.institution}</h3>
+                  <span className="${themes.sidebar.education.periodClass}">Graduated: {edu.graduationDate}</span>
+                </div>
                 <p className="${themes.sidebar.education.degreeClass}">{edu.degree} in {edu.field}</p>
-                <p className="${themes.sidebar.education.periodClass}">Graduated: {edu.graduationDate}</p>
               </div>
             ))}
           </div>
@@ -550,130 +543,130 @@ export const getLayoutJSXString = (layoutName: string) => {
   </>
 )`;
     case 'Centered':
-      return `// CenteredLayout Component
+      return `// Neon City Layout Component
 (
-  <div className="${themes.centered.layout.contentClass}">
-    {/* Personal Info Section */}
-    <div className="${themes.centered.personalInfo.containerClass}">
-      <div className="${themes.centered.personalInfo.gridClass}">
-        <div className="${themes.centered.personalInfo.avatarContainerClass}">
-          {personalInfo.photoUrl ? (
-            <div 
-              className="w-full h-full"
-              style={{
-                backgroundImage: "url(" + personalInfo.photoUrl + ")",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat"
-              }}
-            >
-              <img
-                src={personalInfo.photoUrl}
-                alt={personalInfo.fullName || "Profile"}
-                className="w-24 h-24 rounded-full"
-                style={{ 
-                  objectFit: "cover",
-                  objectPosition: "center"
+  <div className="${themes.centered.layout.containerClass}">
+    <div className="${themes.centered.layout.contentClass}">
+      {/* Personal Info Section */}
+      <div className="${themes.centered.personalInfo.containerClass}">
+        <div className="${themes.centered.personalInfo.gridClass}">
+          <div className="${themes.centered.personalInfo.avatarContainerClass}">
+            {personalInfo.photoUrl ? (
+              <div
+                className="w-full h-full"
+                style={{
+                  backgroundImage: "url(" + personalInfo.photoUrl + ")",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat"
                 }}
-              />
-            </div>
-          ) : (
-            <div className="w-full h-full bg-gray-300 flex items-center justify-center text-gray-500">
-              Photo
-            </div>
-          )}
-        </div>
-
-        <div className="${themes.centered.personalInfo.infoContainerClass}">
-          <h1 className="${themes.centered.personalInfo.titleClass}">{personalInfo.fullName || "Your Name"}</h1>
-          <p className="${themes.centered.personalInfo.subtitleClass}">{personalInfo.jobTitle || "Your Profession"}</p>
-          
-          <div className="${themes.centered.personalInfo.contactContainerClass}">
-            {personalInfo.email && (
-              <div className="${themes.centered.personalInfo.contactItemClass}">
-                <Mail size={16} />
-                <span>{personalInfo.email}</span>
+              >
+                <img
+                  src={personalInfo.photoUrl}
+                  alt={personalInfo.fullName || "Profile"}
+                  className="w-full h-full object-cover"
+                />
               </div>
-            )}
-            {personalInfo.phone && (
-              <div className="${themes.centered.personalInfo.contactItemClass}">
-                <Phone size={16} />
-                <span>{personalInfo.phone}</span>
-              </div>
-            )}
-            {personalInfo.location && (
-              <div className="${themes.centered.personalInfo.contactItemClass}">
-                <MapPin size={16} />
-                <span>{personalInfo.location}</span>
-              </div>
-            )}
-            {personalInfo.website && (
-              <div className="${themes.centered.personalInfo.contactItemClass}">
-                <Link size={16} />
-                <span>{personalInfo.website}</span>
+            ) : (
+              <div className="w-full h-full bg-[#0f1219] flex items-center justify-center text-[#3bd4f5]/50 font-mono text-sm uppercase">
+                IMG_ERR
               </div>
             )}
           </div>
+
+          <div className="${themes.centered.personalInfo.infoContainerClass}">
+            <h1 className="${themes.centered.personalInfo.titleClass}">{personalInfo.fullName || "Your Name"}</h1>
+            <p className="${themes.centered.personalInfo.subtitleClass}">{personalInfo.jobTitle || "Your Profession"}</p>
+
+            <div className="${themes.centered.personalInfo.contactContainerClass}">
+              {personalInfo.email && (
+                <div className="${themes.centered.personalInfo.contactItemClass}">
+                  <span className="${themes.centered.personalInfo.labelClass}">COM.EMAIL</span>
+                  <span>{personalInfo.email}</span>
+                </div>
+              )}
+              {personalInfo.phone && (
+                <div className="${themes.centered.personalInfo.contactItemClass}">
+                  <span className="${themes.centered.personalInfo.labelClass}">COM.VOICE</span>
+                  <span>{personalInfo.phone}</span>
+                </div>
+              )}
+              {personalInfo.location && (
+                <div className="${themes.centered.personalInfo.contactItemClass}">
+                  <span className="${themes.centered.personalInfo.labelClass}">LOC.COORD</span>
+                  <span>{personalInfo.location}</span>
+                </div>
+              )}
+              {personalInfo.website && (
+                <div className="${themes.centered.personalInfo.contactItemClass}">
+                  <span className="${themes.centered.personalInfo.labelClass}">NET.LINK</span>
+                  <span>{personalInfo.website}</span>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Summary Section */}
+      {personalInfo.summary && (
+        <section className="${themes.centered.section.containerClass}">
+          <h2 className="${themes.centered.section.titleClass}">Identity Summary</h2>
+          <div className="${themes.centered.section.contentClass}">
+            <p className="${themes.centered.workExperience.descriptionClass} text-center">{personalInfo.summary}</p>
+          </div>
+        </section>
+      )}
+
+      {/* Work Experience Section */}
+      {workExperience.length > 0 && (
+        <section className="${themes.centered.workExperience.containerClass}">
+          <h2 className="${themes.centered.workExperience.titleClass}">Career Log</h2>
+          <div className="${themes.centered.section.contentClass}">
+            {workExperience.map((exp) => (
+              <div key={exp.id} className="${themes.centered.workExperience.entryClass}">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
+                  <h3 className="${themes.centered.workExperience.jobTitleClass}">{exp.position}</h3>
+                  <span className="${themes.centered.workExperience.periodClass}">{exp.startDate} - {exp.endDate}</span>
+                </div>
+                <p className="${themes.centered.workExperience.companyClass} mb-4">{exp.company}</p>
+                <p className="${themes.centered.workExperience.descriptionClass}">{exp.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Education Section */}
+      {education.length > 0 && (
+        <section className="${themes.centered.education.containerClass}">
+          <h2 className="${themes.centered.education.titleClass}">Academic Protocol</h2>
+          <div className="${themes.centered.section.contentClass}">
+            {education.map((edu) => (
+              <div key={edu.id} className="${themes.centered.education.entryClass}">
+                <h3 className="${themes.centered.education.institutionClass}">{edu.institution}</h3>
+                <p className="${themes.centered.education.degreeClass}">{edu.degree} in {edu.field}</p>
+                <span className="${themes.centered.education.periodClass}">Graduated: {edu.graduationDate}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Skills Section */}
+      {skills.length > 0 && (
+        <section className="${themes.centered.skills.containerClass}">
+          <h2 className="${themes.centered.skills.titleClass}">System Specs</h2>
+          <div className="${themes.centered.skills.skillsListClass}">
+            {skills.map((skill) => (
+              <span key={skill} className="${themes.centered.skills.skillItemClass}">
+                {skill}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
-
-    {/* Summary Section */}
-    {personalInfo.summary && (
-      <section className="${themes.centered.section.containerClass}">
-        <h2 className="${themes.centered.section.titleClass}">Summary</h2>
-        <div className="${themes.centered.section.contentClass}">
-          <p className="text-sm text-gray-600">{personalInfo.summary}</p>
-        </div>
-      </section>
-    )}
-
-    {/* Work Experience Section */}
-    {workExperience.length > 0 && (
-      <section className="${themes.centered.workExperience.containerClass}">
-        <h2 className="${themes.centered.workExperience.titleClass}">Work Experience</h2>
-        <div className="space-y-4">
-          {workExperience.map((exp) => (
-            <div key={exp.id} className="${themes.centered.workExperience.entryClass}">
-              <h3 className="${themes.centered.workExperience.jobTitleClass}">{exp.position}</h3>
-              <p className="${themes.centered.workExperience.companyClass}">{exp.company}</p>
-              <p className="${themes.centered.workExperience.periodClass}">{exp.startDate} - {exp.endDate}</p>
-              <p className="${themes.centered.workExperience.descriptionClass}">{exp.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-    )}
-
-    {/* Education Section */}
-    {education.length > 0 && (
-      <section className="${themes.centered.education.containerClass}">
-        <h2 className="${themes.centered.education.titleClass}">Education</h2>
-        <div className="space-y-4">
-          {education.map((edu) => (
-            <div key={edu.id} className="${themes.centered.education.entryClass}">
-              <h3 className="${themes.centered.education.institutionClass}">{edu.institution}</h3>
-              <p className="${themes.centered.education.degreeClass}">{edu.degree} in {edu.field}</p>
-              <p className="${themes.centered.education.periodClass}">Graduated: {edu.graduationDate}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-    )}
-
-    {/* Skills Section */}
-    {skills.length > 0 && (
-      <section className="${themes.centered.skills.containerClass}">
-        <h2 className="${themes.centered.skills.titleClass}">Skills</h2>
-        <div className="${themes.centered.skills.skillsListClass}">
-          {skills.map((skill) => (
-            <span key={skill} className="${themes.centered.skills.skillItemClass}">
-              {skill}
-            </span>
-          ))}
-        </div>
-      </section>
-    )}
   </div>
 )`;
     default:

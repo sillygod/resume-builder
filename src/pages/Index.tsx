@@ -121,51 +121,70 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 relative">
-      <div className="container py-8">
-        <div className="flex flex-col space-y-4 mb-6">
-          <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl'} font-bold text-primary`}>Resume Builder</h1>
+    <div className="min-h-screen relative overflow-hidden font-sans pb-16 bg-background">
+      {/* Subtle Scanline overlay */}
+      <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden opacity-20">
+        <div className="h-2 w-full bg-primary/10 blur-[1px] animate-scanline"></div>
+      </div>
 
-          <div className={`flex ${isMobile ? 'flex-col space-y-2' : 'flex-row gap-2'} items-stretch`}>
+      <div className="container py-10 relative z-10">
+        <div className="flex flex-col space-y-6 mb-10 animate-fade-in [animation-delay:100ms] opacity-0 [animation-fill-mode:forwards]">
 
-            <input
-              type="file"
-              accept=".json"
-              onChange={handleImport}
-              className="hidden"
-              id="resume-import"
-            />
-            <label htmlFor="resume-import">
-              <Button variant="outline" className="flex items-center gap-2" asChild>
-                <span>
-                  <Upload className="w-4 h-4" /> Import JSON
-                </span>
+          {/* Header section with refined corpo cyberpunk aesthetics */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-primary/20 pb-6 relative">
+            <div className="absolute -bottom-[1px] left-0 w-1/4 h-[1px] bg-primary shadow-[0_0_8px_var(--primary)] animate-pulse-glow"></div>
+
+            <div className="relative">
+              <div className="absolute -top-5 -left-1 text-primary/40 font-mono text-[10px] tracking-widest uppercase hidden md:block">SYS.INIT // CORPO_UI_v2.1</div>
+              <h1
+                className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl'} font-display font-bold text-foreground tracking-wider uppercase mb-1 hover:text-primary transition-colors duration-500`}
+              >
+                Resume <span className="text-primary font-light">Builder</span>
+              </h1>
+              <div className="h-[2px] w-12 bg-secondary mt-3"></div>
+            </div>
+
+            <div className={`flex ${isMobile ? 'flex-col space-y-3 w-full mt-8' : 'flex-row gap-4'} items-stretch`}>
+              <input
+                type="file"
+                accept=".json"
+                onChange={handleImport}
+                className="hidden"
+                id="resume-import"
+              />
+              <label htmlFor="resume-import" className="w-full md:w-auto">
+                <Button variant="outline" className="w-full flex items-center gap-2 cyber-button" asChild>
+                  <span>
+                    <Upload className="w-4 h-4" /> Import Data
+                  </span>
+                </Button>
+              </label>
+              <Button
+                onClick={handleExport}
+                variant="outline"
+                className="flex items-center gap-2 cyber-button"
+              >
+                <Download className="w-4 h-4" /> Export Data
               </Button>
-            </label>
-            <Button
-              onClick={handleExport}
-              variant="outline"
-              className="flex items-center gap-2"
-            >
-              <Download className="w-4 h-4" /> Export JSON
-            </Button>
-            <ShowPreviewButton
-              showPreview={showPreview}
-              togglePreview={() => setShowPreview(!showPreview)}
-              handlePreviewPdf={handlePreviewPdf}
-            />
+              <ShowPreviewButton
+                showPreview={showPreview}
+                togglePreview={() => setShowPreview(!showPreview)}
+                handlePreviewPdf={handlePreviewPdf}
+              />
+            </div>
           </div>
         </div>
 
-        <Tabs defaultValue="editor" className="w-full">
-          <TabsList className="mb-4">
-            <TabsTrigger value="editor">Editor</TabsTrigger>
-            <TabsTrigger value="assistant">AI Assistant</TabsTrigger>
+        <Tabs defaultValue="editor" className="w-full animate-fade-in [animation-delay:300ms] opacity-0 [animation-fill-mode:forwards]">
+          <TabsList className="mb-6 max-w-[400px]">
+            <TabsTrigger value="editor">System Editor</TabsTrigger>
+            <TabsTrigger value="assistant">AI Core</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="editor">
+          <TabsContent value="editor" className="mt-0 focus-visible:ring-0 focus-visible:outline-none">
             <div className={`${isMobile ? 'flex flex-col space-y-6' : 'grid gap-8 lg:grid-cols-2'}`}>
-              <div className={`${isMobile ? 'order-1' : 'lg:col-span-1'}`}>
+              <div className={`${isMobile ? 'order-1' : 'lg:col-span-1'} relative`}>
+                <div className="absolute -left-4 top-0 bottom-0 w-[1px] bg-gradient-to-b from-primary/50 via-primary/10 to-transparent hidden lg:block"></div>
                 <LayoutEditor
                   selectedLayout={selectedLayout}
                   setSelectedLayout={setSelectedLayout}
@@ -206,9 +225,10 @@ const Index = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="assistant">
+          <TabsContent value="assistant" className="mt-0 focus-visible:ring-0 focus-visible:outline-none">
             <div className={`${isMobile ? 'flex flex-col space-y-6' : 'grid gap-8 lg:grid-cols-2'}`}>
-              <div className={`${isMobile ? 'order-1' : 'lg:col-span-1'}`}>
+              <div className={`${isMobile ? 'order-1' : 'lg:col-span-1'} relative`}>
+                <div className="absolute -left-4 top-0 bottom-0 w-[1px] bg-gradient-to-b from-accent/50 via-accent/10 to-transparent hidden lg:block"></div>
                 <ResumeAssistant
                   personalInfo={resumeData.personalInfo}
                   workExperience={resumeData.workExperience}
