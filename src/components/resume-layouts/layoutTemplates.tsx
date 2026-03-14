@@ -38,7 +38,7 @@ export const getLayoutJSXString = (layoutName: string) => {
                 />
               </div>
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-[#00ff9f]/30 font-mono text-sm uppercase">
+              <div className="w-full h-full flex items-center justify-center text-[#3bd4f5]/30 font-mono text-sm uppercase">
                 IMG_ERR
               </div>
             )}
@@ -215,7 +215,7 @@ export const getLayoutJSXString = (layoutName: string) => {
                 />
               </div>
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-[#00ff9f]/50 font-mono text-xs">
+              <div className="w-full h-full flex items-center justify-center text-[#3bd4f5]/50 font-mono text-xs">
                 IMG_ERR
               </div>
             )}
@@ -340,7 +340,7 @@ export const getLayoutJSXString = (layoutName: string) => {
                 <img
                   src={personalInfo.photoUrl}
                   alt={personalInfo.fullName || "Profile"}
-                  className="w-full h-full grayscale sepia-[0.5]"
+                  className="w-full h-full grayscale sepia-[0.2]"
                   style={{
                     objectFit: "cover",
                     objectPosition: "center"
@@ -348,7 +348,7 @@ export const getLayoutJSXString = (layoutName: string) => {
                 />
               </div>
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-[#ff00e5]/50 font-mono text-sm uppercase">
+              <div className="w-full h-full flex items-center justify-center text-[#9b72d1]/50 font-mono text-sm uppercase">
                 IMG_ERR
               </div>
             )}
@@ -439,7 +439,7 @@ export const getLayoutJSXString = (layoutName: string) => {
             />
           </div>
         ) : (
-          <div className="w-full h-full bg-[#1c1c24] flex items-center justify-center text-[#ff8a00]/50 font-mono text-sm uppercase">
+          <div className="w-full h-full bg-[#0f1219] flex items-center justify-center text-[#3bd4f5]/50 font-mono text-sm uppercase">
             IMG_ERR
           </div>
         )}
@@ -568,7 +568,7 @@ export const getLayoutJSXString = (layoutName: string) => {
                 />
               </div>
             ) : (
-              <div className="w-full h-full bg-[#050510] flex items-center justify-center text-[#00b8ff]/50 font-mono text-sm uppercase">
+              <div className="w-full h-full bg-[#0f1219] flex items-center justify-center text-[#3bd4f5]/50 font-mono text-sm uppercase">
                 IMG_ERR
               </div>
             )}

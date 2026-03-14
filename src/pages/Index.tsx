@@ -121,31 +121,30 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden font-sans pb-16">
-      {/* Cyberpunk Scanline overlay */}
-      <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
-        <div className="h-4 w-full bg-primary/20 opacity-50 blur-[2px] animate-scanline"></div>
+    <div className="min-h-screen relative overflow-hidden font-sans pb-16 bg-background">
+      {/* Subtle Scanline overlay */}
+      <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden opacity-20">
+        <div className="h-2 w-full bg-primary/10 blur-[1px] animate-scanline"></div>
       </div>
 
-      <div className="container py-8 relative z-10">
-        <div className="flex flex-col space-y-6 mb-8 animate-fade-in [animation-delay:100ms] opacity-0 [animation-fill-mode:forwards]">
+      <div className="container py-10 relative z-10">
+        <div className="flex flex-col space-y-6 mb-10 animate-fade-in [animation-delay:100ms] opacity-0 [animation-fill-mode:forwards]">
 
-          {/* Header section with cyberpunk aesthetics */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-b-2 border-primary/30 pb-4 relative">
-            <div className="absolute -bottom-[2px] left-0 w-1/3 h-[2px] bg-primary animate-pulse-glow"></div>
+          {/* Header section with refined corpo cyberpunk aesthetics */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-primary/20 pb-6 relative">
+            <div className="absolute -bottom-[1px] left-0 w-1/4 h-[1px] bg-primary shadow-[0_0_8px_var(--primary)] animate-pulse-glow"></div>
 
             <div className="relative">
-              <div className="absolute -top-4 -left-4 text-primary/30 font-mono text-xs hidden md:block">SYS.INIT // v2.0.4</div>
+              <div className="absolute -top-5 -left-1 text-primary/40 font-mono text-[10px] tracking-widest uppercase hidden md:block">SYS.INIT // CORPO_UI_v2.1</div>
               <h1
-                className={`${isMobile ? 'text-3xl' : 'text-5xl'} font-display font-bold text-primary tracking-widest uppercase glitch-text`}
-                data-text="Resume Builder"
+                className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl'} font-display font-bold text-foreground tracking-wider uppercase mb-1 hover:text-primary transition-colors duration-500`}
               >
-                Resume Builder
+                Resume <span className="text-primary font-light">Builder</span>
               </h1>
-              <div className="h-1 w-20 bg-accent mt-2"></div>
+              <div className="h-[2px] w-12 bg-secondary mt-3"></div>
             </div>
 
-            <div className={`flex ${isMobile ? 'flex-col space-y-2 w-full mt-6' : 'flex-row gap-4'} items-stretch`}>
+            <div className={`flex ${isMobile ? 'flex-col space-y-3 w-full mt-8' : 'flex-row gap-4'} items-stretch`}>
               <input
                 type="file"
                 accept=".json"
@@ -154,7 +153,7 @@ const Index = () => {
                 id="resume-import"
               />
               <label htmlFor="resume-import" className="w-full md:w-auto">
-                <Button variant="outline" className="w-full flex items-center gap-2" asChild>
+                <Button variant="outline" className="w-full flex items-center gap-2 cyber-button" asChild>
                   <span>
                     <Upload className="w-4 h-4" /> Import Data
                   </span>
@@ -163,7 +162,7 @@ const Index = () => {
               <Button
                 onClick={handleExport}
                 variant="outline"
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 cyber-button"
               >
                 <Download className="w-4 h-4" /> Export Data
               </Button>

@@ -44,14 +44,14 @@ export default {
           foreground: "hsl(var(--accent-foreground))",
         },
         cyber: {
-          neon: "#00ff9f",
-          blue: "#00b8ff",
-          pink: "#ff00e5",
-          yellow: "#fdfb00",
-          orange: "#ff8a00",
-          dark: "#050510",
-          gray: "#1c1c24",
-          light: "#d1d1e9"
+          neon: "#3bd4f5", // Subtle Cyan
+          blue: "#3b82f6", // Soft Blue
+          pink: "#9b72d1", // Muted Purple
+          yellow: "#eab308", // Muted Yellow
+          orange: "#f97316", // Muted Orange
+          dark: "#0f1219", // Deep Charcoal
+          gray: "#1e293b", // Slate
+          light: "#f1f5f9" // Soft White
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -95,8 +95,8 @@ export default {
           "80%": { transform: "translate(2px, -2px)" },
         },
         "pulse-glow": {
-          "0%, 100%": { opacity: "1", boxShadow: "0 0 10px var(--neon-color, #00ff9f)" },
-          "50%": { opacity: "0.8", boxShadow: "0 0 20px var(--neon-color, #00ff9f)" },
+          "0%, 100%": { opacity: "1", boxShadow: "0 0 5px var(--neon-color, #3bd4f5)" },
+          "50%": { opacity: "0.8", boxShadow: "0 0 10px var(--neon-color, #3bd4f5)" },
         },
         "scanline": {
           "0%": { transform: "translateY(-100%)" },
@@ -109,12 +109,12 @@ export default {
         "fade-in": "fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         "fade-out": "fade-out 0.3s ease-out",
         "glitch": "glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite",
-        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
-        "scanline": "scanline 8s linear infinite"
+        "pulse-glow": "pulse-glow 3s ease-in-out infinite",
+        "scanline": "scanline 10s linear infinite"
       },
       backgroundImage: {
-        'cyber-grid': 'linear-gradient(rgba(0, 255, 159, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 159, 0.1) 1px, transparent 1px)',
-        'hex-pattern': 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'100\' viewBox=\'0 0 60 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M30 0l25.98 15v30L30 60 4.02 45V15L30 0z\' fill-opacity=\'0.05\' fill=\'%2300b8ff\' fill-rule=\'evenodd\'/%3E%3C/svg%3E")',
+        'cyber-grid': 'linear-gradient(rgba(59, 212, 245, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 212, 245, 0.05) 1px, transparent 1px)',
+        'hex-pattern': 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'100\' viewBox=\'0 0 60 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M30 0l25.98 15v30L30 60 4.02 45V15L30 0z\' fill-opacity=\'0.02\' fill=\'%233bd4f5\' fill-rule=\'evenodd\'/%3E%3C/svg%3E")',
       },
     },
   },

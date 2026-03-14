@@ -246,13 +246,13 @@ describe('ThemeContext', () => {
     it('sidebar theme has flex-row layout', () => {
       const sidebarTheme = themes.sidebar;
       expect(sidebarTheme.layout.containerClass).toContain('flex-row');
-      expect(sidebarTheme.personalInfo.containerClass).toContain('w-[35%]');
+      expect(sidebarTheme.personalInfo.containerClass).toContain('w-[32%]');
     });
 
     it('executive theme has sophisticated styling', () => {
       const executiveTheme = themes.executive;
       expect(executiveTheme.personalInfo.titleClass).toContain('text-5xl');
-      expect(executiveTheme.layout.containerClass).toContain('bg-[#050510]');
+      expect(executiveTheme.layout.containerClass).toContain('bg-[#0f1219]');
     });
 
     it('centered theme has center alignment', () => {
