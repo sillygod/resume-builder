@@ -87,7 +87,7 @@ export const themes: Record<ThemeName, ThemeConfig> = {
   // Simple layout -> "Netrunner Core"
   simple: {
     layout: {
-      containerClass: "flex flex-col w-full h-full bg-[#0f1219] text-[#f1f5f9] font-sans",
+      containerClass: "flex flex-col w-full min-h-[297mm] bg-[#0f1219] text-[#f1f5f9] font-sans",
       contentClass: "space-y-6 p-10 relative z-10 before:absolute before:inset-0 before:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiMzYmQ0ZjUiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')] before:z-[-1]",
     },
     personalInfo: {
@@ -135,7 +135,7 @@ export const themes: Record<ThemeName, ThemeConfig> = {
   // Centered layout -> "Neon City"
   centered: {
     layout: {
-      containerClass: "flex flex-col w-full h-full bg-[#151922] text-[#f1f5f9] font-sans",
+      containerClass: "flex flex-col w-full min-h-[297mm] bg-[#151922] text-[#f1f5f9] font-sans",
       contentClass: "space-y-10",
     },
     personalInfo: {
@@ -183,11 +183,11 @@ export const themes: Record<ThemeName, ThemeConfig> = {
   // Sidebar layout -> "Corpo DB"
   sidebar: {
     layout: {
-      containerClass: "flex flex-row w-full h-full bg-[#f8fafc] text-[#0f1219] font-sans",
+      containerClass: "flex flex-row w-full min-h-[297mm] bg-[#f8fafc] text-[#0f1219] font-sans",
       contentClass: "flex flex-row",
     },
     personalInfo: {
-      containerClass: "bg-[#0f1219] text-[#f1f5f9] p-10 w-[32%] min-w-[280px] h-full shadow-xl relative z-10",
+      containerClass: "bg-[#0f1219] text-[#f1f5f9] p-10 w-[32%] min-w-[280px] min-h-[297mm] shadow-xl relative z-10",
       titleClass: "text-2xl font-display font-medium text-[#f1f5f9] uppercase tracking-widest break-words",
       subtitleClass: "text-[#3bd4f5] font-tech text-sm tracking-[0.2em] uppercase mt-3",
       gridClass: "flex flex-col mt-10",
@@ -231,7 +231,7 @@ export const themes: Record<ThemeName, ThemeConfig> = {
   // Modern layout -> "Wasteland Tech"
   modern: {
     layout: {
-      containerClass: "flex flex-col w-full h-full bg-[#1e293b] text-[#f1f5f9] font-sans relative before:absolute before:inset-0 before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMWUyOTNiIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMOCA4Wk04IDBMMCA4WiIgc3Ryb2tlPSIjM2JkNGY1IiBzdHJva2Utb3BhY2l0eT0iMC4wNSIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] before:opacity-50",
+      containerClass: "flex flex-col w-full min-h-[297mm] bg-[#1e293b] text-[#f1f5f9] font-sans relative before:absolute before:inset-0 before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMWUyOTNiIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMOCA4Wk04IDBMMCA4WiIgc3Ryb2tlPSIjM2JkNGY1IiBzdHJva2Utb3BhY2l0eT0iMC4wNSIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] before:opacity-50",
       contentClass: "space-y-6 p-6 md:p-12 relative z-10 max-w-5xl mx-auto",
     },
     personalInfo: {
@@ -279,7 +279,7 @@ export const themes: Record<ThemeName, ThemeConfig> = {
   // Executive layout -> "Cyber-Executive"
   executive: {
     layout: {
-      containerClass: "flex flex-col w-full h-full bg-[#0f1219] text-[#f1f5f9] font-sans",
+      containerClass: "flex flex-col w-full min-h-[297mm] bg-[#0f1219] text-[#f1f5f9] font-sans",
       contentClass: "space-y-10 p-12 max-w-6xl mx-auto relative z-10",
     },
     personalInfo: {

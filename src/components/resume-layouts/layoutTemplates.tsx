@@ -39,7 +39,7 @@ export const getLayoutJSXString = (layoutName: string) => {
               </div>
             ) : (
               <div className="w-full h-full flex items-center justify-center text-[#3bd4f5]/30 font-mono text-sm uppercase">
-                IMG_ERR
+
               </div>
             )}
           </div>
@@ -216,7 +216,7 @@ export const getLayoutJSXString = (layoutName: string) => {
               </div>
             ) : (
               <div className="w-full h-full flex items-center justify-center text-[#3bd4f5]/50 font-mono text-xs">
-                IMG_ERR
+
               </div>
             )}
           </div>
@@ -349,7 +349,7 @@ export const getLayoutJSXString = (layoutName: string) => {
               </div>
             ) : (
               <div className="w-full h-full flex items-center justify-center text-[#9b72d1]/50 font-mono text-sm uppercase">
-                IMG_ERR
+
               </div>
             )}
           </div>
@@ -440,7 +440,8 @@ export const getLayoutJSXString = (layoutName: string) => {
           </div>
         ) : (
           <div className="w-full h-full bg-[#0f1219] flex items-center justify-center text-[#3bd4f5]/50 font-mono text-sm uppercase">
-            IMG_ERR
+
+
           </div>
         )}
       </div>
@@ -569,7 +570,9 @@ export const getLayoutJSXString = (layoutName: string) => {
               </div>
             ) : (
               <div className="w-full h-full bg-[#0f1219] flex items-center justify-center text-[#3bd4f5]/50 font-mono text-sm uppercase">
-                IMG_ERR
+
+
+
               </div>
             )}
           </div>
