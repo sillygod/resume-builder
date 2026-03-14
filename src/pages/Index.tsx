@@ -121,51 +121,71 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 relative">
-      <div className="container py-8">
-        <div className="flex flex-col space-y-4 mb-6">
-          <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl'} font-bold text-primary`}>Resume Builder</h1>
+    <div className="min-h-screen relative overflow-hidden font-sans pb-16">
+      {/* Cyberpunk Scanline overlay */}
+      <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
+        <div className="h-4 w-full bg-primary/20 opacity-50 blur-[2px] animate-scanline"></div>
+      </div>
 
-          <div className={`flex ${isMobile ? 'flex-col space-y-2' : 'flex-row gap-2'} items-stretch`}>
+      <div className="container py-8 relative z-10">
+        <div className="flex flex-col space-y-6 mb-8 animate-fade-in [animation-delay:100ms] opacity-0 [animation-fill-mode:forwards]">
 
-            <input
-              type="file"
-              accept=".json"
-              onChange={handleImport}
-              className="hidden"
-              id="resume-import"
-            />
-            <label htmlFor="resume-import">
-              <Button variant="outline" className="flex items-center gap-2" asChild>
-                <span>
-                  <Upload className="w-4 h-4" /> Import JSON
-                </span>
+          {/* Header section with cyberpunk aesthetics */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-b-2 border-primary/30 pb-4 relative">
+            <div className="absolute -bottom-[2px] left-0 w-1/3 h-[2px] bg-primary animate-pulse-glow"></div>
+
+            <div className="relative">
+              <div className="absolute -top-4 -left-4 text-primary/30 font-mono text-xs hidden md:block">SYS.INIT // v2.0.4</div>
+              <h1
+                className={`${isMobile ? 'text-3xl' : 'text-5xl'} font-display font-bold text-primary tracking-widest uppercase glitch-text`}
+                data-text="Resume Builder"
+              >
+                Resume Builder
+              </h1>
+              <div className="h-1 w-20 bg-accent mt-2"></div>
+            </div>
+
+            <div className={`flex ${isMobile ? 'flex-col space-y-2 w-full mt-6' : 'flex-row gap-4'} items-stretch`}>
+              <input
+                type="file"
+                accept=".json"
+                onChange={handleImport}
+                className="hidden"
+                id="resume-import"
+              />
+              <label htmlFor="resume-import" className="w-full md:w-auto">
+                <Button variant="outline" className="w-full flex items-center gap-2" asChild>
+                  <span>
+                    <Upload className="w-4 h-4" /> Import Data
+                  </span>
+                </Button>
+              </label>
+              <Button
+                onClick={handleExport}
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                <Download className="w-4 h-4" /> Export Data
               </Button>
-            </label>
-            <Button
-              onClick={handleExport}
-              variant="outline"
-              className="flex items-center gap-2"
-            >
-              <Download className="w-4 h-4" /> Export JSON
-            </Button>
-            <ShowPreviewButton
-              showPreview={showPreview}
-              togglePreview={() => setShowPreview(!showPreview)}
-              handlePreviewPdf={handlePreviewPdf}
-            />
+              <ShowPreviewButton
+                showPreview={showPreview}
+                togglePreview={() => setShowPreview(!showPreview)}
+                handlePreviewPdf={handlePreviewPdf}
+              />
+            </div>
           </div>
         </div>
 
-        <Tabs defaultValue="editor" className="w-full">
-          <TabsList className="mb-4">
-            <TabsTrigger value="editor">Editor</TabsTrigger>
-            <TabsTrigger value="assistant">AI Assistant</TabsTrigger>
+        <Tabs defaultValue="editor" className="w-full animate-fade-in [animation-delay:300ms] opacity-0 [animation-fill-mode:forwards]">
+          <TabsList className="mb-6 max-w-[400px]">
+            <TabsTrigger value="editor">System Editor</TabsTrigger>
+            <TabsTrigger value="assistant">AI Core</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="editor">
+          <TabsContent value="editor" className="mt-0 focus-visible:ring-0 focus-visible:outline-none">
             <div className={`${isMobile ? 'flex flex-col space-y-6' : 'grid gap-8 lg:grid-cols-2'}`}>
-              <div className={`${isMobile ? 'order-1' : 'lg:col-span-1'}`}>
+              <div className={`${isMobile ? 'order-1' : 'lg:col-span-1'} relative`}>
+                <div className="absolute -left-4 top-0 bottom-0 w-[1px] bg-gradient-to-b from-primary/50 via-primary/10 to-transparent hidden lg:block"></div>
                 <LayoutEditor
                   selectedLayout={selectedLayout}
                   setSelectedLayout={setSelectedLayout}
@@ -206,9 +226,10 @@ const Index = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="assistant">
+          <TabsContent value="assistant" className="mt-0 focus-visible:ring-0 focus-visible:outline-none">
             <div className={`${isMobile ? 'flex flex-col space-y-6' : 'grid gap-8 lg:grid-cols-2'}`}>
-              <div className={`${isMobile ? 'order-1' : 'lg:col-span-1'}`}>
+              <div className={`${isMobile ? 'order-1' : 'lg:col-span-1'} relative`}>
+                <div className="absolute -left-4 top-0 bottom-0 w-[1px] bg-gradient-to-b from-accent/50 via-accent/10 to-transparent hidden lg:block"></div>
                 <ResumeAssistant
                   personalInfo={resumeData.personalInfo}
                   workExperience={resumeData.workExperience}
