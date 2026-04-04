@@ -5,23 +5,23 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-tech uppercase tracking-widest ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 cyber-button",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-[var(--background-base)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/50 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:-translate-y-[2px] active:scale-[0.98]",
   {
     variants: {
       variant: {
-        default: "bg-primary/10 text-primary border-primary hover:bg-primary hover:text-primary-foreground",
+        default: "bg-[var(--accent)] text-white shadow-[0_0_0_1px_rgba(94,106,210,0.5),0_4px_12px_rgba(94,106,210,0.3),inset_0_1px_0_0_rgba(255,255,255,0.2)] hover:bg-[var(--accent-bright)] hover:shadow-[0_0_0_1px_rgba(104,114,217,0.6),0_6px_16px_rgba(94,106,210,0.4),inset_0_1px_0_0_rgba(255,255,255,0.3)]",
         destructive:
-          "bg-destructive/10 text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "border-secondary/50 text-secondary hover:border-secondary hover:bg-secondary/10",
+          "border border-[var(--border-default)] bg-transparent text-[var(--foreground)] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] hover:bg-[var(--surface-hover)] hover:border-[var(--border-hover)]",
         secondary:
-          "bg-secondary/10 text-secondary border-secondary hover:bg-secondary hover:text-secondary-foreground",
-        ghost: "border-transparent hover:bg-accent/20 hover:text-accent",
-        link: "border-transparent text-primary underline-offset-4 hover:underline",
+          "bg-white/[0.05] text-[var(--foreground)] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] hover:bg-white/[0.08] hover:shadow-[0_0_12px_rgba(255,255,255,0.05),inset_0_1px_0_0_rgba(255,255,255,0.08)]",
+        ghost: "hover:bg-white/[0.05] text-[var(--foreground-muted)] hover:text-[var(--foreground)]",
+        link: "text-[var(--accent)] underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-10 px-6 py-2",
-        sm: "h-9 px-4",
+        default: "h-10 px-4 py-2",
+        sm: "h-9 px-3",
         lg: "h-11 px-8 text-base",
         icon: "h-10 w-10",
       },
