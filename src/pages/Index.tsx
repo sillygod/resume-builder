@@ -11,6 +11,7 @@ import { useTheme, ThemeName } from "@/themes/ThemeContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShowPreviewButton } from "@/components/ShowPreviewButton";
 import LayoutEditor from '@/components/LayoutEditor';
+import { AmbientBackground } from "@/components/AmbientBackground";
 import exampleResumeJson from '@/data/exampleResume.json';
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -121,25 +122,25 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden font-sans pb-16 bg-background">
+    <div className="min-h-screen relative overflow-hidden font-sans pb-16">
+      <AmbientBackground />
       <div className="container py-10 relative z-10">
         <div className="flex flex-col space-y-6 mb-10 animate-fade-in [animation-delay:100ms] opacity-0 [animation-fill-mode:forwards]">
 
-          {/* Header section with refined corpo cyberpunk aesthetics */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-primary/20 pb-6 relative">
-            <div className="absolute -bottom-[1px] left-0 w-1/4 h-[1px] bg-primary shadow-[0_0_8px_var(--primary)] animate-pulse-glow"></div>
+          {/* Header section */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end border-b border-[var(--border-default)] pb-6 relative">
+            <div className="absolute -bottom-[1px] left-0 w-1/4 h-[1px] bg-gradient-to-r from-transparent via-[var(--accent)] to-transparent opacity-50"></div>
 
-            <div className="relative">
-              <div className="absolute -top-5 -left-1 text-primary/40 font-mono text-[10px] tracking-widest uppercase hidden md:block">SYS.INIT // CORPO_UI_v2.1</div>
+            <div className="relative md:col-span-7">
               <h1
-                className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl'} font-display font-bold text-foreground tracking-wider uppercase mb-1 hover:text-primary transition-colors duration-500`}
+                className={`${isMobile ? 'text-4xl' : 'text-5xl md:text-7xl lg:text-8xl'} font-bold tracking-tight leading-tight mb-2`}
               >
-                Resume <span className="text-primary font-light">Builder</span>
+                <span className="text-gradient">Resume</span> <span className="text-gradient-accent">Builder</span>
               </h1>
-              <div className="h-[2px] w-12 bg-secondary mt-3"></div>
+              <div className="h-[1px] w-12 bg-[var(--border-hover)] mt-4"></div>
             </div>
 
-            <div className={`flex ${isMobile ? 'flex-col space-y-3 w-full mt-8' : 'flex-row gap-4'} items-stretch`}>
+            <div className={`md:col-span-5 flex ${isMobile ? 'flex-col space-y-3 w-full mt-4' : 'flex-row gap-4 justify-end'} items-stretch`}>
               <input
                 type="file"
                 accept=".json"

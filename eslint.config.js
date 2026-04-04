@@ -26,4 +26,4 @@ export default tseslint.config({ ignores: ["dist"] }, {
     ],
     "@typescript-eslint/no-unused-vars": "off",
   },
-}, storybook.configs["flat/recommended"]);
+}, ...storybook.configs["flat/recommended"]);
