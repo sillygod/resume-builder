@@ -317,7 +317,7 @@ export function ResumePreview({
         isUpdating ? 'opacity-75 scale-[0.99]' : 'opacity-100 scale-100'
       }`}>
         <Card
-          className="w-full h-full bg-white shadow-lg animate-fade-in relative overflow-hidden p-0 border-0"
+          className="w-full h-full bg-[#050506] shadow-lg animate-fade-in relative overflow-hidden p-0 border-0"
           style={{ height: '297mm' }}
         >
           <div

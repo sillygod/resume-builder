@@ -10,14 +10,14 @@ const TestComponent = () => {
   return (
     <div>
       <div data-testid="current-theme">{currentTheme}</div>
-      <button onClick={() => setTheme('modern')} data-testid="set-modern">
-        Set Modern
+      <button onClick={() => setTheme('centered')} data-testid="set-centered">
+        Set Centered
       </button>
       <button onClick={() => setTheme('sidebar')} data-testid="set-sidebar">
         Set Sidebar
       </button>
-      <button onClick={() => setTheme('centered')} data-testid="set-centered">
-        Set Centered
+      <button onClick={() => setTheme('classic')} data-testid="set-classic">
+        Set Classic
       </button>
       <button onClick={() => setTheme('executive')} data-testid="set-executive">
         Set Executive
@@ -33,7 +33,7 @@ const ComponentWithoutProvider = () => {
   return (
     <div>
       <div data-testid="theme-without-provider">{currentTheme}</div>
-      <button onClick={() => setTheme('modern')} data-testid="set-theme-no-provider">
+      <button onClick={() => setTheme('centered')} data-testid="set-theme-no-provider">
         Set Theme
       </button>
     </div>
@@ -49,7 +49,7 @@ describe('ThemeContext', () => {
         </ThemeProvider>
       );
       
-      expect(screen.getByTestId('current-theme')).toHaveTextContent('simple');
+      expect(screen.getByTestId('current-theme')).toHaveTextContent('classic');
     });
 
     it('allows theme changes', async () => {
@@ -61,10 +61,10 @@ describe('ThemeContext', () => {
         </ThemeProvider>
       );
       
-      expect(screen.getByTestId('current-theme')).toHaveTextContent('simple');
+      expect(screen.getByTestId('current-theme')).toHaveTextContent('classic');
       
-      await user.click(screen.getByTestId('set-modern'));
-      expect(screen.getByTestId('current-theme')).toHaveTextContent('modern');
+      await user.click(screen.getByTestId('set-centered'));
+      expect(screen.getByTestId('current-theme')).toHaveTextContent('centered');
       
       await user.click(screen.getByTestId('set-sidebar'));
       expect(screen.getByTestId('current-theme')).toHaveTextContent('sidebar');
@@ -81,12 +81,12 @@ describe('ThemeContext', () => {
       
       const currentThemeElement = screen.getByTestId('current-theme');
       
-      await user.click(screen.getByTestId('set-modern'));
-      expect(currentThemeElement).toHaveTextContent('modern');
-      
       await user.click(screen.getByTestId('set-centered'));
       expect(currentThemeElement).toHaveTextContent('centered');
       
+      await user.click(screen.getByTestId('set-classic'));
+      expect(currentThemeElement).toHaveTextContent('classic');
+
       await user.click(screen.getByTestId('set-executive'));
       expect(currentThemeElement).toHaveTextContent('executive');
     });
@@ -96,7 +96,7 @@ describe('ThemeContext', () => {
     it('returns default values when used outside provider', () => {
       render(<ComponentWithoutProvider />);
       
-      expect(screen.getByTestId('theme-without-provider')).toHaveTextContent('simple');
+      expect(screen.getByTestId('theme-without-provider')).toHaveTextContent('classic');
     });
 
     it('provides functional setTheme even outside provider', async () => {
@@ -115,7 +115,7 @@ describe('ThemeContext', () => {
 
   describe('Theme configurations', () => {
     it('has all required theme names', () => {
-      const expectedThemes: ThemeName[] = ['simple', 'centered', 'sidebar', 'modern', 'executive'];
+      const expectedThemes: ThemeName[] = ['classic', 'centered', 'executive'];
       
       expectedThemes.forEach(themeName => {
         expect(themes[themeName]).toBeDefined();
@@ -231,33 +231,21 @@ describe('ThemeContext', () => {
   });
 
   describe('Theme-specific tests', () => {
-    it('simple theme has basic styling', () => {
-      const simpleTheme = themes.simple;
-      expect(simpleTheme.layout.containerClass).toContain('flex-col');
-      expect(simpleTheme.personalInfo.titleClass).toContain('text-3xl');
-    });
-
-    it('modern theme has shadow styling', () => {
-      const modernTheme = themes.modern;
-      expect(modernTheme.personalInfo.containerClass).toContain('shadow');
-      expect(modernTheme.section.containerClass).toContain('backdrop');
-    });
-
-    it('sidebar theme has flex-row layout', () => {
-      const sidebarTheme = themes.sidebar;
-      expect(sidebarTheme.layout.containerClass).toContain('flex-row');
-      expect(sidebarTheme.personalInfo.containerClass).toContain('w-[32%]');
+    it('classic theme has linear design styling', () => {
+      const classicTheme = themes.classic;
+      expect(classicTheme.layout.containerClass).toContain('bg-[#050506]');
+      expect(classicTheme.personalInfo.titleClass).toContain('text-4xl');
     });
 
     it('executive theme has sophisticated styling', () => {
       const executiveTheme = themes.executive;
-      expect(executiveTheme.personalInfo.titleClass).toContain('text-4xl');
-      expect(executiveTheme.layout.containerClass).toContain('bg-[#0f1219]');
+      expect(executiveTheme.personalInfo.titleClass).toContain('text-5xl');
+      expect(executiveTheme.layout.containerClass).toContain('bg-[#020203]');
     });
 
-    it('centered theme has center alignment', () => {
+    it('centered theme has center alignment for grid', () => {
       const centeredTheme = themes.centered;
-      expect(centeredTheme.personalInfo.containerClass).toContain('text-center');
+      expect(centeredTheme.personalInfo.titleClass).toContain('text-center');
       expect(centeredTheme.personalInfo.gridClass).toContain('items-center');
     });
   });

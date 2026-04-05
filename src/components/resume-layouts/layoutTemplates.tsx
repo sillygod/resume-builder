@@ -38,7 +38,7 @@ export const getLayoutJSXString = (layoutName: string) => {
                 />
               </div>
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-[#3bd4f5]/30 font-mono text-sm uppercase">
+              <div className="w-full h-full flex items-center justify-center text-white/30 font-mono text-sm uppercase">
 
               </div>
             )}
@@ -215,7 +215,7 @@ export const getLayoutJSXString = (layoutName: string) => {
                 />
               </div>
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-[#3bd4f5]/50 font-mono text-xs">
+              <div className="w-full h-full flex items-center justify-center text-white/50 font-mono text-xs">
 
               </div>
             )}
@@ -348,7 +348,7 @@ export const getLayoutJSXString = (layoutName: string) => {
                 />
               </div>
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-[#9b72d1]/50 font-mono text-sm uppercase">
+              <div className="w-full h-full flex items-center justify-center text-[white]/50 font-mono text-sm uppercase">
 
               </div>
             )}
@@ -416,7 +416,7 @@ export const getLayoutJSXString = (layoutName: string) => {
   </div>
 )`;
     case 'Sidebar':
-      return `// Corpo DB Layout Component
+      return `// Linear Sidebar Layout Component
 (
   <>
     {/* Left Sidebar */}
@@ -439,7 +439,7 @@ export const getLayoutJSXString = (layoutName: string) => {
             />
           </div>
         ) : (
-          <div className="w-full h-full bg-[#0f1219] flex items-center justify-center text-[#3bd4f5]/50 font-mono text-sm uppercase">
+          <div className="w-full h-full bg-white/[0.05] flex items-center justify-center text-white/50 font-mono text-sm uppercase">
 
 
           </div>
@@ -483,7 +483,7 @@ export const getLayoutJSXString = (layoutName: string) => {
       {/* Skills in sidebar */}
       {skills.length > 0 && (
         <section className="${themes.sidebar.skills.containerClass}">
-          <h2 className="${themes.sidebar.skills.titleClass}">Skill DB</h2>
+          <h2 className="\${themes.sidebar.skills.titleClass}">Skills</h2>
           <div className="${themes.sidebar.skills.skillsListClass}">
             {skills.map((skill) => (
               <span key={skill} className="${themes.sidebar.skills.skillItemClass}">
@@ -499,7 +499,7 @@ export const getLayoutJSXString = (layoutName: string) => {
     <div className="${themes.sidebar.workExperience.containerClass}">
       {personalInfo.summary && (
         <section className="${themes.sidebar.section.containerClass}">
-          <h2 className="${themes.sidebar.section.titleClass}">Personnel File</h2>
+          <h2 className="\${themes.sidebar.section.titleClass}">Summary</h2>
           <div className="${themes.sidebar.section.contentClass}">
             <p className="${themes.sidebar.workExperience.descriptionClass}">{personalInfo.summary}</p>
           </div>
@@ -508,7 +508,7 @@ export const getLayoutJSXString = (layoutName: string) => {
 
       {workExperience.length > 0 && (
         <section className="${themes.sidebar.section.containerClass}">
-          <h2 className="${themes.sidebar.workExperience.titleClass}">Employment Records</h2>
+          <h2 className="\${themes.sidebar.workExperience.titleClass}">Experience</h2>
           <div className="space-y-4">
             {workExperience.map((exp) => (
               <div key={exp.id} className="${themes.sidebar.workExperience.entryClass}">
@@ -526,7 +526,7 @@ export const getLayoutJSXString = (layoutName: string) => {
 
       {education.length > 0 && (
         <section className="${themes.sidebar.section.containerClass}">
-          <h2 className="${themes.sidebar.education.titleClass}">Education History</h2>
+          <h2 className="\${themes.sidebar.education.titleClass}">Education</h2>
           <div className="space-y-4">
             {education.map((edu) => (
               <div key={edu.id} className="${themes.sidebar.education.entryClass}">
@@ -544,7 +544,7 @@ export const getLayoutJSXString = (layoutName: string) => {
   </>
 )`;
     case 'Centered':
-      return `// Neon City Layout Component
+      return `// Linear Centered Layout Component
 (
   <div className="${themes.centered.layout.containerClass}">
     <div className="${themes.centered.layout.contentClass}">
@@ -569,7 +569,7 @@ export const getLayoutJSXString = (layoutName: string) => {
                 />
               </div>
             ) : (
-              <div className="w-full h-full bg-[#0f1219] flex items-center justify-center text-[#3bd4f5]/50 font-mono text-sm uppercase">
+              <div className="w-full h-full bg-white/[0.05] flex items-center justify-center text-white/50 font-mono text-sm uppercase">
 
 
 
@@ -614,7 +614,7 @@ export const getLayoutJSXString = (layoutName: string) => {
       {/* Summary Section */}
       {personalInfo.summary && (
         <section className="${themes.centered.section.containerClass}">
-          <h2 className="${themes.centered.section.titleClass}">Identity Summary</h2>
+          <h2 className="\${themes.centered.section.titleClass}">Summary</h2>
           <div className="${themes.centered.section.contentClass}">
             <p className="${themes.centered.workExperience.descriptionClass} text-center">{personalInfo.summary}</p>
           </div>
@@ -624,7 +624,7 @@ export const getLayoutJSXString = (layoutName: string) => {
       {/* Work Experience Section */}
       {workExperience.length > 0 && (
         <section className="${themes.centered.workExperience.containerClass}">
-          <h2 className="${themes.centered.workExperience.titleClass}">Career Log</h2>
+          <h2 className="\${themes.centered.workExperience.titleClass}">Experience</h2>
           <div className="${themes.centered.section.contentClass}">
             {workExperience.map((exp) => (
               <div key={exp.id} className="${themes.centered.workExperience.entryClass}">
@@ -643,7 +643,7 @@ export const getLayoutJSXString = (layoutName: string) => {
       {/* Education Section */}
       {education.length > 0 && (
         <section className="${themes.centered.education.containerClass}">
-          <h2 className="${themes.centered.education.titleClass}">Academic Protocol</h2>
+          <h2 className="\${themes.centered.education.titleClass}">Education</h2>
           <div className="${themes.centered.section.contentClass}">
             {education.map((edu) => (
               <div key={edu.id} className="${themes.centered.education.entryClass}">
@@ -659,7 +659,7 @@ export const getLayoutJSXString = (layoutName: string) => {
       {/* Skills Section */}
       {skills.length > 0 && (
         <section className="${themes.centered.skills.containerClass}">
-          <h2 className="${themes.centered.skills.titleClass}">System Specs</h2>
+          <h2 className="\${themes.centered.skills.titleClass}">Skills</h2>
           <div className="${themes.centered.skills.skillsListClass}">
             {skills.map((skill) => (
               <span key={skill} className="${themes.centered.skills.skillItemClass}">
